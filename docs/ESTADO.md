@@ -63,3 +63,6 @@ Desactivado (código presente, no se borra):
   `cuenta` y `privacidad`.
 - Lighthouse móvil (`index`, `ruta`, `privacidad`): rendimiento, accesibilidad y buenas
   prácticas en 100. SEO en 60 solo por el `noindex` (buscado).
+- **URL pública verificada tras fusionar (#2, 18/10/2026):** el planificador carga, Madrid →
+  Valencia y Getafe → Alcalá calculan con 1/2/5/10 km, guardar/cargar/borrar en el navegador
+  funciona, sin desbordamiento a 390 px y sin errores de consola.
