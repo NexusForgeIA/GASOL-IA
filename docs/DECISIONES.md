@@ -79,3 +79,15 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     colisionan, se añade el ID.
 22. **Hora peninsular calculada con la regla de la UE** en el generador, porque Python en
     Windows no trae `tzdata` y no queremos dependencias. Tiene test del cambio de hora.
+
+# Decisiones — Fase 2 en demo (18/10/2026)
+
+23. **Demo sin cuentas.** El repo es público y el proyecto Supabase propio aún no existe: no se
+    crean usuarios en el Auth compartido. Las rutas se guardan en `localStorage`; cuentas, rutas
+    en servidor y avisos push quedan detrás de `CUENTAS` (cliente) y `GASOL_CUENTAS` (servidor).
+24. **Límite global de 500 cálculos de ruta al día** en la demo, en vez de por usuario o por IP:
+    no guarda datos personales y protege al servidor público de OSRM. **[revisar]** si se queda
+    corto.
+25. **La lista de municipios la sirve `gasol-ruta`** (`GET ?listado=lugares`) para desplegar una
+    sola función; `gasol-buscar` también la tiene en el repo, pero la versión desplegada no.
+26. **Atribución con fecha junto al corredor** («Datos actualizados el …»), además del pie.

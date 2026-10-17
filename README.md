@@ -11,10 +11,11 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html`, `assets/`, `sw.js` | PWA del comparador (vanilla JS) |
+| `index.html`, `ruta.html`, `assets/`, `sw.js` | PWA: comparador y planificador de ruta (vanilla JS) |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web |
+| `supabase/functions/gasol-ruta/` | Ruta y corredor (pública en la demo) |
 | `scripts/generar_paginas.py` | Páginas estáticas por provincia y municipio |
 | `scripts/generar_iconos.py` | Iconos provisionales de la PWA |
 | `docs/` | Informe de la fuente de datos y decisiones |
@@ -22,7 +23,7 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 ## Desarrollo
 
 ```bash
-deno test supabase/functions                              # parser de horarios y normalización
+deno test supabase/functions assets/calculos.test.js      # horarios, normalización, corredor y calculadora
 python scripts/generar_paginas.py                         # genera gasolineras/ y sitemap.xml
 python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-LD de las páginas
 python -m http.server 8080            # sirve la PWA en local
@@ -30,4 +31,4 @@ python -m http.server 8080            # sirve la PWA en local
 
 Reglas del proyecto en [`CLAUDE.md`](CLAUDE.md).
 
-Decisiones de las fases 0-1 y lo pendiente de revisar: [`docs/DECISIONES.md`](docs/DECISIONES.md).
+Estado actual: [`docs/ESTADO.md`](docs/ESTADO.md). Decisiones y lo pendiente de revisar: [`docs/DECISIONES.md`](docs/DECISIONES.md).

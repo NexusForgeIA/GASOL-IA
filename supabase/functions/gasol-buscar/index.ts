@@ -2,6 +2,7 @@
 //   ?combustible=gasoleo_a&provincia=28[&municipio=4354][&solo24=1]
 //   ?combustible=gasoleo_a&lat=40.42&lon=-3.70&radio=10[&solo24=1]
 //   ?listado=territorios
+//   ?listado=lugares   (municipios con estaciones y su centroide, para origen/destino)
 //   &limite=1..1000 (por defecto 200)
 // Consulta con service_role a funciones gasol_* sin acceso público.
 // RGPD: las coordenadas se redondean a 2 decimales (~1 km), no se guardan ni se
@@ -66,6 +67,11 @@ Deno.serve(async (req) => {
         if (pagina.length < 1000) break;
       }
       return json({ territorios: filas }, 200, "public, max-age=3600");
+    }
+
+    if (q.get("listado") === "lugares") {
+      // Un único jsonb: [[id_municipio, municipio, provincia, lat, lon], ...]
+      return json({ lugares: await rpc("gasol_lugares", {}) }, 200, "public, max-age=86400");
     }
 
     const combustible = q.get("combustible") ?? "gasoleo_a";

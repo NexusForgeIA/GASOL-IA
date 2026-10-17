@@ -35,7 +35,11 @@ a { color: var(--accent); }
 }
 .saltar:focus { top: 1rem; }
 
-.cabecera { padding: 1.5rem 0 1rem; border-bottom: 1px solid var(--line); }
+.cabecera { padding: 1rem 0 1rem; border-bottom: 1px solid var(--line); }
+.navegacion { display: flex; flex-wrap: wrap; gap: 0 1rem; align-items: center; margin-bottom: .5rem; }
+.navegacion a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-decoration: none; font-weight: 600; }
+.navegacion a.marca { color: var(--accent); margin: 0 auto 0 0; font-weight: 800; }
+.navegacion a[aria-current="page"] { color: var(--text); text-decoration: underline; text-underline-offset: 6px; }
 .marca { margin: 0 0 .25rem; font-weight: 800; letter-spacing: .02em; color: var(--accent); }
 h1 { margin: 0; font-size: clamp(1.35rem, 5vw, 1.9rem); line-height: 1.2; }
 .sub { margin: .5rem 0 0; color: var(--muted); }
@@ -65,6 +69,17 @@ select {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
 }
 select:disabled { opacity: .6; }
+input[type=text], input[type=email], input[type=password], input:not([type]) {
+  width: 100%; min-height: 48px; padding: .6rem .75rem; font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+input::placeholder { color: var(--muted); }
+.fila-campo { display: flex; gap: .5rem; }
+.fila-campo input { flex: 1; min-width: 0; }
+.fila-campo .boton-sec { flex: none; }
+.campos-paradas { display: grid; gap: .75rem; }
+.botones { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.botones .boton, .botones .boton-sec { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
 
 .interruptor {
   display: flex; align-items: center; gap: .75rem; min-height: 48px; padding: .5rem .75rem;
@@ -82,6 +97,10 @@ select:disabled { opacity: .6; }
 .boton { background: var(--accent); color: var(--accent-ink); border: 0; }
 .boton:disabled { opacity: .6; cursor: progress; }
 .boton-sec { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.boton-sec[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.boton-peligro { min-height: 48px; padding: .75rem 1.25rem; font: inherit; font-weight: 700; border-radius: var(--radius);
+  cursor: pointer; background: transparent; color: var(--error); border: 1px solid var(--error); }
+.peligro { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
 
 .resultados { margin: 1.5rem 0; }
 .resultados:focus { outline: none; }
@@ -120,6 +139,25 @@ h2 { margin: 0; font-size: 1.25rem; }
 
 .pie { border-top: 1px solid var(--line); padding: 1.25rem 0 2rem; color: var(--muted); font-size: .85rem; }
 .pie a { display: inline-block; min-height: 44px; line-height: 44px; }
+
+/* Ruta y cuenta */
+.tarjeta-info { padding: .9rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.tarjeta-info.aviso { border-color: var(--warn); }
+.lista-simple { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: .5rem; }
+.lista-simple li { padding: .75rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow-wrap: anywhere; }
+.ruta-guardada .botones { margin-top: .5rem; }
+.estacion.baja { background: #10241a; border-color: var(--accent); }
+.estacion.sube { border-color: #5c3a37; }
+.tendencia { grid-column: 1 / -1; margin: 0; font-weight: 700; }
+.tendencia.baja { color: var(--accent); }
+.tendencia.sube { color: var(--error); }
+.estacion > .boton-sec { grid-column: 1 / -1; justify-self: start; }
+.tabla-calculo { width: 100%; border-collapse: collapse; margin: 1rem 0 .5rem; font-variant-numeric: tabular-nums; font-size: .92rem; }
+.tabla-calculo caption { text-align: left; color: var(--muted); padding-bottom: .5rem; }
+.tabla-calculo th, .tabla-calculo td { padding: .45rem .4rem; border-bottom: 1px solid var(--line); text-align: right; overflow-wrap: anywhere; }
+.tabla-calculo th[scope="row"], .tabla-calculo thead th:first-child { text-align: left; }
+#resultado:focus { outline: none; }
+#resultado h2 { margin-top: 1.5rem; }
 
 /* Páginas estáticas */
 .estacion.simple { display: block; }

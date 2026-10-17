@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Planifica tu ruta · Gasol-IA</title>
+  <meta name="description" content="Antes de salir: calcula tu ruta y mira las gasolineras de tu corredor ordenadas por precio oficial, con el desvío en km y minutos y el filtro de abiertas 24 horas.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org; connect-src 'self' https://mlaqtniujnvfxcvcourm.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/ruta.js"></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="./">Gasol-IA</a>
+        <a href="./">Comparador</a>
+        <a href="ruta.html" aria-current="page">Ruta</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
+      </nav>
+      <h1>Planifica antes de salir</h1>
+      <p class="sub">Gasolineras de tu corredor ordenadas por precio oficial, con el desvío que suponen.</p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <p class="tarjeta-info aviso" id="aviso-camion"><strong>Ruta no verificada para camiones.</strong> Se calcula para turismo: revisa gálibos, pesos y restricciones antes de salir.</p>
+    <p id="sin-sesion" class="tarjeta-info" hidden>Para calcular y guardar rutas, <a href="cuenta.html">entra o crea tu cuenta</a>.</p>
+
+    <section id="mis-rutas" hidden aria-labelledby="t-mis-rutas">
+      <h2 id="t-mis-rutas">Tus rutas guardadas</h2>
+      <p id="nota-rutas" class="nota"></p>
+      <ul id="lista-rutas" class="lista-simple"></ul>
+    </section>
+
+    <form id="planificador" class="filtros" novalidate>
+      <datalist id="lugares"></datalist>
+      <div class="campo">
+        <label for="origen"><span>Origen</span></label>
+        <div class="fila-campo">
+          <input id="origen" name="origen" list="lugares" autocomplete="off" placeholder="Municipio" required>
+          <button type="button" id="mi-ubicacion" class="boton-sec">Mi ubicación</button>
+        </div>
+      </div>
+      <div id="paradas" class="campos-paradas"></div>
+      <button type="button" id="anadir-parada" class="boton-sec">Añadir parada</button>
+      <label class="campo"><span>Destino</span>
+        <input id="destino" name="destino" list="lugares" autocomplete="off" placeholder="Municipio" required></label>
+
+      <div class="campos">
+        <label class="campo"><span>Combustible</span>
+          <select id="combustible" name="combustible">
+            <option value="gasoleo_a" selected>Gasóleo A</option>
+            <option value="gasoleo_premium">Gasóleo Premium</option>
+            <option value="diesel_renovable">Diésel renovable</option>
+            <option value="adblue">AdBlue</option>
+            <option value="gasolina_95_e5">Gasolina 95 E5</option>
+            <option value="gasolina_98_e5">Gasolina 98 E5</option>
+            <option value="glp">GLP (autogás)</option>
+          </select></label>
+        <label class="campo"><span>Distancia máxima a la ruta</span>
+          <select id="lateral" name="lateral">
+            <option value="1">1 km</option>
+            <option value="2" selected>2 km</option>
+            <option value="5">5 km</option>
+            <option value="10">10 km</option>
+          </select></label>
+      </div>
+      <label class="interruptor"><input type="checkbox" id="solo24" name="solo24"><span>Solo abiertas 24 horas</span></label>
+      <p class="nota">Los municipios de la lista son los que tienen gasolinera; el punto es su centro aproximado. «Mi ubicación» se redondea a ~1 km y no se guarda en ningún servidor.</p>
+      <button type="submit" class="boton">Calcular ruta y corredor</button>
+    </form>
+
+    <p id="estado" class="estado" role="status" aria-live="polite"></p>
+
+    <section id="resultado" hidden aria-labelledby="t-resultado" tabindex="-1">
+      <h2 id="t-resultado">Tu ruta</h2>
+      <p id="resumen-ruta"></p>
+      <p id="aviso-ruta" class="tarjeta-info aviso"></p>
+      <div id="mapa" class="mapa"></div>
+
+      <div class="botones">
+        <a id="nav-google" class="boton" href="#" target="_blank" rel="noopener">Navegar con Google Maps</a>
+        <a id="nav-waze" class="boton-sec" href="#" target="_blank" rel="noopener"></a>
+      </div>
+      <p id="nav-nota" class="nota"></p>
+
+      <h2>Gasolineras del corredor</h2>
+      <p id="resumen-corredor" class="nota"></p>
+      <p id="atribucion-ruta" class="nota"></p>
+      <ol id="corredor" class="lista"></ol>
+
+      <h2>Calculadora de desvío</h2>
+      <form id="calculadora" class="filtros" novalidate>
+        <p class="nota">Compara repostar en la más barata del corredor frente a la más cercana a tu ruta. Los litros y el consumo son <strong>tus datos</strong>; no los estimamos.</p>
+        <div class="campos">
+          <label class="campo"><span>Litros que vas a repostar (tu dato)</span>
+            <input name="litros" inputmode="decimal" autocomplete="off" required></label>
+          <label class="campo"><span>Tu consumo, litros cada 100 km (tu dato)</span>
+            <input name="consumo" inputmode="decimal" autocomplete="off" required></label>
+        </div>
+        <button type="submit" class="boton-sec">Comparar</button>
+        <div id="calc-resultado" aria-live="polite"></div>
+      </form>
+
+      <h2>Guardar ruta</h2>
+      <form id="guardar" class="filtros" novalidate>
+        <label class="campo"><span>Nombre</span><input name="nombre" maxlength="80" required></label>
+        <label class="interruptor" data-cuentas hidden><input type="checkbox" name="alertas"><span>Avisarme cuando bajen precios en este corredor</span></label>
+        <p class="nota" data-cuentas hidden>Para avisarte guardamos la línea simplificada de la ruta. Puedes borrarla cuando quieras.</p>
+        <p class="nota" id="nota-guardar-local">Se guarda solo en este navegador: no llega a ningún servidor. Guardamos origen, destino, paradas y filtros; no la línea de la ruta.</p>
+        <button type="submit" class="boton-sec" id="boton-guardar">Guardar en este navegador</button>
+      </form>
+    </section>
+
+    <aside class="avisos">
+      <p><strong>Al volante, no.</strong> Planifica aquí antes de arrancar; en marcha solo recibirás avisos cortos, sin botones.</p>
+      <p>La ruta es orientativa para turismo y no está verificada para camiones.</p>
+    </aside>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Origen de los datos: Ministerio para la Transición Ecológica y el Reto Demográfico. Cada precio indica la fecha y hora en que lo capturamos; puede haber cambiado desde entonces. El Ministerio no participa en esta aplicación ni la patrocina. Ruta: OSRM (servidor de demostración). Mapa © colaboradores de <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>.</p>
+      <p><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+</body>
+</html>

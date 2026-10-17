@@ -1,7 +1,9 @@
 // Gasol-IA · comparador. Vanilla JS, sin dependencias salvo Leaflet bajo demanda.
-"use strict";
+import { API as BASE, mostrarCuentas } from "./config.js";
 
-const API = "https://mlaqtniujnvfxcvcourm.supabase.co/functions/v1/gasol-buscar";
+mostrarCuentas();
+
+const API = `${BASE}/gasol-buscar`;
 const LEAFLET = {
   css: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
   cssSri: "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=",

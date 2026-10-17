@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tu cuenta · Gasol-IA</title>
+  <meta name="description" content="Entra en Gasol-IA para guardar rutas, recibir avisos de bajadas de precio en tu corredor, exportar tus datos o borrar tu cuenta.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://mlaqtniujnvfxcvcourm.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/cuenta.js"></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="./">Gasol-IA</a>
+        <a href="./">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="cuenta.html" aria-current="page">Cuenta</a>
+      </nav>
+      <h1>Tu cuenta</h1>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <p id="desactivada" class="tarjeta-info" hidden>Las cuentas están desactivadas en esta demo. Puedes guardar rutas en tu navegador desde <a href="ruta.html">Ruta</a>.</p>
+    <p id="estado" class="estado" role="status" aria-live="polite"></p>
+
+    <section id="acceso" hidden aria-labelledby="t-acceso">
+      <h2 id="t-acceso">Entrar o crear cuenta</h2>
+      <form id="form-acceso" class="filtros" novalidate>
+        <label class="campo"><span>Email</span>
+          <input type="email" name="email" autocomplete="email" required maxlength="254"></label>
+        <label class="campo"><span>Contraseña (mínimo 8 caracteres)</span>
+          <input type="password" name="password" autocomplete="current-password" required minlength="8" maxlength="72"></label>
+        <div class="botones">
+          <button type="submit" class="boton" name="accion" value="login">Entrar</button>
+          <button type="submit" class="boton-sec" name="accion" value="registro">Crear cuenta</button>
+        </div>
+        <p class="nota">Solo guardamos tu email, las rutas que guardes y, si los activas, tus avisos. Más en <a href="privacidad.html">privacidad</a>.</p>
+      </form>
+    </section>
+
+    <section id="panel" hidden aria-labelledby="t-panel">
+      <h2 id="t-panel">Hola, <span id="quien"></span></h2>
+
+      <form id="form-perfil" class="filtros" novalidate>
+        <label class="campo"><span>Alias (opcional)</span>
+          <input type="text" name="alias" maxlength="40" autocomplete="nickname"></label>
+        <button type="submit" class="boton-sec">Guardar alias</button>
+      </form>
+
+      <h2>Avisos en este dispositivo</h2>
+      <div id="push" class="tarjeta-info">
+        <p id="push-estado" class="nota"></p>
+        <button type="button" id="push-boton" class="boton-sec" hidden></button>
+      </div>
+
+      <h2>Avisos recientes</h2>
+      <ul id="avisos" class="lista-simple"></ul>
+
+      <h2>Tus datos</h2>
+      <div class="botones">
+        <button type="button" id="exportar" class="boton-sec">Exportar mis datos (JSON)</button>
+        <button type="button" id="salir" class="boton-sec">Cerrar sesión</button>
+      </div>
+
+      <h2>Borrar cuenta</h2>
+      <form id="form-borrar" class="filtros peligro" novalidate>
+        <p class="nota">Se borran tus rutas, avisos y suscripciones. No se puede deshacer.</p>
+        <label class="campo"><span>Escribe BORRAR para confirmar</span>
+          <input type="text" name="confirmacion" autocomplete="off" required></label>
+        <button type="submit" class="boton-peligro">Borrar mi cuenta</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+</body>
+</html>
