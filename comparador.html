@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gasol-IA · Comparador de gasolineras para transportistas</title>
+  <meta name="description" content="Compara el precio del gasóleo A, AdBlue y otros carburantes por provincia, municipio o cerca de ti, con filtro de gasolineras abiertas 24 horas. Datos oficiales del Ministerio con su fecha de captura.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org; connect-src 'self' https://mlaqtniujnvfxcvcourm.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/app.js"></script>
+</head>
+<body>
+  <a class="saltar" href="#resultados">Saltar a los resultados</a>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="comparador.html">Gasol-IA</a>
+        <a href="comparador.html" aria-current="page">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
+      </nav>
+      <h1>Gasolineras más baratas para tu camión o furgoneta</h1>
+      <p class="sub">Precios oficiales con su fecha de captura. Planifica antes de salir.</p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <form id="filtros" class="filtros" novalidate>
+      <fieldset class="modo">
+        <legend>Buscar por</legend>
+        <div class="segmentado" role="radiogroup">
+          <label><input type="radio" name="modo" value="zona" checked> Provincia o municipio</label>
+          <label><input type="radio" name="modo" value="cerca"> Cerca de mí</label>
+        </div>
+      </fieldset>
+
+      <div class="campos" data-modo="zona">
+        <label class="campo">
+          <span>Provincia</span>
+          <select id="provincia" name="provincia" required>
+            <option value="">Cargando provincias…</option>
+          </select>
+        </label>
+        <label class="campo">
+          <span>Municipio</span>
+          <select id="municipio" name="municipio" disabled>
+            <option value="">Todos los municipios</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="campos" data-modo="cerca" hidden>
+        <label class="campo">
+          <span>Radio</span>
+          <select id="radio" name="radio">
+            <option value="5">5 km</option>
+            <option value="10" selected>10 km</option>
+            <option value="25">25 km</option>
+            <option value="50">50 km</option>
+          </select>
+        </label>
+        <p class="nota">Pediremos permiso de ubicación. Se redondea a ~1 km en tu móvil antes de enviarla y no se guarda.</p>
+      </div>
+
+      <div class="campos">
+        <label class="campo">
+          <span>Combustible</span>
+          <select id="combustible" name="combustible">
+            <option value="gasoleo_a" selected>Gasóleo A</option>
+            <option value="gasoleo_premium">Gasóleo Premium</option>
+            <option value="diesel_renovable">Diésel renovable</option>
+            <option value="adblue">AdBlue</option>
+            <option value="gasolina_95_e5">Gasolina 95 E5</option>
+            <option value="gasolina_98_e5">Gasolina 98 E5</option>
+            <option value="glp">GLP (autogás)</option>
+          </select>
+        </label>
+        <label class="interruptor">
+          <input type="checkbox" id="solo24" name="solo24">
+          <span>Solo abiertas 24 horas</span>
+        </label>
+      </div>
+
+      <button type="submit" class="boton">Buscar</button>
+    </form>
+
+    <section id="resultados" class="resultados" aria-labelledby="titulo-resultados" tabindex="-1">
+      <div class="resumen">
+        <h2 id="titulo-resultados">Resultados</h2>
+        <button type="button" id="ver-mapa" class="boton-sec" hidden aria-expanded="false" aria-controls="mapa">Ver en mapa</button>
+      </div>
+      <p id="estado" class="estado" role="status" aria-live="polite">Elige una provincia o usa tu ubicación.</p>
+      <div id="mapa" class="mapa" hidden></div>
+      <ol id="lista" class="lista"></ol>
+    </section>
+
+    <aside class="avisos">
+      <p><strong>Al volante, no.</strong> Consulta y decide antes de arrancar.</p>
+      <p>«Abierta 24 h» solo se marca cuando el horario oficial lo dice sin ambigüedad. Si no, verás el horario tal cual lo publica la estación.</p>
+    </aside>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Origen de los datos: Ministerio para la Transición Ecológica y el Reto Demográfico (servicio de precios de carburantes en estaciones terrestres). Cada precio indica la fecha y hora en que lo capturamos; puede haber cambiado desde entonces. El Ministerio no participa en esta aplicación ni la patrocina.</p>
+      <p><a href="privacidad.html">Privacidad</a> · Mapa © colaboradores de <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a></p>
+    </div>
+  </footer>
+</body>
+</html>
