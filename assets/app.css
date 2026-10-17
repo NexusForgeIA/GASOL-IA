@@ -1,0 +1,138 @@
+/* Gasol-IA · identidad provisional: grafito oscuro + verde para "precio a la baja". */
+:root {
+  color-scheme: dark;
+  --bg: #0d1013;
+  --surface: #161b20;
+  --surface-2: #1e252c;
+  --line: #2c353f;
+  --text: #eef2f5;
+  --muted: #a7b2bd;
+  --accent: #3ddc84;
+  --accent-ink: #062e17;
+  --warn: #f2c14e;
+  --error: #ff8a80;
+  --radius: 10px;
+  --z-sticky: 10;
+  --z-mapa: 20;
+  --z-saltar: 100;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.5;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.contenedor { width: 100%; max-width: 46rem; margin: 0 auto; padding: 0 1rem; }
+
+.saltar {
+  position: absolute; left: 1rem; top: -4rem; z-index: var(--z-saltar);
+  background: var(--accent); color: var(--accent-ink); padding: .75rem 1rem; border-radius: var(--radius);
+  font-weight: 700; text-decoration: none;
+}
+.saltar:focus { top: 1rem; }
+
+.cabecera { padding: 1.5rem 0 1rem; border-bottom: 1px solid var(--line); }
+.marca { margin: 0 0 .25rem; font-weight: 800; letter-spacing: .02em; color: var(--accent); }
+h1 { margin: 0; font-size: clamp(1.35rem, 5vw, 1.9rem); line-height: 1.2; }
+.sub { margin: .5rem 0 0; color: var(--muted); }
+
+.filtros { margin: 1.25rem 0; display: grid; gap: 1rem; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { font-weight: 600; margin-bottom: .5rem; }
+
+.segmentado { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.segmentado label {
+  display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px;
+  padding: .5rem; text-align: center; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); cursor: pointer; font-weight: 600;
+}
+.segmentado input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.segmentado label:has(input:checked) { background: var(--surface-2); border-color: var(--accent); color: var(--text); }
+.segmentado label:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.campos { display: grid; gap: .75rem; }
+@media (min-width: 34rem) { .campos { grid-template-columns: 1fr 1fr; align-items: end; } }
+.campos[hidden] { display: none; }
+
+.campo { display: grid; gap: .35rem; min-width: 0; }
+.campo span { font-weight: 600; font-size: .95rem; }
+select {
+  width: 100%; min-height: 48px; padding: .6rem .75rem; font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+select:disabled { opacity: .6; }
+
+.interruptor {
+  display: flex; align-items: center; gap: .75rem; min-height: 48px; padding: .5rem .75rem;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); cursor: pointer;
+  font-weight: 600;
+}
+.interruptor input { width: 1.4rem; height: 1.4rem; accent-color: var(--accent); flex: none; }
+
+.nota { margin: 0; color: var(--muted); font-size: .9rem; }
+
+.boton, .boton-sec {
+  min-height: 48px; padding: .75rem 1.25rem; font: inherit; font-weight: 700; border-radius: var(--radius);
+  cursor: pointer;
+}
+.boton { background: var(--accent); color: var(--accent-ink); border: 0; }
+.boton:disabled { opacity: .6; cursor: progress; }
+.boton-sec { background: transparent; color: var(--text); border: 1px solid var(--line); }
+
+.resultados { margin: 1.5rem 0; }
+.resultados:focus { outline: none; }
+.resumen { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; min-height: 48px; }
+h2 { margin: 0; font-size: 1.25rem; }
+.estado { color: var(--muted); margin: .5rem 0 1rem; min-height: 4.5em; } /* reserva sitio: sin saltos (CLS) */
+.estado.error { color: var(--error); }
+
+.mapa { height: 340px; margin-bottom: 1rem; border: 1px solid var(--line); border-radius: var(--radius); z-index: var(--z-mapa); }
+
+.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.estacion {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .25rem 1rem;
+  padding: .9rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.estacion.primera { border-color: var(--accent); }
+.estacion h2, .estacion h3 { margin: 0; font-size: 1.05rem; overflow-wrap: anywhere; }
+.estacion .dir { margin: 0; color: var(--muted); font-size: .92rem; overflow-wrap: anywhere; }
+.precio { grid-column: 2; grid-row: 1 / span 2; text-align: right; }
+.precio strong { display: block; font-size: 1.6rem; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.precio .unidad { color: var(--muted); font-size: .85rem; }
+.estacion .primera-etiqueta {
+  display: inline-block; padding: .1rem .55rem; border-radius: 999px;
+  background: var(--accent); color: var(--accent-ink); font-size: .8rem; font-weight: 700;
+}
+.meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .4rem .75rem; align-items: center; font-size: .88rem; color: var(--muted); }
+.chip { padding: .1rem .55rem; border-radius: 999px; border: 1px solid var(--line); color: var(--text); }
+.chip.si { border-color: var(--accent); color: var(--accent); }
+.chip.duda { border-color: var(--warn); color: var(--warn); }
+.captura { grid-column: 1 / -1; margin: 0; font-size: .82rem; color: var(--muted); }
+.estacion a { font-size: .9rem; min-height: 44px; display: inline-flex; align-items: center; }
+
+.avisos { margin: 2rem 0; padding: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-size: .92rem; }
+.avisos p { margin: .25rem 0; }
+.avisos strong { color: var(--text); }
+
+.pie { border-top: 1px solid var(--line); padding: 1.25rem 0 2rem; color: var(--muted); font-size: .85rem; }
+.pie a { display: inline-block; min-height: 44px; line-height: 44px; }
+
+/* Páginas estáticas */
+.estacion.simple { display: block; }
+.estacion.simple > * + * { margin-top: .5rem; }
+.precios-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.precios-lista li { padding: .3rem .6rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); white-space: nowrap; }
+.precios-lista strong { font-variant-numeric: tabular-nums; }
+.tabla-wrap { overflow-x: auto; }
+.migas { margin: 1rem 0 0; font-size: .9rem; color: var(--muted); }
+.migas a { display: inline-block; min-height: 44px; line-height: 44px; }
+.lista-enlaces { list-style: none; padding: 0; display: grid; gap: .25rem; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); }
+.lista-enlaces a { display: block; min-height: 44px; padding: .6rem .5rem; overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
