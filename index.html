@@ -12,13 +12,18 @@
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
   <link rel="stylesheet" href="assets/app.css">
-  <script src="assets/app.js" defer></script>
+  <script type="module" src="assets/app.js"></script>
 </head>
 <body>
   <a class="saltar" href="#resultados">Saltar a los resultados</a>
   <header class="cabecera">
     <div class="contenedor">
-      <p class="marca">Gasol-IA</p>
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="./">Gasol-IA</a>
+        <a href="./" aria-current="page">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="cuenta.html">Cuenta</a>
+      </nav>
       <h1>Gasolineras más baratas para tu camión o furgoneta</h1>
       <p class="sub">Precios oficiales con su fecha de captura. Planifica antes de salir.</p>
     </div>

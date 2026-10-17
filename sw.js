@@ -1,12 +1,19 @@
 // Service worker: solo cachea la carcasa de la app. Los precios siempre van a la red,
 // para no enseñar nunca un precio guardado como si fuera el último.
-const VERSION = "gasol-v1";
+const VERSION = "gasol-v2";
 const CARCASA = [
   "./",
   "index.html",
   "privacidad.html",
+  "ruta.html",
+  "cuenta.html",
   "assets/app.css",
   "assets/app.js",
+  "assets/config.js",
+  "assets/sesion.js",
+  "assets/calculos.js",
+  "assets/ruta.js",
+  "assets/cuenta.js",
   "manifest.webmanifest",
   "assets/icons/favicon.svg",
   "assets/icons/icon-192.png",
@@ -40,4 +47,26 @@ self.addEventListener("fetch", (e) => {
       })
       .catch(() => caches.match(e.request).then((r) => r || caches.match("index.html"))),
   );
+});
+
+// Avisos push: texto corto, sin botones de acción (nada que tocar al volante).
+self.addEventListener("push", (e) => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch { d = { cuerpo: e.data?.text() }; }
+  e.waitUntil(self.registration.showNotification(d.titulo || "Gasol-IA", {
+    body: d.cuerpo || "Hay cambios de precio en tu ruta.",
+    icon: "assets/icons/icon-192.png",
+    badge: "assets/icons/icon-192.png",
+    tag: "gasol-ruta",
+    renotify: false,
+    silent: false,
+  }));
+});
+
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: "window" }).then((ws) => {
+    const abierta = ws.find((w) => w.url.includes("ruta.html"));
+    return abierta ? abierta.focus() : self.clients.openWindow("ruta.html");
+  }));
 });
