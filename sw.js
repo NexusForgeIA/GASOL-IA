@@ -1,6 +1,6 @@
 // Service worker: solo cachea la carcasa de la app. Los precios siempre van a la red,
 // para no enseñar nunca un precio guardado como si fuera el último.
-const VERSION = "gasol-v6";
+const VERSION = "gasol-v7";
 const CARCASA = [
   "./",
   "index.html",
@@ -40,7 +40,7 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET" || url.origin !== self.location.origin) return;
   // Red primero; la caché solo sirve si no hay conexión.
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: "no-cache" }) // revalida siempre: GitHub Pages sirve max-age=600
       .then((r) => {
         if (r.ok && CARCASA.some((p) => url.pathname.endsWith(p.replace("./", "/")))) {
           const copia = r.clone();
