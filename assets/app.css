@@ -174,3 +174,11 @@ h2 { margin: 0; font-size: 1.25rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Sugerencias de municipio (planificador de ruta) */
+.sugerencias { position: absolute; z-index: var(--z-mapa); margin: 0; padding: .25rem; list-style: none; max-height: 16rem; overflow-y: auto; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+.sugerencias[hidden] { display: none; }
+.sugerencias li { min-height: 44px; display: flex; align-items: center; padding: 0 .75rem; border-radius: 6px; cursor: pointer; }
+.sugerencias li[aria-selected="true"], .sugerencias li:hover { background: var(--accent); color: var(--accent-ink); }
+.sugerencias li.vacio { color: var(--muted); cursor: default; }
+.sugerencias li.vacio:hover { background: none; color: var(--muted); }

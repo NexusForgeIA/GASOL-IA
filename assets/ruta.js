@@ -47,16 +47,68 @@ async function cargarLugares() {
   const r = await fetch(`${API}/gasol-ruta?listado=lugares`);
   if (!r.ok) throw new Error("No se pudo cargar la lista de municipios.");
   const { lugares: filas } = await r.json();
-  const dl = $("lugares");
-  const frag = document.createDocumentFragment();
   for (const [, municipio, provincia, lat, lon] of filas) {
     const etiqueta = `${municipio} (${capitalizar(provincia.split("/")[0].trim())})`;
     if (lugares.has(etiqueta)) continue;
     lugares.set(etiqueta, { nombre: etiqueta, lat, lon });
-    frag.append(el("option", { value: etiqueta }));
   }
-  dl.append(frag);
+  indice = [...lugares.keys()].map((k) => [k, norm(k)]);
 }
+
+// ---- Autocompletado (lista propia: el datalist del navegador no se ve en móvil) -------
+const norm = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+let indice = [];
+let activo = null;
+let opcion = -1;
+const lista = $("sugerencias");
+
+function cerrarSugerencias() {
+  lista.hidden = true; lista.replaceChildren(); opcion = -1;
+  if (activo) activo.setAttribute("aria-expanded", "false");
+}
+function elegir(valor) {
+  if (!activo) return;
+  activo.value = valor;
+  cerrarSugerencias();
+  activo.dispatchEvent(new Event("change", { bubbles: true }));
+}
+function mostrarSugerencias(input) {
+  activo = input;
+  const q = norm(input.value.trim());
+  if (q.length < 2 || !indice.length) { cerrarSugerencias(); return; }
+  const empieza = [], contiene = [];
+  for (const [k, n] of indice) {
+    if (n.startsWith(q)) empieza.push(k); else if (n.includes(q)) contiene.push(k);
+    if (empieza.length >= 8) break;
+  }
+  const res = empieza.concat(contiene).slice(0, 8);
+  lista.replaceChildren(...(res.length
+    ? res.map((k, i) => el("li", { role: "option", id: `sug-${i}`, text: k }))
+    : [el("li", { class: "vacio", text: "Sin coincidencias: escribe el municipio con gasolinera." })]));
+  const r = input.getBoundingClientRect();
+  Object.assign(lista.style, { left: `${r.left + scrollX}px`, top: `${r.bottom + scrollY + 2}px`, width: `${r.width}px` });
+  lista.hidden = false; opcion = -1;
+  input.setAttribute("aria-expanded", "true");
+}
+document.addEventListener("input", (e) => { if (e.target.matches("[data-lugar]")) mostrarSugerencias(e.target); });
+document.addEventListener("focusin", (e) => { if (e.target.matches("[data-lugar]") && e.target.value.trim().length >= 2) mostrarSugerencias(e.target); });
+document.addEventListener("keydown", (e) => {
+  if (!e.target.matches?.("[data-lugar]") || lista.hidden) return;
+  const ops = [...lista.querySelectorAll('[role="option"]')];
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    opcion = (opcion + (e.key === "ArrowDown" ? 1 : -1) + ops.length) % ops.length;
+    ops.forEach((o, i) => o.setAttribute("aria-selected", String(i === opcion)));
+    e.target.setAttribute("aria-activedescendant", ops[opcion]?.id ?? "");
+  } else if (e.key === "Enter" && opcion >= 0) { e.preventDefault(); elegir(ops[opcion].textContent); }
+  else if (e.key === "Escape") cerrarSugerencias();
+});
+// pointerdown (no click) para que el blur del input no cierre la lista antes de elegir
+lista.addEventListener("pointerdown", (e) => {
+  const li = e.target.closest('[role="option"]');
+  if (li) { e.preventDefault(); elegir(li.textContent); }
+});
+document.addEventListener("pointerdown", (e) => { if (!e.target.closest("[data-lugar], #sugerencias")) cerrarSugerencias(); });
 
 function lugarDe(input, campo) {
   if (input.id === "origen" && ubicacion && input.value === "Mi ubicación") return ubicacion;
@@ -71,7 +123,7 @@ function anadirParada(valor = "") {
   const n = cont.children.length + 1;
   if (n > MAX_PARADAS) return;
   const id = `parada-${Date.now()}-${n}`;
-  const input = el("input", { id, list: "lugares", autocomplete: "off", placeholder: "Municipio" });
+  const input = el("input", { id, "data-lugar": "", role: "combobox", "aria-autocomplete": "list", "aria-expanded": "false", "aria-controls": "sugerencias", autocomplete: "off", placeholder: "Municipio" });
   input.value = valor;
   const quitar = el("button", { type: "button", class: "boton-sec", text: "Quitar", "aria-label": `Quitar parada ${n}` });
   const fila = el("div", { class: "campo" },

@@ -38,18 +38,18 @@
     </section>
 
     <form id="planificador" class="filtros" novalidate>
-      <datalist id="lugares"></datalist>
+      <ul id="sugerencias" class="sugerencias" role="listbox" hidden></ul>
       <div class="campo">
         <label for="origen"><span>Origen</span></label>
         <div class="fila-campo">
-          <input id="origen" name="origen" list="lugares" autocomplete="off" placeholder="Municipio" required>
+          <input id="origen" name="origen" data-lugar autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugerencias" placeholder="Municipio" required>
           <button type="button" id="mi-ubicacion" class="boton-sec">Mi ubicación</button>
         </div>
       </div>
       <div id="paradas" class="campos-paradas"></div>
       <button type="button" id="anadir-parada" class="boton-sec">Añadir parada</button>
       <label class="campo"><span>Destino</span>
-        <input id="destino" name="destino" list="lugares" autocomplete="off" placeholder="Municipio" required></label>
+        <input id="destino" name="destino" data-lugar autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugerencias" placeholder="Municipio" required></label>
 
       <div class="campos">
         <label class="campo"><span>Combustible</span>
