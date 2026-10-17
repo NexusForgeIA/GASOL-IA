@@ -1,9 +1,5 @@
--- Gasol-IA · PENDIENTE DE APLICAR (requiere confirmación humana).
---
--- El conector MCP de Supabase no pudo confirmar sentencias con DELETE/DROP,
--- así que esto no está aplicado. Aplicar desde el SQL Editor de Supabase y
--- después mover este fichero a supabase/migrations/.
---
+-- Gasol-IA · Retención de capturas (14) y limpieza de restos de la primera ingesta.
+-- Aplicada el 2026-10-17 desde el SQL Editor de Supabase (confirmación humana).
 -- Afecta solo a objetos gasol_*.
 
 -- 1. Retención: conservar las últimas 14 capturas ok (y sus precios, por cascada)
