@@ -1,0 +1,6 @@
+gasolineras/
+sitemap.xml
+__pycache__/
+.lighthouse/
+*.local
+.env
