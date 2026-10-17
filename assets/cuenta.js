@@ -1,4 +1,5 @@
 // Página de cuenta: acceso, perfil, avisos push, exportación y borrado.
+import { CUENTAS } from "./config.js";
 import { entrar, llamar, olvidarSesion, pwaInstalada, salir, sesion } from "./sesion.js";
 
 const $ = (id) => document.getElementById(id);
@@ -153,6 +154,8 @@ $("form-borrar").addEventListener("submit", async (e) => {
 });
 
 (async () => {
+  // Demo sin cuentas: no se ofrece acceso ni registro.
+  if (!CUENTAS) { $("desactivada").hidden = false; return; }
   if (!sesion()) { mostrar(false); return; }
   try { await cargarPanel(); } catch (err) {
     if (err.status === 401) olvidarSesion();

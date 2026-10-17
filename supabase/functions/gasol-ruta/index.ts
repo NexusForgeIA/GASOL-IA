@@ -1,6 +1,8 @@
 // gasol-ruta: calcula una ruta (antes de salir) y las estaciones de su corredor.
-// POST con sesión (Authorization: Bearer <jwt del usuario>):
-//   { puntos: [{lat, lon, nombre}] (2-5), combustible, solo24, lateral_km }
+// POST { puntos: [{lat, lon, nombre}] (2-5), combustible, solo24, lateral_km }
+//   Demo (por defecto): pública, sin sesión, con un límite global diario.
+//   GASOL_CUENTAS=1: exige sesión (Authorization: Bearer <jwt>) y limita por usuario.
+// GET ?listado=lugares: municipios con estaciones y su centroide (origen/destino).
 // RGPD: las coordenadas solo se usan para esta respuesta. No se guardan (salvo que el
 // usuario guarde la ruta desde gasol-cuenta) ni se escriben en logs.
 import { acumuladoM, cajas, enCorredor, proyectar, type Punto, simplificar } from "../_shared/corredor.ts";
@@ -9,14 +11,16 @@ import {
 } from "../_shared/supa.ts";
 import { proveedorActivo } from "./proveedor.ts";
 
-const CORS = cors("POST");
+const CORS = cors("GET, POST");
 const json = respuesta(CORS);
 
 export const COMBUSTIBLES = new Set([
   "gasoleo_a", "gasoleo_premium", "diesel_renovable", "adblue", "gasolina_95_e5", "gasolina_98_e5", "glp",
 ]);
 const LATERALES = new Set([1, 2, 5, 10]);
+const CUENTAS = Deno.env.get("GASOL_CUENTAS") === "1";
 const LIMITE_DIARIO = 30; // cálculos de ruta por usuario y día (protege al proveedor demo)
+const LIMITE_DEMO_DIARIO = 500; // cálculos de ruta al día entre todos, en la demo sin cuentas
 const CON_DESVIO = 25; // estaciones a las que se calcula el desvío real por carretera
 
 function validarPunto(p: unknown): Punto {
@@ -30,9 +34,13 @@ function validarPunto(p: unknown): Punto {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
-  if (req.method !== "POST") return json({ error: "Método no permitido" }, 405);
   try {
-    const yo = await usuario(tokenDe(req));
+    if (req.method === "GET" && new URL(req.url).searchParams.get("listado") === "lugares") {
+      // Un único jsonb: [[id_municipio, municipio, provincia, lat, lon], ...]
+      return json({ lugares: await rpcServicio("gasol_lugares", {}) }, 200, { "Cache-Control": "public, max-age=86400" });
+    }
+    if (req.method !== "POST") return json({ error: "Método no permitido" }, 405);
+    const yo = CUENTAS ? await usuario(tokenDe(req)) : null;
     const body = await req.json().catch(() => ({}));
     const combustible = String(body.combustible ?? "gasoleo_a");
     const lateralKm = Number(body.lateral_km ?? 2);
@@ -44,8 +52,12 @@ Deno.serve(async (req) => {
     }
     const puntos = body.puntos.map(validarPunto);
 
-    if (!(await rpcServicio("gasol_uso_ruta", { p_usuario: yo.id, p_limite: LIMITE_DIARIO }))) {
-      throw new ErrorHttp(429, `Has llegado al límite de ${LIMITE_DIARIO} cálculos de ruta por hoy.`);
+    if (yo) {
+      if (!(await rpcServicio("gasol_uso_ruta", { p_usuario: yo.id, p_limite: LIMITE_DIARIO }))) {
+        throw new ErrorHttp(429, `Has llegado al límite de ${LIMITE_DIARIO} cálculos de ruta por hoy.`);
+      }
+    } else if (!(await rpcServicio("gasol_uso_demo_ruta", { p_limite: LIMITE_DEMO_DIARIO }))) {
+      throw new ErrorHttp(429, "La demo ha llegado a su límite de cálculos de ruta por hoy. Vuelve mañana.");
     }
 
     const prov = proveedorActivo();

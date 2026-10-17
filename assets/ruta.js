@@ -1,5 +1,5 @@
 // Planificador de ruta y corredor. Solo antes de salir.
-import { API } from "./config.js";
+import { API, CUENTAS, mostrarCuentas } from "./config.js";
 import { compararDesvio, enlaceGoogleMaps, enlaceWaze, euros, puntosIntermedios } from "./calculos.js";
 import { llamar, sesion } from "./sesion.js";
 
@@ -10,6 +10,8 @@ const LEAFLET = {
   jsSri: "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",
 };
 const MAX_PARADAS = 3;
+const CLAVE_RUTAS = "gasol.rutas"; // rutas guardadas en este navegador (sin cuentas)
+const MAX_RUTAS_LOCALES = 20;
 
 const $ = (id) => document.getElementById(id);
 const form = $("planificador");
@@ -42,7 +44,7 @@ const precio3 = (n) => `${euros(n, 3)} €/l`;
 
 // ---- Lugares ------------------------------------------------------------------
 async function cargarLugares() {
-  const r = await fetch(`${API}/gasol-buscar?listado=lugares`);
+  const r = await fetch(`${API}/gasol-ruta?listado=lugares`);
   if (!r.ok) throw new Error("No se pudo cargar la lista de municipios.");
   const { lugares: filas } = await r.json();
   const dl = $("lugares");
@@ -117,13 +119,13 @@ form.addEventListener("submit", async (e) => {
       solo24: form.solo24.checked,
     };
     avisar("Calculando ruta y corredor…");
-    const respuesta = await llamar("gasol-ruta", peticion);
+    const respuesta = await llamar("gasol-ruta", peticion, { privada: CUENTAS });
     ultimo = { peticion, respuesta, origen, paradas, destino };
     repostaje = null;
     pintar();
   } catch (err) {
     avisar(err.message, true);
-    if (err.status === 401) $("sin-sesion").hidden = false;
+    if (CUENTAS && err.status === 401) $("sin-sesion").hidden = false;
   } finally {
     boton.disabled = false;
   }
@@ -148,6 +150,7 @@ function pintarCorredor() {
   const { respuesta: r } = ultimo;
   const lista = $("corredor");
   lista.replaceChildren();
+  $("atribucion-ruta").textContent = r.atribucion;
   const est = r.estaciones;
   const nombre = form.combustible.selectedOptions[0].textContent;
   if (!est.length) {
@@ -157,6 +160,8 @@ function pintarCorredor() {
     return;
   }
   const f = est[0];
+  $("atribucion-ruta").textContent =
+    `${r.atribucion}. Datos actualizados el ${fechaHora.format(new Date(f.fecha_captura))} (hora peninsular).`;
   $("resumen-corredor").textContent =
     `${est.length} estaciones a menos de ${r.lateral_km} km de la ruta · ${nombre}, de menor a mayor precio. ` +
     `Captura del ${fechaHora.format(new Date(f.fecha_captura))} (hora peninsular)` +
@@ -212,7 +217,7 @@ function pintarNavegacion() {
   $("nav-waze").href = enlaceWaze(siguiente);
   $("nav-waze").textContent = `Siguiente parada en Waze`;
   $("nav-nota").textContent =
-    (rep ? `Google Maps incluye el repostaje en ${capitalizar(rep.nombre || "la estación")}. ` : "") +
+    (rep && !recortado ? `Google Maps incluye el repostaje en ${capitalizar(rep.nombre || "la estación")}. ` : "") +
     (recortado ? "En el móvil Google Maps admite 3 paradas intermedias: hemos quitado el repostaje del enlace. " : "") +
     `Waze solo abre un destino por enlace: te lleva a ${siguiente.tipo === "repostaje" ? "la estación elegida" : siguiente.nombre}. ` +
     "Abre la navegación antes de arrancar.";
@@ -287,15 +292,42 @@ $("calculadora").addEventListener("submit", (e) => {
 });
 
 // ---- Guardar y rutas guardadas --------------------------------------------------
+// Sin cuentas (demo): localStorage de este navegador. Con cuentas: gasol-cuenta.
+function rutasLocales() {
+  try {
+    const v = JSON.parse(localStorage.getItem(CLAVE_RUTAS) || "[]");
+    return Array.isArray(v) ? v : [];
+  } catch { return []; }
+}
+function escribirRutasLocales(rutas) {
+  try { localStorage.setItem(CLAVE_RUTAS, JSON.stringify(rutas)); return true; } catch { return false; }
+}
+const punto = ({ nombre, lat, lon }) => ({ nombre, lat, lon });
+
 $("guardar").addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!ultimo) return;
   const { peticion, respuesta: r, origen, paradas, destino } = ultimo;
+  const nombre = e.target.nombre.value.trim().slice(0, 80);
+  if (!nombre) { avisar("Ponle un nombre a la ruta.", true); return; }
+  if (!CUENTAS) {
+    const rutas = rutasLocales();
+    if (rutas.length >= MAX_RUTAS_LOCALES) { avisar(`Puedes guardar hasta ${MAX_RUTAS_LOCALES} rutas. Borra alguna antes.`, true); return; }
+    const ruta = {
+      id: crypto.randomUUID?.() ?? String(Date.now()), nombre, origen: punto(origen), destino: punto(destino),
+      paradas: paradas.map(punto), combustible: peticion.combustible, solo_24h: peticion.solo24,
+      lateral_km: peticion.lateral_km, creada_en: new Date().toISOString(),
+    };
+    if (!escribirRutasLocales([ruta, ...rutas])) { avisar("Este navegador no permite guardar datos (¿modo privado?).", true); return; }
+    avisar(`Ruta «${nombre}» guardada en este navegador.`);
+    pintarMisRutas();
+    return;
+  }
   try {
     const { ruta } = await llamar("gasol-cuenta", {
       accion: "ruta_guardar",
       ruta: {
-        nombre: e.target.nombre.value, origen, destino, paradas, combustible: peticion.combustible,
+        nombre, origen, destino, paradas, combustible: peticion.combustible,
         solo_24h: peticion.solo24, lateral_km: peticion.lateral_km, geometria: r.geometria,
         distancia_km: r.distancia_km, duracion_min: r.duracion_min, proveedor: r.proveedor,
       },
@@ -307,14 +339,17 @@ $("guardar").addEventListener("submit", async (e) => {
 });
 
 async function pintarMisRutas() {
-  const { rutas } = await llamar("gasol-cuenta", { accion: "rutas" });
+  const rutas = CUENTAS ? (await llamar("gasol-cuenta", { accion: "rutas" })).rutas : rutasLocales();
   const ul = $("lista-rutas");
   ul.replaceChildren();
   $("mis-rutas").hidden = rutas.length === 0;
+  $("nota-rutas").textContent = CUENTAS ? "" : "Guardadas solo en este navegador.";
   for (const r of rutas) {
     const cargar = el("button", { type: "button", class: "boton-sec", text: "Cargar" });
-    const avisos = el("button", { type: "button", class: "boton-sec", "aria-pressed": String(r.alertas_activas), text: r.alertas_activas ? "Avisos: sí" : "Avisos: no" });
-    const borrar = el("button", { type: "button", class: "boton-sec", text: "Borrar" });
+    const avisos = CUENTAS
+      ? el("button", { type: "button", class: "boton-sec", "aria-pressed": String(r.alertas_activas), text: r.alertas_activas ? "Avisos: sí" : "Avisos: no" })
+      : null;
+    const borrar = el("button", { type: "button", class: "boton-sec", text: "Borrar", "aria-label": `Borrar ${r.nombre}` });
     cargar.addEventListener("click", () => {
       $("origen").value = r.origen.nombre;
       if (r.origen.nombre === "Mi ubicación") ubicacion = r.origen;
@@ -327,7 +362,7 @@ async function pintarMisRutas() {
       form.solo24.checked = r.solo_24h;
       form.requestSubmit();
     });
-    avisos.addEventListener("click", async () => {
+    avisos?.addEventListener("click", async () => {
       try {
         await llamar("gasol-cuenta", { accion: "ruta_alertas", id: r.id, activas: !r.alertas_activas });
         await pintarMisRutas();
@@ -335,7 +370,8 @@ async function pintarMisRutas() {
     });
     borrar.addEventListener("click", async () => {
       try {
-        await llamar("gasol-cuenta", { accion: "ruta_borrar", id: r.id });
+        if (CUENTAS) await llamar("gasol-cuenta", { accion: "ruta_borrar", id: r.id });
+        else escribirRutasLocales(rutasLocales().filter((x) => x.id !== r.id));
         await pintarMisRutas();
         avisar("Ruta borrada.");
       } catch (err) { avisar(err.message, true); }
@@ -348,10 +384,18 @@ async function pintarMisRutas() {
 }
 
 // ---- Arranque --------------------------------------------------------------------
+mostrarCuentas();
+if (!CUENTAS) {
+  $("nota-guardar-local").hidden = false;
+} else {
+  $("nota-guardar-local").hidden = true;
+  $("boton-guardar").textContent = "Guardar";
+}
 (async () => {
   try {
     await cargarLugares();
   } catch (err) { avisar(err.message, true); }
+  if (!CUENTAS) { pintarMisRutas(); return; }
   if (!sesion()) { $("sin-sesion").hidden = false; return; }
   try { await pintarMisRutas(); } catch (err) {
     if (err.status === 401) $("sin-sesion").hidden = false;

@@ -20,7 +20,7 @@
         <a class="marca" href="./">Gasol-IA</a>
         <a href="./">Comparador</a>
         <a href="ruta.html" aria-current="page">Ruta</a>
-        <a href="cuenta.html">Cuenta</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
       </nav>
       <h1>Planifica antes de salir</h1>
       <p class="sub">Gasolineras de tu corredor ordenadas por precio oficial, con el desvío que suponen.</p>
@@ -28,10 +28,12 @@
   </header>
 
   <main class="contenedor">
+    <p class="tarjeta-info aviso" id="aviso-camion"><strong>Ruta no verificada para camiones.</strong> Se calcula para turismo: revisa gálibos, pesos y restricciones antes de salir.</p>
     <p id="sin-sesion" class="tarjeta-info" hidden>Para calcular y guardar rutas, <a href="cuenta.html">entra o crea tu cuenta</a>.</p>
 
     <section id="mis-rutas" hidden aria-labelledby="t-mis-rutas">
       <h2 id="t-mis-rutas">Tus rutas guardadas</h2>
+      <p id="nota-rutas" class="nota"></p>
       <ul id="lista-rutas" class="lista-simple"></ul>
     </section>
 
@@ -69,7 +71,7 @@
           </select></label>
       </div>
       <label class="interruptor"><input type="checkbox" id="solo24" name="solo24"><span>Solo abiertas 24 horas</span></label>
-      <p class="nota">Los municipios de la lista son los que tienen gasolinera; el punto es su centro aproximado. «Mi ubicación» se redondea a ~1 km y no se guarda salvo que guardes la ruta.</p>
+      <p class="nota">Los municipios de la lista son los que tienen gasolinera; el punto es su centro aproximado. «Mi ubicación» se redondea a ~1 km y no se guarda en ningún servidor.</p>
       <button type="submit" class="boton">Calcular ruta y corredor</button>
     </form>
 
@@ -89,6 +91,7 @@
 
       <h2>Gasolineras del corredor</h2>
       <p id="resumen-corredor" class="nota"></p>
+      <p id="atribucion-ruta" class="nota"></p>
       <ol id="corredor" class="lista"></ol>
 
       <h2>Calculadora de desvío</h2>
@@ -107,9 +110,10 @@
       <h2>Guardar ruta</h2>
       <form id="guardar" class="filtros" novalidate>
         <label class="campo"><span>Nombre</span><input name="nombre" maxlength="80" required></label>
-        <label class="interruptor"><input type="checkbox" name="alertas"><span>Avisarme cuando bajen precios en este corredor</span></label>
-        <p class="nota">Para avisarte guardamos la línea simplificada de la ruta. Puedes borrarla cuando quieras.</p>
-        <button type="submit" class="boton-sec">Guardar</button>
+        <label class="interruptor" data-cuentas hidden><input type="checkbox" name="alertas"><span>Avisarme cuando bajen precios en este corredor</span></label>
+        <p class="nota" data-cuentas hidden>Para avisarte guardamos la línea simplificada de la ruta. Puedes borrarla cuando quieras.</p>
+        <p class="nota" id="nota-guardar-local">Se guarda solo en este navegador: no llega a ningún servidor. Guardamos origen, destino, paradas y filtros; no la línea de la ruta.</p>
+        <button type="submit" class="boton-sec" id="boton-guardar">Guardar en este navegador</button>
       </form>
     </section>
 
