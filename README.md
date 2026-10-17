@@ -11,7 +11,7 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html`, `ruta.html`, `assets/`, `sw.js` | PWA: comparador y planificador de ruta (vanilla JS) |
+| `index.html` (portada), `comparador.html`, `ruta.html`, `assets/`, `sw.js` | PWA: comparador y planificador de ruta (vanilla JS) |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web |
