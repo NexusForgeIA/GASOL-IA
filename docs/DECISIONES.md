@@ -32,12 +32,12 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 8. **Clasificación 24 h** (detalle en `docs/FUENTE-DATOS.md` §3): `L-D: 00:00-23:59`
    cuenta como 24 h; `L: 24H` queda «sin confirmar». **[revisar]** si prefieres que
    `00:00-23:59` también quede como dudoso (afecta a 78 estaciones).
-9. **Retención y limpieza pendientes.** El conector MCP no pudo confirmar sentencias con
-   `DELETE`/`DROP`, así que están en `supabase/pendiente/` sin aplicar: retención de 14
-   capturas, borrado de precios huérfanos de cargas fallidas y eliminación de restos de la
-   primera versión (`gasol_ingestar`, `ultima_captura_id`, un índice). **[revisar]**
-   Aplícalo desde el SQL Editor. Sin retención, la tabla crece unas 43.000 filas por
-   captura (unos pocos MB al día).
+9. **Retención y limpieza (aplicadas el 2026-10-17).** El conector MCP no pudo confirmar
+   sentencias con `DELETE`/`DROP`; se aplicaron desde el SQL Editor con confirmación humana
+   (`supabase/migrations/20261018000000_...`): retención de 14 capturas (cron
+   `gasol-retencion-diaria`, 04:45), borrado de precios huérfanos de cargas fallidas y
+   eliminación de restos de la primera versión (`gasol_ingestar`, `ultima_captura_id`, un
+   índice). Verificado en la base: función y cron existen, restos eliminados.
 
 ## Web
 

@@ -13,7 +13,6 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 | --- | --- |
 | `index.html`, `assets/`, `sw.js` | PWA del comparador (vanilla JS) |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
-| `supabase/pendiente/` | SQL con `DELETE`/`DROP` pendiente de aplicar a mano |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web |
 | `scripts/generar_paginas.py` | Páginas estáticas por provincia y municipio |
