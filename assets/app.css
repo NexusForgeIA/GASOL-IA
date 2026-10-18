@@ -70,7 +70,7 @@ select {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
 }
 select:disabled { opacity: .6; }
-input[type=text], input[type=email], input[type=password], input:not([type]) {
+input[type=text], input[type=email], input[type=password], input[type=date], input:not([type]) {
   width: 100%; min-height: 48px; padding: .6rem .75rem; font: inherit; color: var(--text);
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
 }
@@ -219,7 +219,6 @@ h2 { margin: 0; font-size: 1.25rem; }
 
 /* Inicio */
 .tarjetas { list-style: none; margin: 1.5rem 0; padding: 0; display: grid; gap: .75rem; }
-@media (min-width: 40rem) { .tarjetas { grid-template-columns: repeat(3, 1fr); } }
 .tarjeta {
   display: grid; gap: .35rem; height: 100%; min-height: 44px; padding: 1.1rem 1rem; text-decoration: none; color: var(--text);
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
@@ -258,3 +257,12 @@ h2 { margin: 0; font-size: 1.25rem; }
 .tabla-ficha th, .tabla-ficha td { overflow-wrap: normal; }
 .tabla-ficha td { white-space: nowrap; }
 .tabla-ficha th[scope="row"] .chip { display: inline-block; margin: .2rem 0 0; }
+
+/* Control de gastos */
+input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--error); }
+.nota.error { color: var(--error); }
+.resultados h3 { margin: 1.25rem 0 .25rem; font-size: 1.05rem; }
+.tabla-wrap .tabla-calculo th, .tabla-wrap .tabla-calculo td { overflow-wrap: normal; }
+.tabla-wrap .tabla-calculo td { white-space: nowrap; }
+.celda-linea { display: block; }
+@media (min-width: 40rem) { .tarjetas { grid-template-columns: repeat(2, 1fr); } }
