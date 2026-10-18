@@ -130,3 +130,12 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 39. **En la tabla, fecha corta (día/mes y hora)** para que quepa a 390 px; la fecha completa va en
     el atributo `title`, en el resumen y en la atribución.
 40. **Sin teléfono**: la fuente no lo trae y no se completa con otras.
+
+# Decisiones — Posicionamiento (18/10/2026)
+
+41. **Público: conductores profesionales (taxi, VTC, furgoneta y camión)**, en CLAUDE.md, README,
+    portada, inicio, comparador y manifiesto. El diferencial es el control del gasto, no el
+    comparador. Se mantienen el aviso «Ruta no verificada para camiones» y la atribución a MITECO.
+    Sin cifras ni promesas de ahorro.
+42. **La portada anima solo el movimiento, no la opacidad**: con `opacity: 0` de partida, si la
+    animación no corría (pestaña en segundo plano, Lighthouse) no se pintaba nada (`NO_FCP`).

@@ -1,7 +1,7 @@
 {
-  "name": "Gasol-IA · Gasolineras para transportistas",
+  "name": "Gasol-IA · Para conductores profesionales",
   "short_name": "Gasol-IA",
-  "description": "Precios oficiales de carburantes por zona, con filtro de abiertas 24 horas.",
+  "description": "Para conductores profesionales (taxi, VTC, furgoneta y camión): precios oficiales de carburantes por zona y en ruta, con filtro de abiertas 24 horas.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
