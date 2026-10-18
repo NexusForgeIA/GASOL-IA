@@ -251,6 +251,11 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Botones verdes (18/10/2026): texto blanco sobre verde 5,02 / 7,13 / 9,11:1 y sobre rojo 5,62 /
+  6,47 / 8,31:1, medidos también en el navegador. 12 páginas a 390 px sin desbordamiento y todos
+  los botones de al menos 44×44. Capturas `docs/capturas/botones-*.png` (portada, inicio,
+  comparador, ruta, facturación, gastos). Lighthouse móvil de esas seis: 100/100/100, contraste y
+  tamaño táctil OK, 0 errores de consola (SEO 63 por `noindex`).
 - Texto de posicionamiento (18/10/2026): «Servicio de transporte de pasajeros y de mercancías» en
   lugar de «conductores profesionales» y la lista de vehículos (decisión 76). Capturas a 390 px
   (`docs/capturas/posicionamiento-portada.png`, `posicionamiento-inicio.png`), sin desbordamiento

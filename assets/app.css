@@ -7,10 +7,20 @@
   --line: #2c353f;
   --text: #eef2f5;
   --muted: #a7b2bd;
-  --accent: #3ddc84;
+  --accent: #4ade80; /* «precio a la baja» y textos de acento: misma gama que el verde de acción */
   --accent-ink: #062e17;
   --warn: #f2c14e;
   --error: #ff8a80;
+  /* Botones y enlaces de acción: texto blanco sobre verde (5,02:1 / 7,13:1 / 9,11:1). */
+  --accion: #15803d;
+  --accion-hover: #166534;
+  --accion-activo: #14532d;
+  --accion-texto: #ffffff;
+  /* Acciones destructivas: rojo con texto blanco (5,62:1 / 6,47:1 / 8,31:1). */
+  --peligro: #c62828;
+  --peligro-hover: #b91c1c;
+  --peligro-activo: #991b1b;
+  --foco: #ffffff;
   --radius: 10px;
   --z-sticky: 10;
   --z-mapa: 20;
@@ -25,7 +35,7 @@
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
 a { color: var(--accent); }
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
 
 .contenedor { width: 100%; max-width: 46rem; margin: 0 auto; padding: 0 1rem; }
 
@@ -37,10 +47,22 @@ a { color: var(--accent); }
 .saltar:focus { top: 1rem; }
 
 .cabecera { padding: 1rem 0 1rem; border-bottom: 1px solid var(--line); }
-.navegacion { display: flex; flex-wrap: wrap; gap: 0 1rem; align-items: center; margin-bottom: .5rem; }
-.navegacion a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-decoration: none; font-weight: 600; }
-.navegacion a.marca { color: var(--accent); margin: 0 auto 0 0; font-weight: 800; }
-.navegacion a[aria-current="page"] { color: var(--text); text-decoration: underline; text-underline-offset: 6px; }
+.navegacion { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: .75rem; }
+/* Píldoras verdes que pasan a varias filas en el móvil: nunca desbordan la página. */
+.navegacion a {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 .9rem;
+  border: 2px solid transparent; border-radius: 999px; background: var(--accion); color: var(--accion-texto);
+  text-decoration: none; font-weight: 700; font-size: .95rem;
+}
+.navegacion a:hover { background: var(--accion-hover); }
+.navegacion a:active { background: var(--accion-activo); }
+.navegacion a.marca { padding: 0 .5rem 0 0; background: none; color: var(--accent); font-weight: 800; font-size: 1rem; }
+/* Página actual: verde más oscuro, borde blanco y subrayado (no solo color). */
+.navegacion a[aria-current="page"]:not(.marca) {
+  background: var(--accion-activo); border-color: var(--foco);
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;
+}
+.navegacion a.marca[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
 .marca { margin: 0 0 .25rem; font-weight: 800; letter-spacing: .02em; color: var(--accent); }
 h1 { margin: 0; font-size: clamp(1.35rem, 5vw, 1.9rem); line-height: 1.2; }
 .sub { margin: .5rem 0 0; color: var(--muted); }
@@ -79,7 +101,7 @@ input::placeholder { color: var(--muted); }
 .fila-campo input { flex: 1; min-width: 0; }
 .fila-campo .boton-sec { flex: none; }
 .campos-paradas { display: grid; gap: .75rem; }
-.botones { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.botones { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
 .botones .boton, .botones .boton-sec { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
 
 .interruptor {
@@ -91,16 +113,20 @@ input::placeholder { color: var(--muted); }
 
 .nota { margin: 0; color: var(--muted); font-size: .9rem; }
 
-.boton, .boton-sec {
-  min-height: 48px; padding: .75rem 1.25rem; font: inherit; font-weight: 700; border-radius: var(--radius);
-  cursor: pointer;
+.boton, .boton-sec, .boton-peligro {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 44px;
+  padding: .75rem 1.25rem; font: inherit; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none;
+  border: 2px solid transparent; border-radius: var(--radius); cursor: pointer;
 }
-.boton { background: var(--accent); color: var(--accent-ink); border: 0; }
-.boton:disabled { opacity: .6; cursor: progress; }
-.boton-sec { background: transparent; color: var(--text); border: 1px solid var(--line); }
-.boton-sec[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-.boton-peligro { min-height: 48px; padding: .75rem 1.25rem; font: inherit; font-weight: 700; border-radius: var(--radius);
-  cursor: pointer; background: transparent; color: var(--error); border: 1px solid var(--error); }
+.boton, .boton-sec { background: var(--accion); color: var(--accion-texto); }
+.boton:hover, .boton-sec:hover { background: var(--accion-hover); }
+.boton:active, .boton-sec:active { background: var(--accion-activo); }
+.boton:disabled, .boton-sec:disabled { opacity: .6; cursor: progress; }
+/* Conmutadores pulsados: verde oscuro y borde blanco. */
+.boton-sec[aria-pressed="true"] { background: var(--accion-activo); border-color: var(--foco); }
+.boton-peligro { background: var(--peligro); color: var(--accion-texto); }
+.boton-peligro:hover { background: var(--peligro-hover); }
+.boton-peligro:active { background: var(--peligro-activo); }
 .peligro { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
 
 .resultados { margin: 1.5rem 0; }
@@ -185,8 +211,10 @@ h2 { margin: 0; font-size: 1.25rem; }
 .sugerencias li.vacio:hover { background: none; color: var(--muted); }
 
 /* Calculadoras */
-.indice { display: flex; flex-wrap: wrap; gap: .25rem .5rem; margin: 1.25rem 0 0; }
-.indice a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .75rem; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-decoration: none; font-size: .92rem; }
+.indice { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.25rem 0 0; }
+.indice a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem; border: 2px solid transparent; border-radius: 999px; background: var(--accion); color: var(--accion-texto); text-decoration: none; font-size: .92rem; font-weight: 700; }
+.indice a:hover { background: var(--accion-hover); }
+.indice a:active { background: var(--accion-activo); }
 .calc { margin: 1.5rem 0; padding: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); scroll-margin-top: 1rem; }
 .calc > h2 { margin-bottom: .5rem; }
 .calc .filtros { margin: 1rem 0 0; }
@@ -207,9 +235,11 @@ h2 { margin: 0; font-size: 1.25rem; }
 /* Favoritas */
 .estrella {
   min-height: 44px; min-width: 44px; padding: .5rem .9rem; font: inherit; font-weight: 700; cursor: pointer;
-  background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--accion); color: var(--accion-texto); border: 2px solid transparent; border-radius: var(--radius);
 }
-.estrella[aria-pressed="true"] { border-color: var(--warn); color: var(--warn); }
+.estrella:hover { background: var(--accion-hover); }
+.estrella:active { background: var(--accion-activo); }
+.estrella[aria-pressed="true"] { background: var(--accion-activo); border-color: var(--warn); }
 .estacion > .estrella, .estacion > .botones { grid-column: 1 / -1; justify-self: start; }
 .campo-corto { min-width: 10rem; }
 #atribucion { margin-top: .75rem; }
@@ -342,8 +372,10 @@ input[type=time] {
 }
 .chips { list-style: none; margin: .5rem 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
 .chips:empty { display: none; }
-.chip-boton { min-height: 44px; padding: .4rem .9rem; font: inherit; font-weight: 600; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
-.chip-boton[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.chip-boton { min-height: 44px; min-width: 44px; padding: .4rem .9rem; font: inherit; font-weight: 700; color: var(--accion-texto); background: var(--accion); border: 2px solid transparent; border-radius: 999px; cursor: pointer; }
+.chip-boton:hover { background: var(--accion-hover); }
+.chip-boton:active { background: var(--accion-activo); }
+.chip-boton[aria-pressed="true"] { background: var(--accion-activo); border-color: var(--foco); }
 .chip-app { display: flex; align-items: center; gap: .5rem; padding: .25rem .25rem .25rem .75rem; border: 1px solid var(--line); border-radius: var(--radius); overflow-wrap: anywhere; }
 .chip-app .boton-sec { min-height: 44px; padding: .4rem .75rem; }
 .fila-campo { align-items: end; }
@@ -353,9 +385,11 @@ input[type=time] {
 .tarjeta-doble .tarjeta { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 .tarjeta-enlace {
   display: flex; align-items: center; min-height: 48px; padding: .5rem 1rem; font-weight: 700; text-decoration: none;
-  background: var(--surface); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--accion); color: var(--accion-texto); border: 1px solid var(--accion); border-top: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
 }
-.tarjeta-enlace:hover { text-decoration: underline; }
+.tarjeta-enlace:hover { background: var(--accion-hover); }
+.tarjeta-enlace:active { background: var(--accion-activo); }
 @media (max-width: 47.99rem) {
   /* Tarjeta por día: fecha y total arriba, nº de carreras y las cuatro columnas en 2 × 2. */
   .dia-fila { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -374,4 +408,12 @@ input[type=time] {
   .dia-total { grid-column: 6; text-align: right; }
   .dia-n { grid-column: 7; text-align: right; font-size: .95rem; }
   .dia-n:empty { display: block; }
+}
+
+/* Botones verdes: transición breve solo si el usuario no pide menos movimiento. */
+@media (prefers-reduced-motion: no-preference) {
+  .boton, .boton-sec, .boton-peligro, .estrella, .chip-boton, .indice a, .tarjeta-enlace, .navegacion a {
+    transition: background-color .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .boton:active, .boton-sec:active, .boton-peligro:active, .estrella:active, .chip-boton:active { transform: translateY(1px); }
 }
