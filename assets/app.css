@@ -348,30 +348,6 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .mes-nav .boton-sec { padding: 0; font-size: 1.4rem; line-height: 1; }
 .mes-nav .boton-sec:disabled { opacity: .35; cursor: default; }
 .resultados > .botones { margin: 0 0 .5rem; }
-.dias { list-style: none; margin: .75rem 0 1.5rem; padding: 0; display: grid; gap: .4rem; }
-.dias:empty { min-height: 100vh; } /* reserva sitio hasta pintar los días: sin saltos (CLS) */
-.dia { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
-.dia.hoy { border-color: var(--accent); }
-.dia-h { margin: 0; font-size: 1rem; }
-.dia-fila {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .3rem .75rem; align-items: center; width: 100%;
-  min-height: 52px; padding: .6rem .8rem; font: inherit; color: var(--text); text-align: left;
-  background: transparent; border: 0; border-radius: var(--radius); font-variant-numeric: tabular-nums;
-}
-button.dia-fila { cursor: pointer; }
-.dia-fila.futuro { color: var(--muted); min-height: 44px; }
-.dia-fecha { display: flex; align-items: center; gap: .5rem; font-weight: 700; text-transform: capitalize; }
-.dia-fecha .chip { font-size: .75rem; text-transform: none; }
-.dia-total { justify-self: end; font-weight: 800; }
-.dia-total .lbl { font-weight: 600; color: var(--muted); font-size: .85rem; }
-.dia-n { grid-column: 1 / -1; color: var(--muted); font-size: .85rem; }
-.dia-n:empty { display: none; }
-.dia-col { display: flex; justify-content: space-between; gap: .5rem; font-size: .85rem; min-width: 0; }
-.dia-col .lbl { color: var(--muted); overflow-wrap: anywhere; }
-.dia-col.cero .val { color: var(--muted); }
-.dia-panel { padding: 0 .8rem .9rem; border-top: 1px solid var(--line); }
-.dia-panel[hidden] { display: none; }
-.dia-cabecera { display: none; }
 .carreras { list-style: none; margin: .75rem 0; padding: 0; display: grid; gap: .4rem; }
 .carreras li { display: grid; gap: .35rem; padding: .6rem .7rem; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow-wrap: anywhere; }
 .carreras li.sin-detalle { border-style: dashed; }
@@ -407,25 +383,6 @@ input[type=time] {
 }
 .tarjeta-enlace:hover { background: var(--accion-hover); }
 .tarjeta-enlace:active { background: var(--accion-activo); }
-@media (max-width: 47.99rem) {
-  /* Tarjeta por día: fecha y total arriba, nº de carreras y las cuatro columnas en 2 × 2. */
-  .dia-fila { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .dia-total { order: 1; }
-  .dia-n { order: 2; }
-  .dia-col { order: 3; }
-}
-@media (min-width: 48rem) {
-  .dia-cabecera, .dia-fila { grid-template-columns: 5.5rem repeat(4, minmax(0, 1fr)) 6.5rem 6.5rem; }
-  .dia-cabecera { display: grid; gap: .75rem; padding: 0 .8rem; color: var(--muted); font-size: .8rem; font-weight: 600; text-align: right; }
-  .dia-cabecera span:first-child { text-align: left; }
-  .dia-fila { gap: .75rem; }
-  .dia-fecha { grid-column: 1; }
-  .dia-col { display: block; text-align: right; font-size: .95rem; }
-  .dia-col .lbl, .dia-total .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .dia-total { grid-column: 6; text-align: right; }
-  .dia-n { grid-column: 7; text-align: right; font-size: .95rem; }
-  .dia-n:empty { display: block; }
-}
 
 /* Botones verdes: transición breve solo si el usuario no pide menos movimiento. */
 @media (prefers-reduced-motion: no-preference) {
@@ -433,4 +390,37 @@ input[type=time] {
     transition: background-color .15s ease, border-color .15s ease, transform .1s ease;
   }
   .boton:active, .boton-sec:active, .boton-peligro:active, .estrella:active, .chip-boton:active { transform: translateY(1px); }
+}
+
+/* Calendario de facturación: 7 columnas que caben a 390 px. */
+.cal-wrap { margin: .5rem 0 1rem; }
+.cal-wrap:empty { min-height: 100vh; } /* reserva sitio hasta pintar el calendario: sin saltos (CLS) */
+.calendario { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 3px; }
+.calendario th { padding: .25rem 0; color: var(--muted); font-size: .8rem; font-weight: 700; text-align: center; }
+.calendario td { padding: 0; }
+.dia-cal {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 100%; min-height: 52px;
+  padding: .2rem 0; font: inherit; color: var(--muted); background: var(--surface); border: 2px solid transparent;
+  border-radius: 8px; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.dia-cal:hover { border-color: var(--muted); }
+.dia-cal:focus-visible { outline-offset: 1px; }
+.dia-num { font-size: .95rem; font-weight: 700; line-height: 1.1; }
+.dia-tot { min-height: .8rem; font-size: .68rem; font-weight: 800; line-height: 1.1; white-space: nowrap; }
+/* Con datos: fondo más claro, total en verde y barra inferior. Sin datos: neutro. */
+.dia-cal.con-datos { color: var(--text); background: var(--surface-2); box-shadow: inset 0 -3px 0 var(--accent); }
+.dia-cal.con-datos .dia-tot { color: var(--accent); }
+/* Hoy: borde discontinuo y número subrayado. */
+.dia-cal[aria-current="date"] { border: 2px dashed var(--accent); }
+.dia-cal[aria-current="date"] .dia-num { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+/* Elegido: verde de acción, texto blanco y borde blanco continuo. */
+td[aria-selected="true"] .dia-cal { color: var(--accion-texto); background: var(--accion); border: 2px solid var(--foco); box-shadow: none; }
+td[aria-selected="true"] .dia-cal .dia-tot { color: var(--accion-texto); }
+.dia-cal[aria-disabled="true"] { opacity: .45; cursor: default; }
+.dia-cal[aria-disabled="true"]:hover { border-color: transparent; }
+.detalle-dia { scroll-margin-top: .5rem; }
+.detalle-dia > h3 { margin: 0 0 .25rem; }
+@media (min-width: 48rem) {
+  .dia-cal { min-height: 64px; }
+  .dia-tot { font-size: .8rem; }
 }

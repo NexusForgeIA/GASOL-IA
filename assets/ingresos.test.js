@@ -1,9 +1,9 @@
 import { assert, assertEquals } from "jsr:@std/assert@1.0.13";
 import {
   aCSV, anadirApp, anadirCarrera, borrarCarrera, borrarIngresos, CLAVE_INGRESOS, CLAVE_RESPALDO, cruce, editarCarrera, leerApps,
-  leerCarreras, leerImporte, quitarApp, restaurarCarrera, tablaMensual, totalesCarreras, validarCarrera,
+  etiquetaDia, leerCarreras, leerImporte, quitarApp, restaurarCarrera, tablaMensual, totalCompacto, totalesCarreras, validarCarrera,
 } from "./ingresos.js";
-import { diaSemana, diasDelMes, horaMadrid, sumarMeses } from "./fechas.js";
+import { cuadriculaMes, diaSemana, diasDelMes, fechaLarga, horaMadrid, hoyMadrid, sumarMeses } from "./fechas.js";
 
 function memoria(inicial = {}) {
   const m = new Map(Object.entries(inicial));
@@ -159,4 +159,73 @@ Deno.test("CSV: una fila por carrera, canal, aplicación y método en columnas",
   assertEquals(csv[1], "2026-10-18;08:00;Calle;;Tarjeta;15,00;;15,00;;;");
   assertEquals(csv[2], "2026-10-18;09:00;Aplicación;'=App;Efectivo en mano;9,40;;;;9,40;\"aeropuerto; T4\"");
   assertEquals(csv[3], "2026-10-18;total sin detallar;Calle;;Efectivo;30,00;30,00;;;;");
+});
+
+// ---- Calendario --------------------------------------------------------------------------
+const dias = (mes) => cuadriculaMes(mes).flat().filter(Boolean);
+
+Deno.test("calendario: meses de 28, 29, 30 y 31 días, de lunes a domingo", () => {
+  for (const [mes, n] of [["2026-02", 28], ["2028-02", 29], ["2026-11", 30], ["2026-10", 31]]) {
+    const c = cuadriculaMes(mes);
+    assertEquals(dias(mes).length, n, mes);
+    assert(c.every((s) => s.length === 7), mes);
+    assertEquals(dias(mes)[0], `${mes}-01`);
+    assertEquals(dias(mes).at(-1), `${mes}-${n}`);
+  }
+  // Octubre de 2026 empieza en jueves: 3 huecos (L, M, X); el 31 es sábado: 1 hueco al final.
+  const oct = cuadriculaMes("2026-10");
+  assertEquals(oct[0], [null, null, null, "2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04"]);
+  assertEquals(oct.at(-1), ["2026-10-26", "2026-10-27", "2026-10-28", "2026-10-29", "2026-10-30", "2026-10-31", null]);
+  assertEquals(oct.length, 5);
+  // Febrero de 2026: 28 días que empiezan en domingo (6 huecos) → 5 semanas.
+  const feb = cuadriculaMes("2026-02");
+  assertEquals(feb[0], [null, null, null, null, null, null, "2026-02-01"]);
+  assertEquals(feb.length, 5);
+  assertEquals(feb.at(-1), ["2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-02-28", null]);
+  // Marzo de 2026 (31 días, empieza en domingo) necesita 6 semanas.
+  assertEquals(cuadriculaMes("2026-03").length, 6);
+  assertEquals(cuadriculaMes("2026-03")[0][6], "2026-03-01");
+  // Febrero de 2027 empieza en lunes y cabe en 4 semanas exactas.
+  assertEquals(cuadriculaMes("2027-02").length, 4);
+});
+
+Deno.test("calendario: cambio a hora de invierno (25-26 de octubre de 2026) en Madrid", () => {
+  // 25/10 a las 03:00 (CEST) los relojes vuelven a las 02:00 (CET): el día dura 25 horas.
+  assertEquals(hoyMadrid(new Date("2026-10-24T22:30:00Z")), "2026-10-25"); // 00:30 CEST
+  assertEquals(hoyMadrid(new Date("2026-10-25T00:30:00Z")), "2026-10-25"); // 02:30 CEST
+  assertEquals(horaMadrid(new Date("2026-10-25T00:30:00Z")), "02:30");
+  assertEquals(horaMadrid(new Date("2026-10-25T01:30:00Z")), "02:30"); // 02:30 CET, la hora repetida
+  assertEquals(hoyMadrid(new Date("2026-10-25T22:59:00Z")), "2026-10-25"); // 23:59 CET
+  assertEquals(hoyMadrid(new Date("2026-10-25T23:00:00Z")), "2026-10-26"); // 00:00 CET
+  // La cuadrícula no depende de horas: el 25 es domingo y el 26 lunes, en semanas distintas.
+  const oct = cuadriculaMes("2026-10");
+  assertEquals(oct[3][6], "2026-10-25");
+  assertEquals(oct[4][0], "2026-10-26");
+  assertEquals(fechaLarga("2026-10-25"), "domingo 25 de octubre");
+  assertEquals(fechaLarga("2026-10-26"), "lunes 26 de octubre");
+  // Fin de mes: 31/10 a las 23:30 en Madrid ya es 1/11 en UTC+0 al día siguiente, pero el día es el de Madrid.
+  assertEquals(hoyMadrid(new Date("2026-10-31T22:30:00Z")), "2026-10-31");
+  assertEquals(hoyMadrid(new Date("2026-10-31T23:30:00Z")), "2026-11-01");
+  // Una carrera de la hora repetida queda en el 25, y una de las 00:10 del 26 en el 26.
+  const l = lista({ fecha: "2026-10-25", hora: "02:30", importe: "10" }, { fecha: "2026-10-25", hora: "02:45", importe: "5" }, { fecha: "2026-10-26", hora: "00:10", importe: "7" });
+  const t = tablaMensual(l, "2026-10");
+  assertEquals([t.dias[24].total, t.dias[24].carreras, t.dias[25].total], [15, 2, 7]);
+});
+
+Deno.test("celda: total en euros enteros y etiqueta con el importe exacto", () => {
+  assertEquals(totalCompacto(112.45), "112 €");
+  assertEquals(totalCompacto(112.5), "113 €");
+  assertEquals(totalCompacto(0.45), "<1 €"); // solo céntimos: se marca que hay datos
+  assertEquals(totalCompacto(0.99), "1 €");
+  assertEquals(totalCompacto(1234.56), "1235 €");
+  assertEquals(totalCompacto(0), "");
+  const d = tablaMensual(lista({ fecha: "2026-10-14", hora: "08:00", importe: "100" }, { fecha: "2026-10-14", hora: "09:00", importe: "12,45" },
+    { fecha: "2026-10-14", hora: "10:00", importe: "0,01" }, { fecha: "2026-10-14", sinDetalle: "on", hora: "", importe: "0,05" }), "2026-10").dias[13];
+  assertEquals(d.total, 112.51);
+  assertEquals(totalCompacto(d.total), "113 €");
+  assertEquals(etiquetaDia(d), "miércoles 14 de octubre, 3 carreras y 1 total sin detallar, total 112,51 €");
+  const c = tablaMensual(lista({ fecha: "2026-10-13", hora: "08:00", importe: "0,45" }), "2026-10").dias[12];
+  assertEquals(etiquetaDia(c, { hoy: true }), "martes 13 de octubre, hoy, 1 carrera, total 0,45 €");
+  assertEquals(etiquetaDia(tablaMensual([], "2026-10").dias[0]), "jueves 1 de octubre, sin carreras");
+  assertEquals(etiquetaDia(tablaMensual([], "2026-10").dias[30], { futuro: true }), "sábado 31 de octubre, día futuro");
 });

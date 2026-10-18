@@ -1,7 +1,7 @@
 // Facturación: carreras que apunta el usuario, solo en este navegador (localStorage). Todas las
 // cifras salen de sus datos; nada fiscal. Los límites solo frenan errores de tecleo. Módulo ES sin
 // DOM: lo usa ingresos-vista.js y lo prueba Deno (ingresos.test.js).
-import { diasDelMes, esFechaISO, hoyMadrid, sumarDias } from "./fechas.js";
+import { diasDelMes, esFechaISO, fechaLarga, hoyMadrid, sumarDias } from "./fechas.js";
 import { redondear } from "./calculos.js";
 import { almacen } from "./favoritas.js";
 import { celdaCSV } from "./gastos.js";
@@ -204,6 +204,29 @@ export function tablaMensual(carreras, mes) {
     dias: dias.map((d) => ({ fecha: d.fecha, lista: ordenar(d.lista), ...totalesCarreras(d.lista) })),
     total: totalesCarreras(delMes),
   };
+}
+
+const entero = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 });
+const exacto = new Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+/** Total de una casilla del calendario en euros enteros ("112 €"); "<1 €" si no llega a un euro. */
+export function totalCompacto(n) {
+  if (!(n > 0)) return "";
+  return n < 0.5 ? "<1 €" : `${entero.format(Math.round(n))} €`;
+}
+
+/** Etiqueta accesible de un día del calendario: fecha larga, carreras y total exacto. */
+export function etiquetaDia(d, { hoy = false, futuro = false } = {}) {
+  const partes = [fechaLarga(d.fecha)];
+  if (hoy) partes.push("hoy");
+  if (futuro) partes.push("día futuro");
+  else if (!d.lineas) partes.push("sin carreras");
+  else {
+    const sinDetalle = d.lineas - d.carreras;
+    partes.push(`${d.carreras} ${d.carreras === 1 ? "carrera" : "carreras"}${sinDetalle ? ` y ${sinDetalle} ${sinDetalle === 1 ? "total sin detallar" : "totales sin detallar"}` : ""}`);
+    partes.push(`total ${exacto.format(d.total)} €`);
+  }
+  return partes.join(", ");
 }
 
 /**

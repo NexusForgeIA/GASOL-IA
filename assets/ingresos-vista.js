@@ -2,24 +2,22 @@
 import "./nav.js";
 import { mostrarCuentas } from "./config.js";
 import { euros } from "./calculos.js";
-import { diaSemana, fechaCorta, horaMadrid, hoyMadrid, nombreMes, sumarMeses } from "./fechas.js";
+import { cuadriculaMes, diasDelMes, fechaLarga, horaMadrid, hoyMadrid, nombreMes, sumarDias, sumarMeses } from "./fechas.js";
 import { leerRegistros, porEtiqueta, totales } from "./gastos.js";
 import {
   aCSV, anadirApp, anadirCarrera, borrarCarrera, borrarIngresos, CANALES, COLUMNAS, cruce, editarCarrera, leerApps, leerCarreras,
-  METODOS, quitarApp, restaurarCarrera, tablaMensual,
+  etiquetaDia, METODOS, quitarApp, restaurarCarrera, tablaMensual, totalCompacto,
 } from "./ingresos.js";
 
 mostrarCuentas();
 
 const $ = (id) => document.getElementById(id);
 const form = $("f-carrera");
-// El formulario se mueve al día desplegado (y sale del documento si no hay ninguno): sus nodos
-// se guardan aquí, porque getElementById no los encuentra fuera del documento.
 const F = Object.fromEntries(["g-calle", "g-app", "c-hora", "guardar", "cancelar", "t-form", "estado-form", "apps-lista", "apps-rapidas"].map((id) => [id, $(id)]));
 const kmFmt = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 });
 const MES_HOY = hoyMadrid().slice(0, 7);
 let mes = MES_HOY;
-let abierto = null; // fecha del día desplegado
+let abierto = null; // fecha del día abierto en el detalle
 let editando = null; // id de la carrera que se edita
 let aviso = null; // {fecha, nodos}: mensaje del día (p. ej. «Deshacer»)
 
@@ -144,13 +142,38 @@ function borrar(c) {
   deshacer.focus();
 }
 
-// ---- Tabla mensual -----------------------------------------------------------------------
-function celdas(d) {
-  return COLUMNAS.map(([k, nombre]) => el("span", { class: `dia-col${d[k] ? "" : " cero"}` }, el("span", { class: "lbl", text: nombre }), el("span", { class: "val", text: euros(d[k]) })));
+// ---- Calendario del mes ------------------------------------------------------------------
+const SEMANA = [["L", "lunes"], ["M", "martes"], ["X", "miércoles"], ["J", "jueves"], ["V", "viernes"], ["S", "sábado"], ["D", "domingo"]];
+const mayuscula = (s) => s.replace(/^./, (l) => l.toUpperCase());
+const sinMovimiento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let foco = null; // día con tabindex=0: el que recibe el foco al entrar en el calendario con Tab
+
+function calendario(t, hoy) {
+  const porFecha = new Map(t.dias.map((d) => [d.fecha, d]));
+  return el("table", { class: "calendario", role: "grid", "aria-labelledby": "t-mes" },
+    el("thead", {}, el("tr", {}, ...SEMANA.map(([c, nombre]) => el("th", { scope: "col", abbr: nombre, "aria-label": nombre, text: c })))),
+    el("tbody", {}, ...cuadriculaMes(mes).map((semana) => el("tr", {}, ...semana.map((f) => {
+      if (!f) return el("td", { class: "hueco" });
+      const d = porFecha.get(f);
+      const futuro = f > hoy;
+      const b = el("button", {
+        type: "button", class: `dia-cal${d.lineas ? " con-datos" : ""}`, id: `c-${f}`, "data-fecha": f,
+        tabindex: f === foco ? "0" : "-1", "aria-label": etiquetaDia(d, { hoy: f === hoy, futuro }),
+      }, el("span", { class: "dia-num", text: String(Number(f.slice(8))) }), el("span", { class: "dia-tot", text: totalCompacto(d.total) }));
+      if (f === hoy) b.setAttribute("aria-current", "date");
+      if (futuro) b.setAttribute("aria-disabled", "true");
+      b.addEventListener("click", (e) => { if (!futuro) seleccionar(f, e.detail > 0); });
+      return el("td", { "aria-selected": String(f === abierto) }, b);
+    })))));
 }
 
-function panelDia(d) {
-  const lista = el("ul", { class: "carreras" }, ...d.lista.map((c) => {
+function pintarDetalle(d, hoy) {
+  $("detalle").hidden = !d;
+  $("sin-dia").hidden = Boolean(d);
+  if (!d) return;
+  $("t-dia").textContent = `${mayuscula(fechaLarga(d.fecha))}${d.fecha === hoy ? " (hoy)" : ""}`;
+  $("resumen-dia").textContent = d.lineas ? `Total del día: ${eur(d.total)} · ${nCarreras(d)}` : "Sin carreras este día.";
+  $("carreras").replaceChildren(...d.lista.map((c) => {
     const bE = el("button", { type: "button", class: "boton-sec", text: "Editar", "aria-label": `Editar ${textoCarrera(c)}, ${eur(c.importe)}` });
     const bB = el("button", { type: "button", class: "boton-peligro", text: "Borrar", "aria-label": `Borrar ${textoCarrera(c)}, ${eur(c.importe)}` });
     bE.addEventListener("click", () => editar(c));
@@ -160,41 +183,18 @@ function panelDia(d) {
       c.nota ? el("span", { class: "nota", text: c.nota }) : null,
       el("span", { class: "botones" }, bE, bB));
   }));
-  if (!d.lista.length) lista.append(el("li", { class: "nota", text: "Sin carreras este día." }));
-  const estado = el("p", { class: "nota", role: "status", "aria-live": "polite" }, ...(aviso?.fecha === d.fecha ? aviso.nodos : []));
-  return [lista, estado, form];
+  $("estado-dia").replaceChildren(...(aviso?.fecha === d.fecha ? aviso.nodos : []));
 }
 
 function pintar() {
   const t = tablaMensual(leerCarreras(), mes);
   const hoy = hoyMadrid();
-  $("t-mes").textContent = nombreMes(mes).replace(/^./, (l) => l.toUpperCase());
+  if (!foco || !foco.startsWith(`${mes}-`)) foco = abierto?.startsWith(`${mes}-`) ? abierto : mes === MES_HOY ? hoy : `${mes}-01`;
+  $("t-mes").textContent = mayuscula(nombreMes(mes));
   $("mes-sig").disabled = mes >= MES_HOY;
   $("mes-ant").disabled = mes <= "2000-01";
-
-  $("dias").replaceChildren(...t.dias.map((d) => {
-    const esHoy = d.fecha === hoy;
-    const li = el("li", { class: `dia${esHoy ? " hoy" : ""}${d.lineas ? "" : " vacio"}` });
-    const fecha = el("span", { class: "dia-fecha" }, el("span", { text: diaSemana(d.fecha) }), esHoy ? el("span", { class: "chip si", text: "Hoy" }) : null);
-    if (d.fecha > hoy) {
-      li.append(el("div", { class: "dia-fila futuro" }, fecha, el("span", { class: "dia-total nota", text: "—" })));
-      return li;
-    }
-    const abiertoAqui = d.fecha === abierto;
-    const idP = `p-${d.fecha}`;
-    const boton = el("button", { type: "button", class: "dia-fila", id: `b-${d.fecha}`, "aria-expanded": String(abiertoAqui), "aria-controls": idP },
-      fecha,
-      ...(d.lineas ? celdas(d) : []),
-      el("span", { class: "dia-total" }, el("span", { class: "lbl", text: "Total " }), d.lineas ? eur(d.total) : el("span", { class: "nota", text: "—" })),
-      el("span", { class: "dia-n" }, d.lineas ? nCarreras(d) : ""),
-      el("span", { class: "visualmente-oculto", text: `, ${fechaCorta(d.fecha)}` }));
-    boton.addEventListener("click", () => abrir(abiertoAqui ? null : d.fecha));
-    const panel = el("div", { class: "dia-panel", id: idP, role: "region", "aria-labelledby": `b-${d.fecha}` });
-    panel.hidden = !abiertoAqui;
-    if (abiertoAqui) panel.append(...panelDia(d));
-    li.append(el("h3", { class: "dia-h" }, boton), panel);
-    return li;
-  }));
+  $("cal-wrap").replaceChildren(calendario(t, hoy));
+  pintarDetalle(abierto?.startsWith(`${mes}-`) ? t.dias[Number(abierto.slice(8)) - 1] : null, hoy);
 
   const m = t.total;
   const par = (dt, dd, cls) => [el("dt", { class: cls, text: dt }), el("dd", { class: cls, text: dd })];
@@ -222,24 +222,43 @@ function pintar() {
     : "Para la facturación por km, apunta el cuentakilómetros en al menos dos repostajes del mes.";
 }
 
-function abrir(fecha, enfocar = "boton") {
-  const previo = abierto;
+/** Abre el detalle de un día. Con el dedo o el ratón, lleva la vista al detalle; con el teclado, el foco sigue en el día. */
+function seleccionar(fecha, verDetalle = false) {
   if (fecha !== abierto) { aviso = null; F["estado-form"].textContent = ""; siguiente(); }
   abierto = fecha;
+  foco = fecha;
+  mes = fecha.slice(0, 7);
   pintar();
-  const boton = $(`b-${fecha ?? previo}`);
-  if (enfocar === "importe" && fecha) { boton.scrollIntoView({ block: "start" }); form.importe.focus(); } else boton?.focus();
+  $(`c-${fecha}`).focus({ preventScroll: verDetalle });
+  if (verDetalle) $("detalle").scrollIntoView({ block: "start", behavior: sinMovimiento() ? "auto" : "smooth" });
 }
+
+/** Flechas: día anterior/siguiente y semana arriba/abajo; Inicio/Fin de la semana; RePág/AvPág, mes. */
+$("cal-wrap").addEventListener("keydown", (e) => {
+  const f = e.target.dataset?.fecha;
+  if (!f) return;
+  const dow = (new Date(`${f}T00:00:00Z`).getUTCDay() + 6) % 7;
+  const otroMes = (n) => { const m = sumarMeses(f.slice(0, 7), n); return `${m}-${String(Math.min(Number(f.slice(8)), diasDelMes(m))).padStart(2, "0")}`; };
+  const destino = { ArrowLeft: () => sumarDias(f, -1), ArrowRight: () => sumarDias(f, 1), ArrowUp: () => sumarDias(f, -7), ArrowDown: () => sumarDias(f, 7),
+    Home: () => sumarDias(f, -dow), End: () => sumarDias(f, 6 - dow), PageUp: () => otroMes(-1), PageDown: () => otroMes(1) }[e.key]?.();
+  if (!destino) return;
+  e.preventDefault();
+  if (destino.slice(0, 7) > MES_HOY || destino < "2000-01-01") return;
+  foco = destino;
+  mes = destino.slice(0, 7);
+  pintar();
+  $(`c-${destino}`).focus();
+});
 
 function cambiarMes(n) {
   mes = sumarMeses(mes, n);
-  abierto = null;
+  foco = null;
   aviso = null;
   pintar();
 }
 $("mes-ant").addEventListener("click", () => cambiarMes(-1));
 $("mes-sig").addEventListener("click", () => cambiarMes(1));
-$("ir-hoy").addEventListener("click", () => { mes = MES_HOY; abrir(hoyMadrid(), "importe"); });
+$("ir-hoy").addEventListener("click", () => seleccionar(hoyMadrid()));
 
 // ---- Aplicaciones ---------------------------------------------------------------------------
 $("f-app").addEventListener("submit", (e) => {
@@ -286,6 +305,7 @@ bSi.addEventListener("click", () => {
 siguiente();
 apuntarApps();
 abierto = hoyMadrid();
+foco = abierto;
 pintar();
 
 if ("serviceWorker" in navigator) {

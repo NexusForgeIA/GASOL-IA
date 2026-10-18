@@ -115,20 +115,24 @@ ni declaración ni consejo fiscal.
 
 Petición de los taxistas de la beta. `ingresos.html` (menú «Facturación» y enlace dentro de la
 tarjeta de Control de gastos del inicio).
-- **Tabla mensual**: una fila por día del mes, con mes anterior/siguiente (no pasa del mes actual)
-  y el mes actual por defecto, hoy resaltado y desplegado al abrir. Columnas: Calle efectivo ·
-  Calle tarjeta · App cobrado por la app · App efectivo · Total · Nº de carreras. A 390 px cada día
-  es una tarjeta (fecha y total arriba, las cuatro columnas en 2 × 2); desde 48rem, fila de tabla
-  con cabecera. Los días futuros no se despliegan. Totales del mes con las mismas columnas y los
-  subtotales «Efectivo en mano (calle + app)» y «Cobrado por banco, datáfono o app».
-- **Día desplegable**: botón con `aria-expanded`/`aria-controls` dentro de un `h3` y panel
-  `region`; un día abierto a la vez. Lista de carreras (hora, canal o aplicación, método e
-  importe) con Editar y Borrar + «Deshacer». Formulario «+ Carrera»: Calle/Aplicación en botones
-  grandes; efectivo o tarjeta; o aplicación (texto libre con atajos de las del usuario, ninguna
+- **Calendario mensual** (desde el 18/10/2026, sustituye a la lista de días): cuadrícula de lunes a
+  domingo (cabecera L M X J V S D, huecos al principio y al final), mes anterior/siguiente (no pasa
+  del mes actual) y botón «Hoy». Cada día es un botón de 52 px de alto que cabe a 390 px: número y,
+  si hay datos, el total en euros enteros («<1 €» si solo hay céntimos), fondo más claro y barra
+  verde; sin datos, neutro. Hoy: borde discontinuo y número subrayado. Elegido: verde con texto y
+  borde blancos. Días futuros atenuados y no se abren. `table role="grid"`, `aria-label` completo
+  por día («miércoles 14 de octubre, 3 carreras y 1 total sin detallar, total 112,51 €» / «sin
+  carreras»), `aria-current="date"` en hoy, `aria-selected` en el elegido y foco itinerante:
+  flechas (día y semana), Inicio/Fin (semana) y RePág/AvPág (mes). Totales del mes con las cuatro
+  columnas y los subtotales «Efectivo en mano (calle + app)» y «Cobrado por banco, datáfono o app».
+- **Detalle del día** (debajo del calendario; con el dedo o el ratón la vista baja hasta él, con el
+  teclado el foco sigue en el día): total exacto y nº de carreras, lista (hora, canal o aplicación,
+  método e importe) con Editar y Borrar + «Deshacer». Formulario «+ Carrera»: Calle/Aplicación;
+  efectivo o tarjeta; o aplicación (texto libre con atajos de las del usuario, ninguna
   preinstalada) y cobrado por la app o efectivo en mano; importe con teclado numérico; hora de
-  Madrid automática y editable; nota opcional. Tras guardar, queda listo para la siguiente con el
-  mismo canal, cobro y aplicación. «+ Carrera hoy» abre hoy y pone el foco en el importe.
-  «Añadir total sin detallar»: línea sin hora que suma al día pero no cuenta como carrera.
+  Madrid automática y editable; nota opcional. Tras guardar, la casilla se actualiza y el detalle
+  sigue abierto, listo para la siguiente con el mismo canal, cobro y aplicación. «Añadir total sin
+  detallar»: línea sin hora que suma al día pero no cuenta como carrera.
 - **Con tus gastos** (etiquetado «tus datos», informativo): facturación del mes menos los
   repostajes del mes de Control de gastos, y facturación por km si hay dos lecturas del
   cuentakilómetros en el mes.
@@ -200,7 +204,7 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/*.test.js`: 102 OK (9 nuevos de facturación). `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/*.test.js`: 105 OK (12 de facturación y calendario). `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -251,6 +255,14 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Calendario de facturación (18/10/2026): tests de meses de 28, 29, 30 y 31 días, mes que empieza
+  en domingo (febrero y marzo de 2026), cambio a hora de invierno del 25/10/2026 (la hora repetida y
+  la medianoche del 26 caen en su día), fin de mes y casilla con céntimos («<1 €», etiqueta con
+  0,45 €). En el navegador: alta en el 14 y el 13, casilla actualizada al momento, detalle abierto,
+  flechas/Inicio/Fin/RePág/AvPág, borrar y deshacer, mes anterior y «Hoy»; febrero de 2026 con el 1
+  en domingo. Captura `docs/capturas/facturacion-calendario.png` a 390 px (casillas de 46 × 52 px),
+  sin desbordamiento; 0 errores de consola. Lighthouse móvil `ingresos` e `inicio` 100/100/100
+  (CLS 0; SEO 63 por `noindex`).
 - Barra en una fila y opciones (18/10/2026): 12 páginas a 390 px sin desbordamiento; página actual
   centrada (o lo más cerca posible en los extremos) y visible al cargar; el foco con teclado desplaza
   solo la barra. Opción elegida 5,02:1. Capturas antes/después `docs/capturas/nav-antes-*.png` y
