@@ -262,7 +262,7 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     (`aria-pressed`) pasan al verde oscuro con borde blanco (la estrella, borde ámbar).
 78. **Destructivos en rojo con texto blanco**: `--peligro` #c62828 (5,62:1), hover #b91c1c
     (6,47:1), pulsado #991b1b (8,31:1). El borde del botón contra el fondo es 3,39:1.
-79. **Barra superior en píldoras verdes que pasan a varias filas** (tres a 390 px), no en una
+79. *(Sustituida por la 82.)* **Barra superior en píldoras verdes que pasan a varias filas** (tres a 390 px), no en una
     tira con desplazamiento: así se ven todas las secciones sin esconder ninguna y sin JS. La página
     actual: verde más oscuro, borde blanco y subrayado. «Gasol-IA» sigue como marca (texto verde).
 80. **«Precio a la baja» en la misma gama**: `--accent` pasa de #3ddc84 a #4ade80 (10,95:1 sobre
@@ -272,3 +272,15 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     hover y pulsado con tonos más oscuros y una transición de 0,15 s solo con
     `prefers-reduced-motion: no-preference`. Las opciones tipo radio (Calle/Aplicación, Buscar
     por…) no cambian: son elecciones, no acciones.
+
+# Decisiones — Barra en una fila y opciones (18/10/2026)
+
+82. **Barra superior en una sola fila que se desplaza dentro de sí misma** (petición de Cris; sustituye
+    a la 79). `overflow-x: auto` solo en la barra, sin barra de desplazamiento visible y con un
+    degradado en el borde por el que hay más secciones. `assets/nav.js` (importado por el módulo de
+    cada página) centra la página actual al cargar y pone las clases `mas-izq`/`mas-der`; sin JS,
+    la barra sigue desplazándose y solo falta el degradado. Hueco vertical para que el anillo de foco
+    no se recorte; con el teclado, el foco desplaza la barra, nunca la página.
+83. **Opciones tipo radio**: la elegida en verde de acción con texto blanco (5,02:1), borde blanco y
+    «✓» delante (oculto a lectores de pantalla), para no depender solo del color. Las demás,
+    neutras (texto 15,39:1 sobre la superficie). Anillo de foco blanco.

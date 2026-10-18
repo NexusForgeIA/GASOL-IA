@@ -1,4 +1,5 @@
 // Página de cuenta: acceso, perfil, avisos push, exportación y borrado.
+import "./nav.js";
 import { CUENTAS } from "./config.js";
 import { entrar, llamar, olvidarSesion, pwaInstalada, salir, sesion } from "./sesion.js";
 

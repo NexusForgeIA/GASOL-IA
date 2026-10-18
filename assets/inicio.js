@@ -1,4 +1,5 @@
 // Inicio: avisos de vencimientos al abrir la app (sin push ni servidor) y registro del SW.
+import "./nav.js";
 import { fechaCorta } from "./fechas.js";
 import { avisos, leerVencimientos, nombreVencimiento, textoEstado } from "./vencimientos.js";
 

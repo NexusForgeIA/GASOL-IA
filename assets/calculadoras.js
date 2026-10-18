@@ -1,5 +1,6 @@
 // Gasol-IA · calculadoras. Todo se calcula en el navegador; solo se consulta al servidor
 // el precio oficial de la zona, que se enseña siempre con su fecha de captura.
+import "./nav.js";
 import { API, mostrarCuentas } from "./config.js";
 import { ahorroRepostaje, consumoReal, costePorKm, costeViaje, deposito, euros, leerNumero } from "./calculos.js";
 

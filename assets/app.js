@@ -1,4 +1,5 @@
 // Gasol-IA · comparador. Vanilla JS, sin dependencias salvo Leaflet bajo demanda.
+import "./nav.js";
 import { API as BASE, mostrarCuentas } from "./config.js";
 import { leerPreferencias } from "./favoritas.js";
 import { ficha, unidad } from "./ficha.js";

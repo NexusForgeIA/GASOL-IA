@@ -1,4 +1,5 @@
 // Gasol-IA · facturación. Sin cuenta ni servidor: las carreras viven en este navegador.
+import "./nav.js";
 import { mostrarCuentas } from "./config.js";
 import { euros } from "./calculos.js";
 import { diaSemana, fechaCorta, horaMadrid, hoyMadrid, nombreMes, sumarMeses } from "./fechas.js";

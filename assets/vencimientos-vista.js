@@ -1,4 +1,5 @@
 // Gasol-IA · vencimientos. Sin cuenta ni servidor: viven en este navegador.
+import "./nav.js";
 import { mostrarCuentas } from "./config.js";
 import { fechaCorta, hoyMadrid } from "./fechas.js";
 import {
