@@ -13,6 +13,7 @@ del proyecto Supabase propio de Gasol-IA.
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
 | Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
+| Control de gastos | **Publicado** (`gastos.html`), solo en el navegador. Ver abajo. |
 | Ficha de estación | **Publicada** en comparador, ruta y favoritas. Ver abajo. |
 | Inicio, favoritas y preferencias | **Publicadas** (`inicio.html`, `favoritas.html`), solo en el navegador. Ver abajo. |
 | 2 · Cuentas, rutas en servidor y avisos push | Escritas, **desactivadas**. Pendientes del proyecto Supabase propio. |
@@ -58,6 +59,17 @@ la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribuci�
 
 Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
 `try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
+
+## Control de gastos
+
+`gastos.html` (menú y primera tarjeta del inicio). El usuario apunta repostajes: fecha, litros,
+importe, combustible, cuentakilómetros (opcional) y turno o vehículo (opcional). Con sus datos:
+totales y precio medio pagado; por turno o vehículo con coste por km (entre la primera y la
+última lectura del cuentakilómetros: importes posteriores a la primera ÷ km recorridos); por día;
+por mes. Filtro por mes. Editar, borrar con «Deshacer», exportar CSV (`;` y coma decimal, sin
+fórmulas) y «Borrar mis datos» con confirmación en la página. Se guarda en `localStorage`
+(`gasol.gastos`, máx. 5.000). La validación solo frena errores de tecleo. Resumen informativo:
+ni declaración ni consejo fiscal.
 
 ## Ficha de estación
 
@@ -105,7 +117,7 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/calculos.test.js assets/favoritas.test.js assets/ficha.test.js`: 74 OK. `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/*.test.js`: 85 OK (7 de gastos y 4 de fechas). `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -129,6 +141,10 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   favoritas; teclado; 0 desbordamiento con todas las fichas abiertas; 0 errores de consola.
   Lighthouse móvil `comparador` 99, `ruta` y `favoritas` 100 (accesibilidad y buenas prácticas
   100). Contraste de 50 precios en 10 fichas: iguales al oficial de la fecha de captura.
+- Gastos (18/10/2026): alta con errores de tecleo frenados, resumen por turno, día y mes
+  comprobado a mano, editar, borrar y deshacer, CSV descargado, borrar todo, datos corruptos y
+  almacenamiento bloqueado; 390 px sin desbordamiento (tampoco dentro de las tablas); 0 errores
+  de consola. Lighthouse móvil `gastos` e `inicio` 100/100/100.
 - Posicionamiento (18/10/2026): textos de portada, inicio, comparador y manifiesto para
   conductores profesionales. Lighthouse móvil portada 100/100/100 (antes fallaba con `NO_FCP`
   por la animación de opacidad), inicio y comparador 100/100/100.

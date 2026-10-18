@@ -139,3 +139,19 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     Sin cifras ni promesas de ahorro.
 42. **La portada anima solo el movimiento, no la opacidad**: con `opacity: 0` de partida, si la
     animación no corría (pestaña en segundo plano, Lighthouse) no se pintaba nada (`NO_FCP`).
+
+# Decisiones — Control de gastos (18/10/2026)
+
+43. **Un solo campo «Turno o vehículo»**, libre (máx. 40), como pidió el producto. El coste por km
+    se calcula por etiqueta; si se usan turnos del mismo vehículo, las lecturas se mezclan y la
+    página lo explica (mejor etiquetar por vehículo para el coste por km).
+44. **Coste por km de lleno a lleno**: el primer repostaje con lectura no cuenta (el combustible
+    se gastó antes de medir); los que no tienen lectura no entran. Sin al menos dos lecturas
+    distintas no se da cifra («Faltan lecturas»). El AdBlue y «Otro» cuentan en el gasto.
+45. **Límites de tecleo**: litros hasta 2.000, importe hasta 10.000 €, cuentakilómetros hasta
+    9.999.999, fecha desde 2000 hasta mañana (holgura de zona horaria). No se valida el €/l: sería
+    una regla de negocio.
+46. **CSV con «;» y coma decimal, BOM UTF-8** y celdas que empiezan por `= + - @` precedidas de
+    «'» para que una hoja de cálculo no las ejecute como fórmulas.
+47. **Borrar un repostaje no pide confirmación; ofrece «Deshacer»**. Borrarlo todo sí la pide.
+48. **Cuarta tarjeta en el inicio («Control de gastos»), la primera**, porque es el diferencial.
