@@ -12,7 +12,7 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html` (portada), `inicio.html`, `comparador.html`, `ruta.html`, `calculadoras.html`, `favoritas.html`, `gastos.html`, `assets/`, `sw.js` | PWA: inicio, comparador, planificador de ruta, calculadoras, favoritas y control de gastos (vanilla JS) |
+| `index.html` (portada), `inicio.html`, `comparador.html`, `ruta.html`, `calculadoras.html`, `favoritas.html`, `gastos.html`, `vencimientos.html`, `assets/`, `sw.js` | PWA: inicio, comparador, planificador de ruta, calculadoras, favoritas, control de gastos y vencimientos (vanilla JS) |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web (también precios por ID para favoritas y la ficha de estación) |
@@ -24,7 +24,7 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 ## Desarrollo
 
 ```bash
-deno test supabase/functions assets/*.test.js   # horarios, normalización, corredor, calculadoras, favoritas, ficha, gastos y fechas
+deno test supabase/functions assets/*.test.js   # horarios, normalización, corredor, calculadoras, favoritas, ficha, gastos, vencimientos y fechas
 python scripts/generar_paginas.py                         # genera gasolineras/ y sitemap.xml
 python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-LD de las páginas
 python -m http.server 8080            # sirve la PWA en local

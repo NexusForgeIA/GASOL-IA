@@ -155,3 +155,15 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     «'» para que una hoja de cálculo no las ejecute como fórmulas.
 47. **Borrar un repostaje no pide confirmación; ofrece «Deshacer»**. Borrarlo todo sí la pide.
 48. **Cuarta tarjeta en el inicio («Control de gastos»), la primera**, porque es el diferencial.
+
+# Decisiones — Vencimientos (18/10/2026)
+
+49. **Sin plazos legales**: la fecha la pone el usuario y la página lo dice arriba. No se sugieren
+    periodicidades de ITV, taxímetro ni licencias.
+50. **La antelación del aviso la elige el usuario** (7, 15, 30 o 60 días; 30 por defecto). Es una
+    preferencia de la app, no un plazo.
+51. **Días de calendario en hora peninsular** (`assets/fechas.js`): «hoy» no depende de la zona
+    horaria del móvil ni del cambio de hora.
+52. **Avisos solo en el inicio** (la pantalla tras «Entrar»), máximo cinco y enlace a la lista.
+    Sin notificaciones push: requieren cuentas o servidor.
+53. **«Otro» exige descripción**, para que el aviso diga qué vence.
