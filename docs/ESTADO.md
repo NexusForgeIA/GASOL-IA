@@ -68,8 +68,9 @@ Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculador
 
 - Pie de todas las páginas: «Privacidad · Aviso legal», botón «Enviar opinión»
   (`mailto:comercial@whitemoon.es`, asunto «Opinión Gasol-IA beta»; constante en
-  `assets/config.js`) y logo de WhiteMoon (WebP con PNG de respaldo, copiado tal cual de
-  NexusForgeIA/WHITEMOON-WEB) con «Desarrollado por WhiteMoon Agencia IA» enlazado a
+  `assets/config.js`) y logo 3D de WhiteMoon (`whitemoon-logo-3d.webp`, 3,6 KB, con PNG de
+  respaldo de 15,5 KB; 72×72 en pantalla, generado a 144 px desde el original que subió Cris,
+  guardado en `assets/img/whitemoon-logo-3d-original.jpeg`) con «Desarrollado por WhiteMoon Agencia IA» enlazado a
   whitemoon.es. En la portada, firma y enlaces legales; en el inicio, una línea de beta con la
   opinión y la firma. Sin WhatsApp.
 - `aviso-legal.html`: datos del titular copiados del aviso legal publicado de whitemoon.es
