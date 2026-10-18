@@ -15,6 +15,8 @@ export function mostrarCuentas() {
 // Contacto para opiniones de la beta: solo correo (sin WhatsApp). Mismo titular que whitemoon.es.
 export const CORREO_CONTACTO = "comercial@whitemoon.es";
 export const ASUNTO_OPINION = "Opinión Gasol-IA beta";
+// Nota de beta: la portada la lleva escrita en el HTML (sin JS); un test comprueba que es la misma.
+export const AVISO_BETA = "Versión beta gratuita en pruebas. Puede haber errores. Los precios son los oficiales del Ministerio en la fecha de captura indicada.";
 export const enlaceOpinion = () => `mailto:${CORREO_CONTACTO}?subject=${encodeURIComponent(ASUNTO_OPINION)}`;
 
 // Los enlaces «Enviar opinión» del HTML ya llevan el mailto; aquí se rehacen desde la constante

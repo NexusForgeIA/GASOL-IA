@@ -30,7 +30,7 @@ eléctrica, pendientes (ver `docs/FUENTE-DATOS.md` §8 y §9).
 ```bash
 deno test supabase/functions assets/*.test.js   # horarios, normalización, corredor, calculadoras, favoritas, ficha, gastos, facturación y su calendario, vencimientos y fechas
 python scripts/generar_paginas.py                         # genera gasolineras/ y sitemap.xml
-python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-LD de las páginas
+python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-LD de las páginas; nota de beta
 python -m http.server 8080            # sirve la PWA en local
 ```
 

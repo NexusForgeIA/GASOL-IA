@@ -264,6 +264,10 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Etiqueta Beta (18/10/2026): «Beta» junto al nombre en las 12 páginas (CSS) y nota de beta con
+  «Enviar opinión» en la portada y en el panel «Más» (decisiones 103-104). 12 páginas a 390 px sin
+  desbordamiento; 0 errores de consola; Lighthouse móvil portada, inicio y privacidad 100/100/100,
+  CLS 0. Capturas `docs/capturas/beta-portada.png` y `beta-panel.png`.
 - CSP en Privacidad (18/10/2026): `privacidad.html` ya tiene el CSP de las demás páginas
   (decisión 101); estilos y menú de móvil sin violaciones de CSP ni errores de consola; Lighthouse
   móvil 100/100/100.
