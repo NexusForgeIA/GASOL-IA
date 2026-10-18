@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#0d1013">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://mlaqtniujnvfxcvcourm.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
   <link rel="icon" href="assets/icons/favicon-48.png" type="image/png" sizes="48x48">
   <link rel="stylesheet" href="assets/app.css">
   <script type="module" src="assets/nav.js"></script>
@@ -42,6 +42,10 @@
     <h2>Control de gastos</h2>
     <p>Los repostajes que apuntas (fecha, litros, importe, combustible, cuentakilómetros y turno o vehículo) se guardan solo en tu navegador y no se envían a ningún servidor. Puedes exportarlos a CSV o borrarlos con «Borrar mis datos» en Gastos.</p>
     <h2>Vencimientos</h2>
+    <h2>Contador de aperturas</h2>
+    <p>Para saber si la beta se usa, Gasol-IA cuenta <strong>aperturas, no personas</strong>: cada vez que se abre una página se suma 1 al número de aperturas de ese día y esa página, indicando solo si se ha abierto desde la app instalada o desde el navegador.</p>
+    <p>No se cuenta ni se guarda la IP, la ubicación, ningún identificador del dispositivo ni del usuario, y no se crean perfiles. Para contar no se guarda nada en tu dispositivo (ni cookies ni almacenamiento del navegador).</p>
+    <p>La app no almacena tu IP. El proveedor de infraestructura (Supabase) puede conservar registros técnicos de las peticiones durante un tiempo limitado; según su página de precios, con el plan contratado los registros de API y de base de datos se conservan 7 días.</p>
     <p>Las fechas que apuntas (ITV, seguro, taxímetro, revista municipal u otras) se guardan solo en tu navegador. Los avisos se muestran al abrir la app; no enviamos notificaciones ni guardamos nada en un servidor.</p>
     <h2>Si nos envías tu opinión</h2>
     <p>Si usas «Enviar opinión», nos escribes por correo a comercial@whitemoon.es. Usamos tu dirección y lo que nos cuentes solo para leer tu opinión y, si hace falta, responderte. La base es tu consentimiento al escribirnos.</p>

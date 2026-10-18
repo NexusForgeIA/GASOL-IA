@@ -268,6 +268,12 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Contador de aperturas (18/10/2026): `gasol-visita` desplegada; tablas `gasol_visitas` y
+  `gasol_visitas_hora` (migración `20261018210000`), tope de 300 por hora (decisiones 113-116).
+  Función SQL probada en una transacción deshecha (ok, tope, inválidas). Con la función desplegada:
+  válida 204 con CORS, página fuera de lista 400, preflight 200. En local no se envía nada y no se
+  guarda nada en el navegador; 13 páginas a 390 px sin desbordamiento; Lighthouse móvil privacidad e
+  inicio 100/100/100. Texto en privacidad. El contador incluye las aperturas de estas pruebas.
 - Límite de rutas (18/10/2026): `gasol-ruta` desplegada con topes de 60/hora y 500/día
   (`gasol_uso_ruta`, migración `20261018200000`); cliente con 20/día por dispositivo, 5 s entre
   pulsaciones y un cálculo cada vez (decisiones 109-112). Con la función desplegada: cálculo normal
