@@ -23,6 +23,11 @@ export const COMBUSTIBLES = new Set([
   "gasolina_95_e5",
   "gasolina_98_e5",
   "glp",
+  // En €/kg (anexo de la Orden ITC/2308/2007, docs/FUENTE-DATOS.md §8).
+  "gnc",
+  "gnl",
+  "biogas_comprimido",
+  "biogas_licuado",
 ]);
 const RADIOS = new Set([5, 10, 25, 50]);
 const ATRIBUCION =

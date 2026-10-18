@@ -9,8 +9,9 @@ Deno.test("ids de favoritas: limpia, quita duplicados y valida", () => {
   assertEquals(idsValidos(Array.from({ length: MAX_IDS + 1 }, (_, i) => String(i + 1)).join(",")), null);
 });
 
-Deno.test("ficha: sin productos de unidad sin confirmar ni gasóleo B", () => {
-  for (const fuera of ["gnc", "gnl", "biogas_comprimido", "biogas_licuado", "hidrogeno", "gasoleo_b"]) {
+Deno.test("ficha: sin hidrógeno ni gasóleo B; con los gases de unidad confirmada", () => {
+  for (const dentro of ["gnc", "gnl", "biogas_comprimido", "biogas_licuado"]) assertEquals(FICHA_COMBUSTIBLES.includes(dentro), true, dentro);
+  for (const fuera of ["hidrogeno", "gasoleo_b", "metanol", "amoniaco"]) {
     assertEquals(FICHA_COMBUSTIBLES.includes(fuera), false, fuera);
   }
   assertEquals(new Set(FICHA_COMBUSTIBLES).size, FICHA_COMBUSTIBLES.length);

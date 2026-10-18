@@ -64,9 +64,9 @@ Diésel renovable 1.618 · Gasolina 95 E5 Premium 1.115 · GLP 996 · GNC 98 · 
 Biogás licuado 50 · Biogás comprimido 42 · Gasolina renovable 31 · Biodiésel 28 ·
 95 E10 27 · 98 E10 15 · 95 E85 2 · Hidrógeno 2 · 95 E25 1 · Bioetanol 1 · Amoniaco 0 · Metanol 0.
 
-**Unidades**: el servicio no las declara. Se asume €/l para carburantes líquidos, GLP y
-AdBlue. GNC, GNL, biogás e hidrógeno parecen ir por kg (el hidrógeno aparece a 25,000):
-**pendiente de confirmar**; por eso no se ofrecen en el comparador.
+**Unidades**: el JSON no las declara, pero sí el anexo de la orden que regula su remisión
+(confirmado el 18/10/2026, ver §8): €/l para carburantes líquidos, GLP y AdBlue; €/kg para GNC,
+GNL, hidrógeno, metanol, amoniaco y biogás.
 
 ## 2. Frecuencia real de actualización
 
@@ -208,3 +208,59 @@ Gasóleo B (agrícola) y GNC, GNL, biogás e hidrógeno (unidades sin confirmar;
 **Contraste** (10 estaciones con 5 o más productos, 50 precios): 39 iguales al JSON de las 3:41
 del 18/10; los 11 restantes, de 3 estaciones, coinciden con el histórico oficial del 17/10
 (`EstacionesTerrestresHist/17-10-2026`): cambiaron de precio después de nuestra captura.
+
+## 8. Combustibles alternativos — 18/10/2026
+
+**Unidades, confirmadas en fuente oficial.** Anexo de la Orden ITC/2308/2007, en su versión
+modificada por la Resolución de 5 de diciembre de 2025, publicado por el MITECO
+(<https://www.miteco.gob.es/content/dam/miteco/es/energia/files-1/risp/normativa/Documents/Anexos%20Orden%20ITC23082007%20modificados%20por%20Resolucion%205%20diciembre%202025.pdf>).
+Textualmente: *"Todos los precios se darán en: euros por litro (€/l) para los productos G95E5,
+G95E5+, G95E10, G95E25, G95E85, BIE, G98E5, G98E10, GOA, GOA+, GOB, GOC, BIO, GLP, ADB, DREN y
+GREN"* y *"euros por kilogramo (€/kg) para los productos PVPGNC, PVPGNL, PVPH2, PVPMET, PVPAMO,
+PVPBGNC y PVPBGNL"*, porque *"son las realmente aplicadas en el punto de venta"*. Es la orden
+con la que las estaciones remiten los precios que publica el servicio REST.
+
+**Datos reales en nuestra ingesta** (captura del 17/10/2026, 23:12; ya se guardaban todos):
+
+| Producto | Código | Estaciones | Rango | Unidad | Decisión |
+| --- | --- | --- | --- | --- | --- |
+| GLP (autogás) | `glp` | 996 | 0,781–1,290 | €/l | Ya estaba en el comparador y las calculadoras. |
+| Gas natural comprimido | `gnc` | 97 | 1,299–2,199 | €/kg | **Añadido** al comparador, la ficha y favoritas. |
+| Gas natural licuado | `gnl` | 52 | 1,729–1,959 | €/kg | **Añadido** al comparador, la ficha y favoritas. |
+| Biogás comprimido | `biogas_comprimido` | 42 | 1,789–1,999 | €/kg | **Añadido** al comparador, la ficha y favoritas. |
+| Biogás licuado | `biogas_licuado` | 50 | 1,729–1,889 | €/kg | **Añadido** al comparador, la ficha y favoritas. |
+| Hidrógeno | `hidrogeno` | 2 | 9,900 y 25,000 | €/kg | **Fuera**: dos estaciones y un precio 2,5 veces el otro. Se revisará. |
+| Metanol, amoniaco | — | 0 | — | €/kg | Sin datos. |
+
+Coherencia: el informe mensual del MITECO de septiembre de 2026 da un GNC medio de 182,12 c€/kg,
+dentro del rango observado. Contraste con el histórico oficial del 17/10/2026
+(`EstacionesTerrestresHist/17-10-2026`): GNC 97/97, GNL 52/52, biogás comprimido 42/42 y biogás
+licuado 50/50 precios iguales.
+
+**Dónde no se añaden todavía**: la ruta (su calculadora de desvío usa litros y l/100 km), las
+calculadoras y el control de gastos (piden litros). Requieren pasar a kg y kg/100 km; pendiente.
+
+## 9. Puntos de recarga eléctrica — investigado, NO integrado (18/10/2026)
+
+| Fuente | Qué es | Licencia | Estado |
+| --- | --- | --- | --- |
+| **Puntos de Recarga de Vehículos Eléctricos** (datos.gob.es, `e05068001-puntos-de-recarga-de-vehiculos-electricos`; <https://datos.gob.es/es/catalogo/e05068001-puntos-de-recarga-de-vehiculos-electricos>) | Registro oficial del MITECO (SG de Prospectiva y Estadísticas Energéticas, aplicación RIPREE). Cobertura nacional. Frecuencia «irregular»; última modificación en el catálogo: 01/06/2026. | **CC BY 4.0**, según el identificador de licencia de la ficha del catálogo. | Candidata principal. |
+| **Mapa REVE** (Red Eléctrica, por encargo del MITECO) | Mapa oficial con disponibilidad y precios dinámicos de más de 25.600 puntos. | **No encontrada**: sin aviso legal, condiciones de reutilización ni API pública documentada. | No usar hasta que publiquen condiciones. |
+
+**Campos reales de la exportación CSV** (descargada el 18/10/2026 desde
+`https://energia.serviciosmin.gob.es/Ripree/ExportarInstalaciones/Export`: la página genera el
+archivo con un `POST` a `GenerarExcel`; `InstalacionesPublicas_20261018_041742.csv`, ~44 MB,
+UTF-16, separador `;`, una fila por conector, valores con formato de Excel `="…"`):
+COMUNIDAD AUTONOMA, PROVINCIA, MUNICIPIO, LATITUD, LONGITUD, NOMBRE INSTALACION, DIRECCIÓN,
+CODIGO POSTAL, LOCALIZACION, TIPO HORARIO APERTURA, HORARIO APERTURA, NOMBRE OPERADOR,
+COD. OPERADOR, TIPOS DE SERVICIOS, COD. INSTALACION, ID. PUNTO DE RECARGA, ACCESIBILIDAD,
+METODOS DE PAGOS, COD. PUNTO DE RECARGA, ID. CONECTOR, TIPO CONECTOR, TIPO DE CARGA, FORMATO,
+POTENCIA MAXIMA, VOLTAJE, INTENSIDAD, FECHA DE ULTIMA MODIFICACION. **No trae precio ni
+disponibilidad.**
+
+**Recomendación**: si se integra, usar el registro del MITECO (CC BY 4.0) solo para ubicación,
+potencia, conector, horario y operador, con atribución y fecha de última modificación, y sin
+precios (no están en la fuente abierta). Antes: confirmar la licencia en el propio portal de
+datos abiertos del MITECO, decidir la carga periódica (archivo grande, UTF-16, por `POST`) y
+cómo agrupar conectores por instalación. Precio y disponibilidad solo cuando el Mapa REVE
+publique condiciones de reutilización.

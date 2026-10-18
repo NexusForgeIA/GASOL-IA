@@ -15,8 +15,16 @@ export const NOMBRES = {
   gasolina_95_e5_premium: "Gasolina 95 E5 Premium",
   gasolina_98_e5: "Gasolina 98 E5",
   glp: "GLP (autogás)",
+  gnc: "GNC (gas natural comprimido)",
+  gnl: "GNL (gas natural licuado)",
+  biogas_comprimido: "Biogás comprimido",
+  biogas_licuado: "Biogás licuado",
   adblue: "AdBlue",
 };
+/** El servicio oficial publica estos productos en €/kg; el resto, en €/l. */
+const EN_KG = new Set(["gnc", "gnl", "biogas_comprimido", "biogas_licuado"]);
+export const unidad = (combustible) => (EN_KG.has(combustible) ? "kg" : "l");
+export const porUnidad = (combustible) => (EN_KG.has(combustible) ? "por kg" : "por litro");
 export const ATRIBUCION = "Origen de los datos: Ministerio para la Transición Ecológica y el Reto Demográfico";
 
 export const fechaHora = new Intl.DateTimeFormat("es-ES", {
@@ -103,7 +111,7 @@ export function chip24(abierta) {
 export function ficha(e, op = {}) {
   const nombreComb = NOMBRES[op.combustible] ?? op.nombreCombustible ?? "";
   const precio = e.precio != null
-    ? el("span", { class: "precio" }, el("strong", { text: `${euros(e.precio, 3)} €` }), el("span", { class: "unidad", text: "por litro" }))
+    ? el("span", { class: "precio" }, el("strong", { text: `${euros(e.precio, 3)} €` }), el("span", { class: "unidad", text: porUnidad(op.combustible) }))
     : el("span", { class: "precio sin" }, el("span", { class: "unidad", text: op.sinPrecio ?? `Sin precio de ${nombreComb}` }));
   const linea = [op.distancia, e.fecha_captura ? `capturado ${fechaHora.format(new Date(e.fecha_captura))}` : null].filter(Boolean).join(" · ");
 
@@ -168,11 +176,11 @@ function tablaPrecios(filas) {
   for (const f of filas) {
     cuerpo.append(el("tr", { class: f.elegido ? "elegido" : "" },
       el("th", { scope: "row" }, document.createTextNode(f.nombre), f.elegido ? el("span", { class: "chip si", text: "Tu combustible" }) : null),
-      el("td", { text: `${euros(f.precio, 3)} €/l` }),
+      el("td", { text: `${euros(f.precio, 3)} €/${unidad(f.combustible)}` }),
       el("td", {}, el("time", { datetime: f.fecha_captura, title: fechaHora.format(new Date(f.fecha_captura)), text: fechaCorta.format(new Date(f.fecha_captura)) }))));
   }
   return el("table", { class: "tabla-calculo tabla-ficha" },
-    el("caption", { text: "Precios de esta estación publicados en la última captura (día/mes y hora peninsular)" }),
+    el("caption", { text: "Precios de esta estación publicados en la última captura (día/mes y hora peninsular). Los gases, por kg." }),
     el("thead", {}, el("tr", {}, el("th", { scope: "col", text: "Producto" }), el("th", { scope: "col", text: "Precio" }), el("th", { scope: "col", text: "Capturado" }))),
     cuerpo);
 }

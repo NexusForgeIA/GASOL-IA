@@ -7,7 +7,7 @@ export const CLAVE_FAVORITAS = "gasol.favoritas";
 export const CLAVE_PREFERENCIAS = "gasol.preferencias";
 export const MAX_FAVORITAS = 50; // el mismo máximo que acepta gasol-buscar?ids=
 
-export const COMBUSTIBLES = ["gasoleo_a", "gasoleo_premium", "diesel_renovable", "adblue", "gasolina_95_e5", "gasolina_98_e5", "glp"];
+export const COMBUSTIBLES = ["gasoleo_a", "gasoleo_premium", "diesel_renovable", "adblue", "gasolina_95_e5", "gasolina_98_e5", "glp", "gnc", "gnl", "biogas_comprimido", "biogas_licuado"];
 export const RADIOS = ["5", "10", "25", "50"]; // comparador, «Cerca de mí»
 export const CORREDORES = ["1", "2", "5", "10"]; // ruta, km a cada lado
 

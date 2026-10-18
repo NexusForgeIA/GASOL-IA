@@ -13,6 +13,8 @@ del proyecto Supabase propio de Gasol-IA.
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
 | Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
+| Gas (GNC, GNL, biogás) | **En el comparador, la ficha y favoritas**, en €/kg. Ver abajo. |
+| Recarga eléctrica | **Investigada, no integrada** (`docs/FUENTE-DATOS.md` §9). |
 | Vencimientos | **Publicado** (`vencimientos.html`), solo en el navegador. Ver abajo. |
 | Control de gastos | **Publicado** (`gastos.html`), solo en el navegador. Ver abajo. |
 | Ficha de estación | **Publicada** en comparador, ruta y favoritas. Ver abajo. |
@@ -60,6 +62,14 @@ la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribuci�
 
 Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
 `try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
+
+## Combustibles alternativos
+
+GNC, GNL, biogás comprimido y biogás licuado en el comparador, la ficha y favoritas, en €/kg
+(unidad confirmada en el anexo de la Orden ITC/2308/2007; `docs/FUENTE-DATOS.md` §8). El GLP ya
+estaba (€/l). Hidrógeno fuera (dos estaciones, precios muy dispares). La ruta, las calculadoras y
+el control de gastos siguen solo con productos en litros. Recarga eléctrica: documentada como
+pendiente con fuente, licencia y recomendación (§9).
 
 ## Vencimientos
 
@@ -122,13 +132,15 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   `gasol_avisos`, `gasol_uso`) y los secretos VAPID de Vault ya existen en el proyecto compartido
   (migraciones `20261018100000` y `20261018101000`). Están vacías. Al pasar al proyecto propio se
   aplican allí; retirarlas del compartido requiere `DROP` y se haría a mano, con confirmación.
+- Ruta, calculadoras y control de gastos en kg y kg/100 km para los gases.
+- Puntos de recarga eléctrica (fuente CC BY 4.0 localizada; ver `docs/FUENTE-DATOS.md` §9).
 - Proveedor de rutas para producción con perfil de camión (hoy OSRM demo, perfil turismo).
 - Teselas de mapa con condiciones para tráfico real (hoy OpenStreetMap).
 - Licencia comercial de los datos oficiales (`docs/FUENTE-DATOS.md`).
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/*.test.js`: 91 OK (6 de vencimientos). `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/*.test.js`: 92 OK. `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -152,6 +164,9 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   favoritas; teclado; 0 desbordamiento con todas las fichas abiertas; 0 errores de consola.
   Lighthouse móvil `comparador` 99, `ruta` y `favoritas` 100 (accesibilidad y buenas prácticas
   100). Contraste de 50 precios en 10 fichas: iguales al oficial de la fecha de captura.
+- Gas (18/10/2026): comparador con GNC, GNL y biogás licuado en Madrid («por kg»), ficha y
+  popup del mapa en €/kg, preferencia de gas aplicada en comparador y favoritas e ignorada en la
+  ruta; 0 errores de consola. Contraste con el histórico oficial del 17/10: 241/241 precios.
 - Vencimientos (18/10/2026): alta con errores frenados, estados vencido/hoy/próximo/al día,
   editar, borrar y deshacer, aviso en el inicio, CSV, borrar todo, corruptos y sin
   almacenamiento; con el navegador en `Pacific/Pago_Pago` (otro día) «hoy» sigue siendo el de

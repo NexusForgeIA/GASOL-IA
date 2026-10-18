@@ -167,3 +167,14 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 52. **Avisos solo en el inicio** (la pantalla tras «Entrar»), máximo cinco y enlace a la lista.
     Sin notificaciones push: requieren cuentas o servidor.
 53. **«Otro» exige descripción**, para que el aviso diga qué vence.
+
+# Decisiones — Combustibles alternativos y recarga (18/10/2026)
+
+54. **GNC, GNL y biogás entran en €/kg** porque la unidad está confirmada en el anexo oficial de
+    la orden de remisión y hay datos reales (42–97 estaciones). Se muestra «por kg» en la ficha,
+    «€/kg» en la tabla, el mapa y el selector.
+55. **Hidrógeno fuera**: dos estaciones, 9,90 y 25,00 €/kg. Unidad confirmada, dato insuficiente.
+56. **La ruta no ofrece gases** y no aplica una preferencia de gas: su calculadora de desvío usa
+    litros. Igual las calculadoras y el control de gastos («Otro» sirve mientras tanto).
+57. **Recarga eléctrica sin integrar**: el registro del MITECO (CC BY 4.0) no trae precios y el
+    Mapa REVE no publica condiciones de reutilización. Documentado en `docs/FUENTE-DATOS.md` §9.
