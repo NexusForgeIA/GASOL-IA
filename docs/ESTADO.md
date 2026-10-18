@@ -125,18 +125,25 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 - **Alertas de precio**: no se hacen todavía. Requieren cuentas y el proyecto Supabase propio
   (avisos push con VAPID, `gasol-alertas`, ya escrito y sin desplegar).
 
-- **`gasol-cuenta` está desplegada (v1) en el proyecto compartido** desde la sesión anterior,
-  aunque la web ya no la enlaza. Es pública y permite registrarse en el Auth compartido.
-  Hay que decidir si se elimina hasta tener el proyecto propio.
+- **`gasol-cuenta` retirada (18/10/2026)**: desplegada como v2 que responde 410 a todo, sin tocar
+  Auth ni la base (antes permitía registrarse en el Auth compartido; 0 perfiles creados). Falta
+  **borrarla** del proyecto compartido: el conector de Supabase no tiene esa operación; se hace en
+  el panel de Supabase (Edge Functions → gasol-cuenta → Delete) o con
+  `supabase functions delete gasol-cuenta --project-ref mlaqtniujnvfxcvcourm`. El código original
+  sigue en `supabase/functions/gasol-cuenta/` para el proyecto propio: **no redesplegarlo aquí**.
 - Las tablas de cuentas (`gasol_perfiles`, `gasol_rutas`, `gasol_push_suscripciones`,
   `gasol_avisos`, `gasol_uso`) y los secretos VAPID de Vault ya existen en el proyecto compartido
   (migraciones `20261018100000` y `20261018101000`). Están vacías. Al pasar al proyecto propio se
   aplican allí; retirarlas del compartido requiere `DROP` y se haría a mano, con confirmación.
-- Ruta, calculadoras y control de gastos en kg y kg/100 km para los gases.
-- Puntos de recarga eléctrica (fuente CC BY 4.0 localizada; ver `docs/FUENTE-DATOS.md` §9).
+- Ruta, calculadoras y control de gastos en kg y kg/100 km para los gases: **aplazado**; se
+  decide según lo que digan los taxistas en la beta.
+- Puntos de recarga eléctrica: **aplazado**. Sin precios ni disponibilidad aporta poco; queda
+  documentado (`docs/FUENTE-DATOS.md` §9).
 - Proveedor de rutas para producción con perfil de camión (hoy OSRM demo, perfil turismo).
 - Teselas de mapa con condiciones para tráfico real (hoy OpenStreetMap).
-- Licencia comercial de los datos oficiales (`docs/FUENTE-DATOS.md`).
+- Licencia comercial de los datos oficiales (`docs/FUENTE-DATOS.md`): pendiente. **No bloquea
+  la beta gratuita con `noindex`**; se resuelve antes de cobrar o de indexar. No se ha enviado
+  todavía la consulta al Ministerio.
 
 ## Verificación de esta versión
 

@@ -178,3 +178,13 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     litros. Igual las calculadoras y el control de gastos («Otro» sirve mientras tanto).
 57. **Recarga eléctrica sin integrar**: el registro del MITECO (CC BY 4.0) no trae precios y el
     Mapa REVE no publica condiciones de reutilización. Documentado en `docs/FUENTE-DATOS.md` §9.
+
+# Decisiones del producto — beta (18/10/2026)
+
+58. **`gasol-cuenta` fuera del proyecto compartido.** Neutralizada (410) y pendiente de borrar
+    desde el panel; las cuentas llegan con el proyecto Supabase propio.
+59. **Licencia de datos**: no bloquea la beta gratuita con `noindex`. Se resuelve antes de cobrar
+    o de indexar. No se escribe al Ministerio todavía.
+60. **Recarga eléctrica y gas en kg en ruta, calculadoras y gastos: aplazados** hasta tener
+    opiniones de la beta (taxistas).
+61. **Se quedan las tarjetas de inicio** «Control de gastos» y «Vencimientos».
