@@ -26,7 +26,7 @@ if (nav) {
 
 // ---- Barra inferior y panel «Más» (móvil) ---------------------------------------------------
 const PRINCIPALES = [["inicio.html", "inicio", "Inicio"], ["comparador.html", "comparador", "Comparador"], ["ruta.html", "ruta", "Ruta"], ["ingresos.html", "facturacion", "Facturación"]];
-const EN_MAS = [["gastos.html", "gastos", "Gastos"], ["calculadoras.html", "calculadora", "Calculadoras"], ["favoritas.html", "favorita", "Favoritas"], ["vencimientos.html", "vencimientos", "Vencimientos"]];
+const EN_MAS = [["gastos.html", "gastos", "Gastos"], ["calculadoras.html", "calculadora", "Calculadoras"], ["favoritas.html", "favorita", "Favoritas"], ["vencimientos.html", "vencimientos", "Vencimientos"], ["instalar.html", "instalar", "Instalar la app"]];
 const LEGALES = [["privacidad.html", "Privacidad"], ["aviso-legal.html", "Aviso legal"]];
 const pagina = location.pathname.split("/").pop() || "index.html";
 

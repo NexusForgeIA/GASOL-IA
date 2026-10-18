@@ -25,3 +25,4 @@
 .portada-beta .nota-beta { margin: 0; }
 .portada-beta p { margin: 0; }
 .portada-beta .opinion { display: inline-flex; align-items: center; text-decoration: none; }
+.portada .instalar-portada { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .75rem; color: var(--accent); font-weight: 700; }

@@ -264,6 +264,11 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Guía de instalación (18/10/2026): `instalar.html` (decisiones 105-108). Con un iPhone simulado
+  sale primero el bloque de Safari y, con la app «instalada» simulada, «Ya la tienes instalada».
+  Funciona sin conexión una vez cargada (servidor parado: página, estilos, menú e iconos desde la
+  caché). 13 páginas a 390 px sin desbordamiento; Lighthouse móvil `instalar`, portada e inicio
+  100/100/100, CLS 0; 0 errores de consola. Captura `docs/capturas/instalar.png`.
 - Etiqueta Beta (18/10/2026): «Beta» junto al nombre en las 12 páginas (CSS) y nota de beta con
   «Enviar opinión» en la portada y en el panel «Más» (decisiones 103-104). 12 páginas a 390 px sin
   desbordamiento; 0 errores de consola; Lighthouse móvil portada, inicio y privacidad 100/100/100,

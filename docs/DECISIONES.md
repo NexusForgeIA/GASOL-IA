@@ -403,3 +403,22 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      con el «Enviar opinión» de siempre (solo correo) justo debajo. Texto único en `AVISO_BETA`
      (`assets/config.js`); la portada, que no carga JS, lo lleva escrito y
      `scripts/test_textos.py` comprueba que coincide. Sin cifras de usuarios ni «en vivo».
+
+# Decisiones — Guía de instalación (18/10/2026)
+
+105. **`instalar.html`**, con la misma CSP, `noindex` y menú que las demás; entrada «Instalar la app»
+     en el panel «Más», en la portada y en la barra superior de pantallas anchas («Instalar»).
+106. **Pasos tomados de la documentación oficial (consultada el 18/10/2026)**:
+     - Chrome para Android (ayuda de Google en español): «Más» → «Instalar y crear acceso directo»
+       → «Instalar». Se avisa de que, según el móvil, puede aparecer como «Instalar aplicación» o
+       «Añadir a pantalla de inicio».
+     - Safari en iPhone (manual de Apple, es-ES, iOS 26/27): «Compartir» → «Añadir a pantalla de
+       inicio» (si no aparece, «Editar acciones») → «Abrir como app web» → «Añadir». Se pide abrirla
+       en Safari.
+107. **Orden según el sistema, sin ocultar ninguno**: con JS se pone primero el bloque del móvil
+     (iPhone/iPad, incluido el iPad que se presenta como Mac táctil); sin JS se ven los dos. Si la app
+     ya se abre desde su icono (`display-mode: standalone` o `navigator.standalone`), la guía se
+     cambia por «Ya la tienes instalada».
+108. **Recordatorio de datos**: Facturación, Gastos y Vencimientos se guardan solo en ese navegador;
+     antes de cambiar de móvil o de navegador, exportar el CSV. Iconos nuevos del sprite: instalar,
+     puntos, compartir, añadir y móvil.
