@@ -1,6 +1,7 @@
 // Gasol-IA · comparador. Vanilla JS, sin dependencias salvo Leaflet bajo demanda.
 import { API as BASE, mostrarCuentas } from "./config.js";
-import { botonEstrella, leerPreferencias } from "./favoritas.js";
+import { leerPreferencias } from "./favoritas.js";
+import { ficha } from "./ficha.js";
 
 mostrarCuentas();
 
@@ -172,30 +173,12 @@ function pintar(filas, cerca) {
 }
 
 function tarjeta(f, minima, cerca) {
-  const chip = f.abierta_24h === "si"
-    ? el("span", { class: "chip si", text: "Abierta 24 h" })
-    : f.abierta_24h === "sin_confirmar"
-      ? el("span", { class: "chip duda", text: "Horario sin confirmar" })
-      : null;
-  const horario = el("span", { text: f.horario_texto ? `Horario oficial: ${f.horario_texto}` : "Sin horario publicado" });
-  const distancia = cerca && f.distancia_km != null ? el("span", { text: `a ${km.format(f.distancia_km)} km en línea recta` }) : null;
-  const enlace = el("a", {
-    href: `https://www.openstreetmap.org/?mlat=${f.lat}&mlon=${f.lon}#map=17/${f.lat}/${f.lon}`,
-    rel: "noopener", target: "_blank", text: "Ver en el mapa",
+  return ficha(f, {
+    combustible: form.combustible.value,
+    distancia: cerca && f.distancia_km != null ? `a ${km.format(f.distancia_km)} km en línea recta` : null,
+    chips: minima ? [el("span", { class: "primera-etiqueta", text: "Precio más bajo" })] : [],
+    clase: minima ? "primera" : "",
   });
-
-  return el("li", { class: `estacion${minima ? " primera" : ""}` },
-    el("h3", { text: capitalizar(f.rotulo || "Sin rótulo") }),
-    el("div", { class: "precio" },
-      el("strong", { text: `${euros.format(f.precio)} €` }),
-      el("span", { class: "unidad", text: "por litro" })),
-    el("p", { class: "dir", text: `${capitalizar(f.direccion)} · ${f.municipio} (${capitalizar(f.provincia)})` }),
-    el("div", { class: "meta" },
-      minima ? el("span", { class: "primera-etiqueta", text: "Precio más bajo" }) : null,
-      chip, horario, distancia, enlace),
-    botonEstrella(f),
-    el("p", { class: "captura", text: `Precio capturado el ${fechaHora.format(new Date(f.fecha_captura))} (hora peninsular) · Fuente: MITECO` }),
-  );
 }
 
 // ---- Mapa (Leaflet bajo demanda) ------------------------------------------

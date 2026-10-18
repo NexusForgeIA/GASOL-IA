@@ -117,3 +117,16 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     las rutas guardadas, que tienen su propio botón en Ruta (se indica en la página).
 35. **`[hidden] { display: none !important }`** global: evita que una clase con `display` muestre
     lo que está oculto (pasaba con el enlace «Cuenta»).
+
+# Decisiones — Ficha de estación (18/10/2026)
+
+36. **Ficha plegable con `<details>`/`<summary>`**: nativo, accesible con teclado y sin JS para
+    abrir y cerrar. Cerrada en todos los tamaños; el resumen basta para comparar.
+37. **El detalle se pide al abrir** (`gasol-buscar?ficha=`, caché HTTP de 10 min y en memoria):
+    no engorda la búsqueda de 200 resultados. Favoritas precarga todas en una sola petición.
+38. **Productos de la ficha**: los seis pedidos (Gasóleo A y Premium, 95 E5, 98 E5, 95 E5
+    Premium, AdBlue) más Diésel renovable y GLP, que ya están en el comparador, para poder
+    destacar el elegido. Lista única en `gasol-buscar/ids.ts` (`FICHA_COMBUSTIBLES`).
+39. **En la tabla, fecha corta (día/mes y hora)** para que quepa a 390 px; la fecha completa va en
+    el atributo `title`, en el resumen y en la atribución.
+40. **Sin teléfono**: la fuente no lo trae y no se completa con otras.

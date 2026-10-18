@@ -1,6 +1,6 @@
 import { assert, assertAlmostEquals, assertEquals } from "jsr:@std/assert@1.0.13";
 import {
-  ahorroRepostaje, compararDesvio, consumoReal, costePorKm, costeViaje, deposito, enlaceGoogleMaps, enlaceWaze,
+  ahorroRepostaje, compararDesvio, enlaceComoLlegar, consumoReal, costePorKm, costeViaje, deposito, enlaceGoogleMaps, enlaceWaze,
   leerNumero, puntosIntermedios, redondear,
 } from "./calculos.js";
 
@@ -166,4 +166,12 @@ Deno.test("depósito: nivel mayor que la capacidad, negativo o vacío", () => {
   assert(deposito({ capacidad: "60", nivel: "50", unidad: "pct", objetivo: "120" }).error);
   assert(deposito({ capacidad: "60", nivel: "50", unidad: "pct", objetivo: "40" }).error);
   assert(deposito({ capacidad: "60", nivel: "50", unidad: "pct", consumoL100: "0" }).error);
+});
+
+Deno.test("cómo llegar: Google Maps solo con destino", () => {
+  const u = new URL(enlaceComoLlegar({ lat: 40.327389, lon: -3.725889 }));
+  assertEquals(u.origin + u.pathname, "https://www.google.com/maps/dir/");
+  assertEquals(u.searchParams.get("destination"), "40.32739,-3.72589");
+  assertEquals(u.searchParams.get("origin"), null);
+  assertEquals(u.searchParams.get("travelmode"), "driving");
 });

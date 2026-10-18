@@ -2,7 +2,8 @@
 import { API, CUENTAS, mostrarCuentas } from "./config.js";
 import { compararDesvio, enlaceGoogleMaps, enlaceWaze, euros, puntosIntermedios } from "./calculos.js";
 import { llamar, sesion } from "./sesion.js";
-import { botonEstrella, leerPreferencias } from "./favoritas.js";
+import { leerPreferencias } from "./favoritas.js";
+import { ficha } from "./ficha.js";
 
 const LEAFLET = {
   css: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
@@ -226,37 +227,37 @@ function pintarCorredor() {
 function tarjeta(e, minima) {
   const dif = e.precio_anterior != null ? Math.abs(e.precio - e.precio_anterior) : 0;
   const tend = e.tendencia === "baja"
-    ? el("p", { class: "tendencia baja", text: `✓ Baja ${euros(dif, 3)} € desde la captura anterior` })
+    ? el("span", { class: "tendencia baja", text: `✓ Baja ${euros(dif, 3)} € desde la captura anterior` })
     : e.tendencia === "sube"
-      ? el("p", { class: "tendencia sube", text: `✗ Sube ${euros(dif, 3)} € desde la captura anterior` })
+      ? el("span", { class: "tendencia sube", text: `✗ Sube ${euros(dif, 3)} € desde la captura anterior` })
       : null;
+  const corto = e.desvio_km != null
+    ? `desvío ${km1.format(e.desvio_km)} km ida y vuelta`
+    : `a ${km1.format(e.lateral_km)} km de la ruta en línea recta`;
   const desvio = e.desvio_km != null
     ? `Desvío: ${km1.format(e.desvio_km)} km y ${e.desvio_min} min, ida y vuelta por carretera desde el punto más cercano de tu ruta`
     : `A ${km1.format(e.lateral_km)} km en línea recta de la ruta (desvío por carretera no calculado)`;
-  const chip = e.abierta_24h === "si" ? el("span", { class: "chip si", text: "Abierta 24 h" })
-    : e.abierta_24h === "sin_confirmar" ? el("span", { class: "chip duda", text: "Horario sin confirmar" }) : null;
 
   const elegir = el("button", { type: "button", class: "boton-sec", text: "Repostar aquí", "aria-pressed": "false" });
   elegir.addEventListener("click", () => {
     repostaje = repostaje?.ideess === e.ideess ? null : e;
-    document.querySelectorAll("#corredor [aria-pressed]").forEach((b) => b.setAttribute("aria-pressed", "false"));
+    document.querySelectorAll("#corredor [aria-pressed]:not(.estrella)").forEach((b) => b.setAttribute("aria-pressed", "false"));
     if (repostaje) elegir.setAttribute("aria-pressed", "true");
     pintarNavegacion();
   });
 
-  return el("li", { class: `estacion${e.tendencia === "baja" ? " baja" : e.tendencia === "sube" ? " sube" : ""}${minima ? " primera" : ""}` },
-    el("h3", { text: capitalizar(e.rotulo || "Sin rótulo") }),
-    el("div", { class: "precio" }, el("strong", { text: `${euros(e.precio, 3)} €` }), el("span", { class: "unidad", text: "por litro" })),
-    el("p", { class: "dir", text: `${capitalizar(e.direccion)} · ${e.municipio} · km ${e.km_ruta} de la ruta` }),
-    tend,
-    el("div", { class: "meta" },
+  return ficha(e, {
+    combustible: form.combustible.value,
+    distancia: `km ${e.km_ruta} de la ruta · ${corto}`,
+    chips: [
       minima ? el("span", { class: "primera-etiqueta", text: "Precio más bajo" }) : null,
       e.mas_cercana ? el("span", { class: "chip", text: "La más cercana a la ruta" }) : null,
-      chip, el("span", { text: `Horario oficial: ${e.horario_texto || "sin publicar"}` })),
-    el("p", { class: "dir", text: desvio }),
-    el("p", { class: "captura", text: `Precio capturado el ${fechaHora.format(new Date(e.fecha_captura))} (hora peninsular) · Fuente: MITECO` }),
-    el("div", { class: "botones" }, elegir, botonEstrella(e)),
-  );
+      tend,
+    ].filter(Boolean),
+    detalle: [el("p", { class: "dir", text: desvio })],
+    acciones: [elegir],
+    clase: [e.tendencia === "baja" ? "baja" : e.tendencia === "sube" ? "sube" : "", minima ? "primera" : ""].filter(Boolean).join(" "),
+  });
 }
 
 function pintarNavegacion() {

@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1.0.13";
-import { idsValidos, MAX_IDS } from "./ids.ts";
+import { FICHA_COMBUSTIBLES, idsValidos, MAX_IDS } from "./ids.ts";
 
 Deno.test("ids de favoritas: limpia, quita duplicados y valida", () => {
   assertEquals(idsValidos("4375, 5122,4375,"), ["4375", "5122"]);
@@ -7,4 +7,11 @@ Deno.test("ids de favoritas: limpia, quita duplicados y valida", () => {
   assertEquals(idsValidos("12,abc"), null);
   assertEquals(idsValidos("1;DROP"), null);
   assertEquals(idsValidos(Array.from({ length: MAX_IDS + 1 }, (_, i) => String(i + 1)).join(",")), null);
+});
+
+Deno.test("ficha: sin productos de unidad sin confirmar ni gasóleo B", () => {
+  for (const fuera of ["gnc", "gnl", "biogas_comprimido", "biogas_licuado", "hidrogeno", "gasoleo_b"]) {
+    assertEquals(FICHA_COMBUSTIBLES.includes(fuera), false, fuera);
+  }
+  assertEquals(new Set(FICHA_COMBUSTIBLES).size, FICHA_COMBUSTIBLES.length);
 });
