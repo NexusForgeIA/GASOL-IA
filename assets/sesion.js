@@ -46,7 +46,7 @@ export async function llamar(funcion, body, { privada = true } = {}) {
     s = await refrescar(s);
     if (s) ({ r, datos } = await post(funcion, body, s.access_token));
   }
-  if (!r.ok) throw Object.assign(new Error(datos.error || "No se pudo completar ahora mismo."), { status: r.status });
+  if (!r.ok) throw Object.assign(new Error(datos.error || "No se pudo completar ahora mismo."), { status: r.status, limite: datos.limite });
   return datos;
 }
 

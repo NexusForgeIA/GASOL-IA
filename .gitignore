@@ -4,3 +4,4 @@ __pycache__/
 .lighthouse/
 *.local
 .env
+supabase/.temp/
