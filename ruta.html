@@ -33,7 +33,7 @@
   </header>
 
   <main class="contenedor">
-    <p class="tarjeta-info aviso" id="aviso-camion"><strong>Ruta no verificada para camiones.</strong> Se calcula para turismo: revisa gálibos, pesos y restricciones antes de salir.</p>
+    <p class="tarjeta-info aviso" id="aviso-camion"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#aviso"/></svg> <strong>Ruta no verificada para camiones.</strong> Se calcula para turismo: revisa gálibos, pesos y restricciones antes de salir.</p>
     <p id="sin-sesion" class="tarjeta-info" hidden>Para calcular y guardar rutas, <a href="cuenta.html">entra o crea tu cuenta</a>.</p>
 
     <section id="mis-rutas" hidden aria-labelledby="t-mis-rutas">
@@ -48,7 +48,7 @@
         <label for="origen"><span>Origen</span></label>
         <div class="fila-campo">
           <input id="origen" name="origen" data-lugar autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugerencias" placeholder="Municipio" required>
-          <button type="button" id="mi-ubicacion" class="boton-sec">Mi ubicación</button>
+          <button type="button" id="mi-ubicacion" class="boton-sec"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#ubicacion"/></svg>Mi ubicación</button>
         </div>
       </div>
       <div id="paradas" class="campos-paradas"></div>

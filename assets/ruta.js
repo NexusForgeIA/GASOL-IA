@@ -5,6 +5,7 @@ import { compararDesvio, enlaceGoogleMaps, enlaceWaze, euros, puntosIntermedios 
 import { llamar, sesion } from "./sesion.js";
 import { leerPreferencias } from "./favoritas.js";
 import { ficha } from "./ficha.js";
+import { icono } from "./iconos.js";
 
 const LEAFLET = {
   css: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
@@ -220,7 +221,7 @@ function pintarCorredor() {
   $("resumen-corredor").textContent =
     `${est.length} estaciones a menos de ${r.lateral_km} km de la ruta · ${nombre}, de menor a mayor precio. ` +
     `Captura del ${fechaHora.format(new Date(f.fecha_captura))} (hora peninsular)` +
-    (f.fecha_anterior ? `; ✓/✗ comparan con la captura del ${fechaHora.format(new Date(f.fecha_anterior))}.` : ". Aún no hay captura anterior para comparar.");
+    (f.fecha_anterior ? `; «Baja» y «Sube» comparan con la captura del ${fechaHora.format(new Date(f.fecha_anterior))}.` : ". Aún no hay captura anterior para comparar.");
   const minimo = f.precio;
   est.forEach((e) => lista.append(tarjeta(e, e.precio === minimo)));
 }
@@ -228,9 +229,9 @@ function pintarCorredor() {
 function tarjeta(e, minima) {
   const dif = e.precio_anterior != null ? Math.abs(e.precio - e.precio_anterior) : 0;
   const tend = e.tendencia === "baja"
-    ? el("span", { class: "tendencia baja", text: `✓ Baja ${euros(dif, 3)} € desde la captura anterior` })
+    ? el("span", { class: "tendencia baja" }, icono("check"), `Baja ${euros(dif, 3)} € desde la captura anterior`)
     : e.tendencia === "sube"
-      ? el("span", { class: "tendencia sube", text: `✗ Sube ${euros(dif, 3)} € desde la captura anterior` })
+      ? el("span", { class: "tendencia sube" }, icono("aviso"), `Sube ${euros(dif, 3)} € desde la captura anterior`)
       : null;
   const corto = e.desvio_km != null
     ? `desvío ${km1.format(e.desvio_km)} km ida y vuelta`

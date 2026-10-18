@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Iconos de Gasol-IA: 24 × 24, trazo uniforme; el color lo hereda currentColor. Los estilos de
+       trazo los pone la clase .icono en assets/app.css. -->
+  <symbol id="gastos" viewBox="0 0 24 24">
+    <path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/>
+    <path d="M9 8h6M9 12h6M9 16h3"/>
+  </symbol>
+  <symbol id="vencimientos" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="16" rx="2"/>
+    <path d="M3 10h18M8 3v4M16 3v4"/>
+  </symbol>
+  <symbol id="ruta" viewBox="0 0 24 24">
+    <circle cx="6" cy="19" r="2"/>
+    <circle cx="18" cy="5" r="2"/>
+    <path d="M8 19h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/>
+  </symbol>
+  <symbol id="favorita" viewBox="0 0 24 24">
+    <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z"/>
+  </symbol>
+  <symbol id="favorita-llena" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z"/>
+  </symbol>
+  <symbol id="calculadora" viewBox="0 0 24 24">
+    <path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M7 7h4v4H7z"/>
+    <path d="M14 9h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V8l-3-3"/>
+  </symbol>
+  <symbol id="facturacion" viewBox="0 0 24 24">
+    <rect x="2" y="6" width="20" height="12" rx="2"/>
+    <circle cx="12" cy="12" r="2.5"/>
+    <path d="M6 9.5v.01M18 14.5v.01"/>
+  </symbol>
+  <symbol id="comparador" viewBox="0 0 24 24">
+    <path d="M4 20h16M7 20v-8M12 20V5M17 20v-5"/>
+  </symbol>
+  <symbol id="chevron" viewBox="0 0 24 24">
+    <path d="M9 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="check" viewBox="0 0 24 24">
+    <path d="M5 12.5l4.5 4.5L19 7.5"/>
+  </symbol>
+  <symbol id="aviso" viewBox="0 0 24 24">
+    <path d="M10.3 4.9L2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 4.9a2 2 0 0 0-3.4 0z"/>
+    <path d="M12 9.5v4M12 17h.01"/>
+  </symbol>
+  <symbol id="ubicacion" viewBox="0 0 24 24">
+    <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/>
+    <circle cx="12" cy="10" r="2.5"/>
+  </symbol>
+</svg>

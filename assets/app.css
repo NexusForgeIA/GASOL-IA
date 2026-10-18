@@ -21,6 +21,12 @@
   --peligro-hover: #b91c1c;
   --peligro-activo: #991b1b;
   --foco: #ffffff;
+  --accion-suave: #12301f; /* fondo del cuadro de icono de las tarjetas */
+  /* Tarjetas: las comparten .tarjeta, .calc, .estacion, las listas y los avisos. */
+  --tarjeta-fondo: var(--surface);
+  --tarjeta-borde: var(--line);
+  --tarjeta-radio: var(--radius);
+  --tarjeta-pad: 1rem;
   --radius: 10px;
   --z-sticky: 10;
   --z-mapa: 20;
@@ -33,7 +39,20 @@
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; } /* «hidden» manda sobre display de las clases (enlace Cuenta, botones) */
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+/* «Shell»: cabecera arriba, <main> ocupa lo que sobra y el pie queda abajo aunque la página sea corta. */
+body {
+  display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh;
+  margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden;
+}
+body > main { flex: 1 0 auto; }
+body > header, body > footer { flex: none; }
+
+/* Iconos SVG del sprite assets/iconos.svg: trazo uniforme y color del texto. */
+.icono {
+  display: inline-block; flex: none; width: 1.25em; height: 1.25em; vertical-align: -.25em;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.icono.girado { transform: rotate(180deg); }
 a { color: var(--accent); }
 :focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
 
@@ -93,9 +112,10 @@ legend { font-weight: 600; margin-bottom: .5rem; }
 }
 .segmentado input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .segmentado label { border-width: 2px; }
-/* Elegida: verde con texto blanco, borde blanco y ✓ (no solo color). Las demás, neutras. */
+/* Elegida: verde con texto blanco, borde blanco y marca de check (no solo color). Las demás, neutras. */
 .segmentado label:has(input:checked) { background: var(--accion); border-color: var(--foco); color: var(--accion-texto); }
-.segmentado label:has(input:checked)::before { content: "✓"; content: "✓" / ""; font-weight: 800; }
+.segmentado .icono-check { display: none; }
+.segmentado label:has(input:checked) .icono-check { display: inline-block; stroke-width: 3; }
 .segmentado label:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
 
 .campos { display: grid; gap: .75rem; }
@@ -131,7 +151,7 @@ input::placeholder { color: var(--muted); }
 .nota { margin: 0; color: var(--muted); font-size: .9rem; }
 
 .boton, .boton-sec, .boton-peligro {
-  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 44px;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; min-width: 44px;
   padding: .75rem 1.25rem; font: inherit; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none;
   border: 2px solid transparent; border-radius: var(--radius); cursor: pointer;
 }
@@ -144,7 +164,7 @@ input::placeholder { color: var(--muted); }
 .boton-peligro { background: var(--peligro); color: var(--accion-texto); }
 .boton-peligro:hover { background: var(--peligro-hover); }
 .boton-peligro:active { background: var(--peligro-activo); }
-.peligro { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.peligro { padding: var(--tarjeta-pad); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio); }
 
 .resultados { margin: 1.5rem 0; }
 .resultados:focus { outline: none; }
@@ -158,7 +178,7 @@ h2 { margin: 0; font-size: 1.25rem; }
 .lista { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
 .estacion {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .25rem 1rem;
-  padding: .9rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: .9rem var(--tarjeta-pad); background: var(--tarjeta-fondo); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio);
 }
 .estacion.primera { border-color: var(--accent); }
 .estacion h2, .estacion h3 { margin: 0; font-size: 1.05rem; overflow-wrap: anywhere; }
@@ -177,7 +197,7 @@ h2 { margin: 0; font-size: 1.25rem; }
 .captura { grid-column: 1 / -1; margin: 0; font-size: .82rem; color: var(--muted); }
 .estacion a { font-size: .9rem; min-height: 44px; display: inline-flex; align-items: center; }
 
-.avisos { margin: 2rem 0; padding: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-size: .92rem; }
+.avisos { margin: 2rem 0; padding: var(--tarjeta-pad); background: var(--tarjeta-fondo); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio); color: var(--muted); font-size: .92rem; }
 .avisos p { margin: .25rem 0; }
 .avisos strong { color: var(--text); }
 
@@ -185,14 +205,14 @@ h2 { margin: 0; font-size: 1.25rem; }
 .pie a { display: inline-block; min-height: 44px; line-height: 44px; }
 
 /* Ruta y cuenta */
-.tarjeta-info { padding: .9rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.tarjeta-info { padding: .9rem var(--tarjeta-pad); background: var(--tarjeta-fondo); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio); }
 .tarjeta-info.aviso { border-color: var(--warn); }
 .lista-simple { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: .5rem; }
-.lista-simple li { padding: .75rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow-wrap: anywhere; }
+.lista-simple li { padding: .75rem var(--tarjeta-pad); background: var(--tarjeta-fondo); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio); overflow-wrap: anywhere; }
 .ruta-guardada .botones { margin-top: .5rem; }
 .estacion.baja { background: #10241a; border-color: var(--accent); }
 .estacion.sube { border-color: #5c3a37; }
-.tendencia { grid-column: 1 / -1; margin: 0; font-weight: 700; }
+.tendencia { grid-column: 1 / -1; display: flex; align-items: center; gap: .35rem; margin: 0; font-weight: 700; }
 .tendencia.baja { color: var(--accent); }
 .tendencia.sube { color: var(--error); }
 .estacion > .boton-sec { grid-column: 1 / -1; justify-self: start; }
@@ -232,7 +252,7 @@ h2 { margin: 0; font-size: 1.25rem; }
 .indice a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem; border: 2px solid transparent; border-radius: 999px; background: var(--accion); color: var(--accion-texto); text-decoration: none; font-size: .92rem; font-weight: 700; }
 .indice a:hover { background: var(--accion-hover); }
 .indice a:active { background: var(--accion-activo); }
-.calc { margin: 1.5rem 0; padding: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); scroll-margin-top: 1rem; }
+.calc { margin: 1.5rem 0; padding: var(--tarjeta-pad); background: var(--tarjeta-fondo); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio); scroll-margin-top: 1rem; }
 .calc > h2 { margin-bottom: .5rem; }
 .calc .filtros { margin: 1rem 0 0; }
 .calc input[type=text], .calc select, .calc .segmentado label { background: var(--bg); }
@@ -251,6 +271,7 @@ h2 { margin: 0; font-size: 1.25rem; }
 
 /* Favoritas */
 .estrella {
+  display: inline-flex; align-items: center; gap: .4rem;
   min-height: 44px; min-width: 44px; padding: .5rem .9rem; font: inherit; font-weight: 700; cursor: pointer;
   background: var(--accion); color: var(--accion-texto); border: 2px solid transparent; border-radius: var(--radius);
 }
@@ -264,19 +285,30 @@ h2 { margin: 0; font-size: 1.25rem; }
 .peligro h2 { margin-bottom: .5rem; }
 .peligro .botones { margin-top: .75rem; }
 
-/* Inicio */
-.tarjetas { list-style: none; margin: 1.5rem 0; padding: 0; display: grid; gap: .75rem; }
+/* Tarjetas de enlace (inicio): un solo enlace por tarjeta, icono en cuadro, título, texto y chevron. */
+.tarjetas { list-style: none; margin: 1.5rem 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.tarjetas > li { display: flex; min-width: 0; }
+.tarjetas-ancho { grid-column: 1 / -1; }
+@media (min-width: 37.5rem) { .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .tarjeta {
-  display: grid; gap: .35rem; height: 100%; min-height: 44px; padding: 1.1rem 1rem; text-decoration: none; color: var(--text);
-  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem; width: 100%; min-height: 44px;
+  padding: var(--tarjeta-pad); color: var(--text); text-decoration: none;
+  background: var(--tarjeta-fondo); border: 1px solid var(--tarjeta-borde); border-radius: var(--tarjeta-radio);
 }
-.tarjeta:hover { border-color: var(--accent); }
-.tarjeta-icono { font-size: 1.6rem; line-height: 1; color: var(--accent); }
-.tarjeta-titulo { font-size: 1.15rem; font-weight: 800; color: var(--accent); }
-.tarjeta-texto { color: var(--muted); }
-.acceso-comparador { margin: 0 0 2rem; }
-.acceso-comparador .boton-sec { display: inline-flex; align-items: center; text-decoration: none; }
-@media (prefers-reduced-motion: no-preference) { .tarjeta { transition: border-color .15s ease; } }
+.tarjeta:hover { background: var(--surface-2); border-color: var(--accent); }
+.tarjeta:active { transform: scale(.99); }
+.tarjeta-icono { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: var(--radius); background: var(--accion-suave); color: var(--accent); }
+.tarjeta-icono .icono { width: 1.6rem; height: 1.6rem; }
+.tarjeta-cuerpo { display: grid; gap: .3rem; min-width: 0; }
+.tarjeta-titulo { font-size: 1.1rem; font-weight: 800; line-height: 1.25; color: var(--accent); overflow-wrap: anywhere; }
+.tarjeta-texto { color: var(--muted); font-size: .95rem; }
+.tarjeta-chevron { color: var(--muted); }
+.tarjeta-destacada { background: var(--accion); border-color: var(--accion); color: var(--accion-texto); }
+.tarjeta-destacada:hover { background: var(--accion-hover); border-color: var(--accion-hover); }
+.tarjeta-destacada:active { background: var(--accion-activo); }
+.tarjeta-destacada .tarjeta-titulo, .tarjeta-destacada .tarjeta-chevron { color: var(--accion-texto); }
+.tarjeta-destacada .tarjeta-icono { background: rgba(255, 255, 255, .16); color: var(--accion-texto); }
+@media (prefers-reduced-motion: no-preference) { .tarjeta { transition: background-color .15s ease, border-color .15s ease, transform .1s ease; } }
 
 /* Ficha de estación (plegable) */
 .estacion.ficha { display: block; padding: 0; }
@@ -291,8 +323,8 @@ h2 { margin: 0; font-size: 1.25rem; }
 .ficha summary .meta { grid-column: 1 / -1; }
 .precio.sin { max-width: 9rem; }
 .ficha-abrir { grid-column: 1 / -1; display: flex; align-items: center; min-height: 32px; color: var(--accent); font-weight: 700; font-size: .9rem; }
-.ficha-abrir::before { content: "▸"; margin-right: .4rem; }
-.ficha details[open] .ficha-abrir::before { content: "▾"; }
+.ficha-abrir { gap: .4rem; }
+.ficha details[open] .ficha-abrir .icono { transform: rotate(90deg); }
 .ficha-detalle { display: grid; gap: .6rem; padding: .75rem 1rem 1rem; border-top: 1px solid var(--line); }
 .ficha-detalle p { margin: 0; }
 .ficha-horario { color: var(--muted); font-size: .92rem; }
@@ -312,7 +344,6 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .tabla-wrap .tabla-calculo th, .tabla-wrap .tabla-calculo td { overflow-wrap: normal; }
 .tabla-wrap .tabla-calculo td { white-space: nowrap; }
 .celda-linea { display: block; }
-@media (min-width: 40rem) { .tarjetas { grid-template-columns: repeat(2, 1fr); } }
 
 /* Vencimientos */
 .etiqueta-estado { display: inline-block; margin: 0 .5rem .25rem 0; padding: .1rem .6rem; border-radius: 999px; border: 1px solid var(--line); font-size: .85rem; font-weight: 700; }
@@ -345,7 +376,8 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .aviso-fiscal { margin: 1.25rem 0 0; }
 .mes-nav { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: .5rem; align-items: center; margin: 1.25rem 0 .75rem; }
 .mes-nav h2 { margin: 0; text-align: center; font-size: 1.2rem; }
-.mes-nav .boton-sec { padding: 0; font-size: 1.4rem; line-height: 1; }
+.mes-nav .boton-sec { padding: 0; }
+.mes-nav .icono { width: 1.5rem; height: 1.5rem; }
 .mes-nav .boton-sec:disabled { opacity: .35; cursor: default; }
 .resultados > .botones { margin: 0 0 .5rem; }
 .carreras { list-style: none; margin: .75rem 0; padding: 0; display: grid; gap: .4rem; }
@@ -374,19 +406,10 @@ input[type=time] {
 .fila-campo { align-items: end; }
 .fila-campo .campo { flex: 1; }
 .cifras .fuerte { color: var(--text); font-weight: 800; }
-.tarjeta-doble { display: grid; }
-.tarjeta-doble .tarjeta { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-.tarjeta-enlace {
-  display: flex; align-items: center; min-height: 48px; padding: .5rem 1rem; font-weight: 700; text-decoration: none;
-  background: var(--accion); color: var(--accion-texto); border: 1px solid var(--accion); border-top: 0;
-  border-radius: 0 0 var(--radius) var(--radius);
-}
-.tarjeta-enlace:hover { background: var(--accion-hover); }
-.tarjeta-enlace:active { background: var(--accion-activo); }
 
 /* Botones verdes: transición breve solo si el usuario no pide menos movimiento. */
 @media (prefers-reduced-motion: no-preference) {
-  .boton, .boton-sec, .boton-peligro, .estrella, .chip-boton, .indice a, .tarjeta-enlace, .navegacion a {
+  .boton, .boton-sec, .boton-peligro, .estrella, .chip-boton, .indice a, .navegacion a {
     transition: background-color .15s ease, border-color .15s ease, transform .1s ease;
   }
   .boton:active, .boton-sec:active, .boton-peligro:active, .estrella:active, .chip-boton:active { transform: translateY(1px); }
@@ -394,7 +417,7 @@ input[type=time] {
 
 /* Calendario de facturación: 7 columnas que caben a 390 px. */
 .cal-wrap { margin: .5rem 0 1rem; }
-.cal-wrap:empty { min-height: 100vh; } /* reserva sitio hasta pintar el calendario: sin saltos (CLS) */
+.cal-wrap:empty { min-height: 100vh; min-height: 100svh; } /* reserva sitio hasta pintar el calendario: sin saltos (CLS) */
 .calendario { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 3px; }
 .calendario th { padding: .25rem 0; color: var(--muted); font-size: .8rem; font-weight: 700; text-align: center; }
 .calendario td { padding: 0; }
@@ -424,3 +447,4 @@ td[aria-selected="true"] .dia-cal .dia-tot { color: var(--accion-texto); }
   .dia-cal { min-height: 64px; }
   .dia-tot { font-size: .8rem; }
 }
+.tarjeta-info.aviso > .icono:first-child { color: var(--warn); margin-right: .25rem; }

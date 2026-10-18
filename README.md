@@ -16,7 +16,7 @@ eléctrica, pendientes (ver `docs/FUENTE-DATOS.md` §8 y §9).
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html` (portada), `inicio.html`, `comparador.html`, `ruta.html`, `calculadoras.html`, `favoritas.html`, `gastos.html`, `ingresos.html`, `vencimientos.html`, `assets/`, `sw.js` | PWA: inicio, comparador, planificador de ruta, calculadoras, favoritas, control de gastos, facturación y vencimientos (vanilla JS) |
+| `index.html` (portada), `inicio.html`, `comparador.html`, `ruta.html`, `calculadoras.html`, `favoritas.html`, `gastos.html`, `ingresos.html`, `vencimientos.html`, `assets/`, `sw.js` | PWA: inicio, comparador, planificador de ruta, calculadoras, favoritas, control de gastos, facturación y vencimientos (vanilla JS). Iconos SVG propios en `assets/iconos.svg` |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web (también precios por ID para favoritas y la ficha de estación) |

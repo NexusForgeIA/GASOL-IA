@@ -24,7 +24,7 @@ async function pintarFavoritas() {
   $("atribucion").hidden = true;
   $("vacio").hidden = true;
   if (!favs.length) {
-    avisar("Aún no tienes favoritas. Márcalas con «☆ Favorita» en el comparador o en la ruta.");
+    avisar("Aún no tienes favoritas. Márcalas con «Favorita» en el comparador o en la ruta.");
     $("vacio").hidden = false;
     return;
   }

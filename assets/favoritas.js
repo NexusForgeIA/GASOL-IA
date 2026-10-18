@@ -2,6 +2,7 @@
 // servidor y sin ubicación: de cada estación solo su ID y lo necesario para mostrarla.
 // Módulo ES: la parte de datos no toca el DOM y se prueba con Deno (favoritas.test.js).
 import { CUENTAS } from "./config.js";
+import { icono } from "./iconos.js";
 
 export const CLAVE_FAVORITAS = "gasol.favoritas";
 export const CLAVE_PREFERENCIAS = "gasol.preferencias";
@@ -119,7 +120,7 @@ export function botonEstrella(estacion, alCambiar) {
   b.setAttribute("aria-label", `Favorita: ${nombre}, ${estacion.municipio || ""}`.replace(/, $/, ""));
   const pintar = (on) => {
     b.setAttribute("aria-pressed", String(on));
-    b.textContent = on ? "★ Favorita" : "☆ Favorita";
+    b.replaceChildren(icono(on ? "favorita-llena" : "favorita"), document.createTextNode("Favorita"));
   };
   pintar(esFavorita(estacion.ideess));
   b.addEventListener("click", () => {
