@@ -1,6 +1,6 @@
 // gasol-ruta: calcula una ruta (antes de salir) y las estaciones de su corredor.
 // POST { puntos: [{lat, lon, nombre}] (2-5), combustible, solo24, lateral_km }
-//   Demo (por defecto): pública, sin sesión, con un límite global diario.
+//   Demo (por defecto): pública, sin sesión, con topes globales por hora y por día (limites.ts).
 //   GASOL_CUENTAS=1: exige sesión (Authorization: Bearer <jwt>) y limita por usuario.
 // GET ?listado=lugares: municipios con estaciones y su centroide (origen/destino).
 // RGPD: las coordenadas solo se usan para esta respuesta. No se guardan (salvo que el
@@ -9,6 +9,7 @@ import { acumuladoM, cajas, enCorredor, proyectar, type Punto, simplificar } fro
 import {
   ATRIBUCION, cors, ErrorHttp, respuesta, rpcServicio, tokenDe, usuario,
 } from "../_shared/supa.ts";
+import { contarRuta, MENSAJES_LIMITE } from "./limites.ts";
 import { proveedorActivo } from "./proveedor.ts";
 
 const CORS = cors("GET, POST");
@@ -20,7 +21,6 @@ export const COMBUSTIBLES = new Set([
 const LATERALES = new Set([1, 2, 5, 10]);
 const CUENTAS = Deno.env.get("GASOL_CUENTAS") === "1";
 const LIMITE_DIARIO = 30; // cálculos de ruta por usuario y día (protege al proveedor demo)
-const LIMITE_DEMO_DIARIO = 500; // cálculos de ruta al día entre todos, en la demo sin cuentas
 const CON_DESVIO = 25; // estaciones a las que se calcula el desvío real por carretera
 
 function validarPunto(p: unknown): Punto {
@@ -56,8 +56,10 @@ Deno.serve(async (req) => {
       if (!(await rpcServicio("gasol_uso_ruta", { p_usuario: yo.id, p_limite: LIMITE_DIARIO }))) {
         throw new ErrorHttp(429, `Has llegado al límite de ${LIMITE_DIARIO} cálculos de ruta por hoy.`);
       }
-    } else if (!(await rpcServicio("gasol_uso_demo_ruta", { p_limite: LIMITE_DEMO_DIARIO }))) {
-      throw new ErrorHttp(429, "La demo ha llegado a su límite de cálculos de ruta por hoy. Vuelve mañana.");
+    } else {
+      // Tope global por hora y por día: solo contadores, sin coordenadas ni identificadores.
+      const superada = await contarRuta(rpcServicio);
+      if (superada) return json({ error: MENSAJES_LIMITE[superada], limite: superada }, 429);
     }
 
     const prov = proveedorActivo();

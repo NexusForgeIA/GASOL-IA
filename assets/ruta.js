@@ -1,11 +1,12 @@
 // Planificador de ruta y corredor. Solo antes de salir.
 import "./nav.js";
-import { API, CUENTAS, mostrarCuentas } from "./config.js";
+import { API, CUENTAS, mostrarCuentas, PAUSA_RUTAS_MS } from "./config.js";
 import { compararDesvio, enlaceGoogleMaps, enlaceWaze, euros, puntosIntermedios } from "./calculos.js";
 import { llamar, sesion } from "./sesion.js";
 import { leerPreferencias } from "./favoritas.js";
 import { ficha } from "./ficha.js";
 import { icono } from "./iconos.js";
+import { AVISO_LIMITE_RUTAS, contarUso, pausaCumplida, quedanHoy } from "./limite-rutas.js";
 
 const LEAFLET = {
   css: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
@@ -159,10 +160,19 @@ $("mi-ubicacion").addEventListener("click", () => {
 });
 
 // ---- Cálculo ------------------------------------------------------------------
+// Un cálculo cada vez, una pausa mínima entre pulsaciones y un tope por dispositivo y día
+// (decisión 109). Si se llega al tope, solo se avisa: el resto de la app sigue igual.
+let calculando = false;
+let ultimaPulsacion = null;
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (calculando) return;
+  if (!pausaCumplida(ultimaPulsacion, Date.now(), PAUSA_RUTAS_MS)) { avisar("Espera unos segundos antes de volver a calcular."); return; }
+  if (!quedanHoy()) { avisar(AVISO_LIMITE_RUTAS); return; }
   const boton = form.querySelector("button[type=submit]");
   boton.disabled = true;
+  calculando = true;
   try {
     const origen = lugarDe($("origen"), "Origen");
     const paradas = [...$("paradas").querySelectorAll("input")].filter((i) => i.value.trim())
@@ -175,15 +185,20 @@ form.addEventListener("submit", async (e) => {
       solo24: form.solo24.checked,
     };
     avisar("Calculando ruta y corredor…");
+    ultimaPulsacion = Date.now();
+    contarUso();
     const respuesta = await llamar("gasol-ruta", peticion, { privada: CUENTAS });
     ultimo = { peticion, respuesta, origen, paradas, destino };
     repostaje = null;
     pintar();
   } catch (err) {
-    avisar(err.message, true);
+    // Tope del servidor: el mismo aviso amable que el del dispositivo (el de la hora dice «dentro de un rato»).
+    if (err.status === 429) avisar(err.limite === "hora" ? err.message : AVISO_LIMITE_RUTAS);
+    else avisar(err.message, true);
     if (CUENTAS && err.status === 401) $("sin-sesion").hidden = false;
   } finally {
     boton.disabled = false;
+    calculando = false;
   }
 });
 

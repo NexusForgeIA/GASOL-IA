@@ -12,6 +12,12 @@ export function mostrarCuentas() {
   if (CUENTAS) document.querySelectorAll("[data-cuentas]").forEach((n) => { n.hidden = false; });
 }
 
+// Cálculos de ruta por dispositivo y día, y pausa mínima entre pulsaciones. Son una cortesía con el
+// servidor de rutas (la protección real son los topes de gasol-ruta/limites.ts), no cifras de
+// rendimiento. Decisión 109.
+export const LIMITE_RUTAS_DISPOSITIVO_DIA = 20;
+export const PAUSA_RUTAS_MS = 5000;
+
 // Contacto para opiniones de la beta: solo correo (sin WhatsApp). Mismo titular que whitemoon.es.
 export const CORREO_CONTACTO = "comercial@whitemoon.es";
 export const ASUNTO_OPINION = "Opinión Gasol-IA beta";

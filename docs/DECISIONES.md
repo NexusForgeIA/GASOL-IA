@@ -422,3 +422,30 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 108. **Recordatorio de datos**: Facturación, Gastos y Vencimientos se guardan solo en ese navegador;
      antes de cambiar de móvil o de navegador, exportar el CSV. Iconos nuevos del sprite: instalar,
      puntos, compartir, añadir y móvil.
+
+# Decisiones — Límite de cálculos de ruta (18/10/2026)
+
+109. **El servidor de demostración de OSRM (`router.project-osrm.org`) solo vale mientras la beta
+     sea gratuita y no comercial.** Su política (wiki de OSRM, «Demo server», consultada el
+     18/10/2026): «Do not exceed 1 request per second» y «the demo server usage is restricted to
+     reasonable, non-commercial use-cases»; sin garantías de disponibilidad. El resumen de FOSSGIS
+     (routing.openstreetmap.de) añade «No scraping, no heavy usage», user agent válido y la
+     atribución con enlace a «fix the map» (añadido en el pie de `ruta.html`). Si Gasol-IA se cobra,
+     hay que contratar un proveedor de rutas. Cada cálculo hace dos peticiones (ruta y desvíos).
+110. **Tope por dispositivo = cortesía; tope de servidor = protección real.** Cliente
+     (`assets/config.js`): 20 cálculos por dispositivo y día (`gasol.rutas.uso`, solo día y número),
+     5 s entre pulsaciones y un cálculo cada vez; se puede saltar borrando datos del navegador.
+     Servidor (`supabase/functions/gasol-ruta/limites.ts`): 60 por hora (120 peticiones a OSRM, una
+     cada 30 s de media) y 500 por día entre todos, en `gasol_uso_ruta` (solo ventana, inicio y
+     número; sin IP, coordenadas ni identificadores; RLS sin políticas, solo `service_role`) con
+     `gasol_contar_ruta`. Se cuentan también los intentos rechazados. No son cifras de rendimiento.
+111. **El tope global lo puede agotar un solo usuario**: sin cuentas ni IP no se distingue quién
+     calcula, así que alguien que se salte el tope del dispositivo puede gastar el cupo de la hora o
+     del día de todos. Se acepta en la beta; con cuentas se usará el límite por usuario
+     (`gasol_uso_ruta(uuid, int)`, ya escrito y desactivado).
+112. **Aviso amable, sin bloquear el resto**: al llegar al tope del dispositivo o al 429 diario del
+     servidor, «Has llegado al límite de cálculos de hoy en esta versión beta. Vuelve mañana.»; para
+     el 429 de la hora, el servidor dice «Vuelve a intentarlo dentro de un rato» (no «mañana», que
+     sería falso). El 429 lleva CORS y `limite: "hora" | "dia"`. Dos peticiones a OSRM seguidas de
+     dos usuarios a la vez pueden pasar puntualmente de 1 por segundo: no se añade espera por no
+     hacer más lenta cada ruta.

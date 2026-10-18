@@ -40,9 +40,9 @@ Activo:
 - Rutas guardadas **solo en el navegador** (`localStorage`, clave `gasol.rutas`, máx. 20): origen,
   destino, paradas y filtros, sin la línea de la ruta. No llegan al servidor.
 - Edge Function `gasol-ruta` (pública, sin JWT, CORS): `POST` calcula ruta y corredor;
-  `GET ?listado=lugares` da la lista de municipios. Límite global de 500 cálculos al día
-  (`gasol_uso_demo`: solo día y recuento, sin usuario ni IP) para no abusar del servidor
-  público de OSRM.
+  `GET ?listado=lugares` da la lista de municipios. Topes globales de 60 cálculos por hora y 500
+  al día (`gasol_uso_ruta`: solo ventana y recuento, sin usuario ni IP) para no abusar del servidor
+  público de OSRM, más 20 por dispositivo y día en el cliente (decisión 110).
 
 Desactivado (código presente, no se borra):
 - Bandera `CUENTAS = false` en `assets/config.js`: oculta el enlace «Cuenta», el aviso de sesión,
@@ -187,6 +187,10 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 ## Pendiente de decidir o de hacer
 
 - Si se publican las páginas generadas, añadir viewport-fit=cover en scripts/generar_paginas.py.
+- `gasol_uso_demo` (y su función `gasol_uso_demo_ruta`): ya no se usa desde el tope por hora y día
+  (`gasol_uso_ruta`, decisión 110). Pendiente de `DROP` manual, solo con confirmación de Cris.
+- Conocido y sin tocar: sin conexión, el service worker devuelve la portada para páginas abiertas
+  con parámetros en la URL (p. ej. `instalar.html?x`), porque la caché guarda la página sin ellos.
 
 - **Alertas de precio**: no se hacen todavía. Requieren cuentas y el proyecto Supabase propio
   (avisos push con VAPID, `gasol-alertas`, ya escrito y sin desplegar).
@@ -264,6 +268,15 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Límite de rutas (18/10/2026): `gasol-ruta` desplegada con topes de 60/hora y 500/día
+  (`gasol_uso_ruta`, migración `20261018200000`); cliente con 20/día por dispositivo, 5 s entre
+  pulsaciones y un cálculo cada vez (decisiones 109-112). Con la función desplegada: cálculo normal
+  Madrid → Getafe (17 km, 45 estaciones); 429 de la hora y del día con CORS y su aviso; pausa; tope
+  del dispositivo sin llamar al servidor; comparador, favoritas y facturación siguen funcionando.
+  Los contadores se subieron a mano para provocar los 429 y se devolvieron a los 6 intentos reales.
+  Prueba de la función SQL en una transacción deshecha. 13 páginas a 390 px sin desbordamiento;
+  Lighthouse móvil `ruta` e `inicio` 100/100/100; 0 errores de consola. Enlace «fix the map» en la
+  atribución de la ruta.
 - Guía de instalación (18/10/2026): `instalar.html` (decisiones 105-108). Con un iPhone simulado
   sale primero el bloque de Safari y, con la app «instalada» simulada, «Ya la tienes instalada».
   Funciona sin conexión una vez cargada (servidor parado: página, estilos, menú e iconos desde la
