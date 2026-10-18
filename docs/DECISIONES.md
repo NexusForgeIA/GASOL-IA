@@ -473,3 +473,24 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      tiempo limitado. Según su página de precios (<https://supabase.com/pricing>, consultada el
      18/10/2026), con el plan del proyecto (Pro) «Log retention (API & Database)» es de 7 días. Para
      los registros de Edge Functions no hay plazo publicado en esa página: no se escribe ninguno.
+
+# Decisiones — Resumen diario por Telegram (18/10/2026)
+
+117. **`gasol-resumen` envía cada día por Telegram el resumen de ayer** (día de Madrid): aperturas
+     totales y por modo, las tres páginas más abiertas, cálculos de ruta pedidos (`gasol_uso_ruta`) y,
+     si alguna hora llegó al tope, «Dato orientativo: tope alcanzado en N horas». Empieza por
+     «Gasol-IA · resumen de ayer» para distinguirlo de los avisos de WhiteMoon en el mismo chat y
+     dice «Aperturas, no personas.». Lo que no hay sale «sin datos»; si hay aperturas y un modo no
+     tiene fila, ese modo vale 0. Datos con `gasol_datos_resumen` (solo agregados).
+118. **Claves**: la función exige `x-gasol-clave`, que puede ser `GASOL_RESUMEN_CLAVE` (Supabase
+     Secrets, para lanzarla a mano) o la clave del cron, guardada en Vault (`gasol_resumen_clave`) y
+     **generada dentro de la base**, sin aparecer nunca en claro (ni en el SQL, ni en el repo). La
+     del cron se valida en la base con `gasol_resumen_clave_valida`, como `gasol_token_valido` de
+     `gasol-ingest` (decisión 5). La de Secrets se compara en la función en tiempo constante
+     (SHA-256 de ambas y comparación byte a byte sin salir antes). Si falta un secreto, 500 sin
+     detalles; sin clave o con una mala, 401. `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` en Secrets.
+119. **El cron depende del cambio de hora.** pg_cron va en UTC: `gasol-resumen-diario` se lanza a las
+     06:00 y a las 07:00 UTC y `gasol_lanzar_resumen` solo envía si en Madrid son las 8 (verano
+     UTC+2 → 06:00 UTC; invierno UTC+1 → 07:00 UTC). El **25/10/2026** se pasa a horario de invierno
+     (a las 03:00 los relojes vuelven a las 02:00), así que ese día las 08:00 de Madrid son las 07:00
+     UTC: hay que comprobar que el resumen llega a las 08:00 el 25 y el 26 de octubre.
