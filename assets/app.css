@@ -514,3 +514,12 @@ td[aria-selected="true"] .dia-cal .dia-tot { color: var(--accion-texto); }
 }
 @keyframes hoja-sube { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
 @keyframes fondo-entra { from { opacity: 0; } to { opacity: 1; } }
+
+/* Etiqueta «Beta» junto al nombre: un solo componente en CSS (sin JS ni saltos de diseño). Los
+   lectores de pantalla la leen con el nombre («Gasol-IA Beta»). */
+.marca::after {
+  content: "Beta"; display: inline-block; margin-left: .45rem; padding: 0 .45rem; vertical-align: middle;
+  border: 1px solid currentColor; border-radius: 999px; color: var(--warn);
+  font-size: .7rem; font-weight: 700; line-height: 1.5; letter-spacing: .03em; text-decoration: none;
+}
+.nota-beta { margin: 0 0 .75rem; }

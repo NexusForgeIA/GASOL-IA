@@ -391,3 +391,15 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      Privacidad y Aviso legal no tenían `viewport-fit=cover`, y sin ella `env(safe-area-inset-*)`
      vale 0: en móviles con muesca la barra inferior no dejaba su margen. El generador de páginas
      queda fuera porque sus páginas no se publican (pendiente en ESTADO).
+
+# Decisiones — Etiqueta Beta (18/10/2026)
+
+103. **Etiqueta «Beta» junto al nombre en las 12 páginas**, como un solo componente en CSS
+     (`.marca::after` y, en la portada, `.portada .logo::after`): sin tocar cada HTML, sin JS y sin
+     saltos de diseño. Ámbar (`--warn`, 10,33:1 sobre el fondo). Los lectores de pantalla la leen con
+     el nombre.
+104. **Nota de beta** «Versión beta gratuita en pruebas. Puede haber errores. Los precios son los
+     oficiales del Ministerio en la fecha de captura indicada.» en la portada y en el panel «Más»,
+     con el «Enviar opinión» de siempre (solo correo) justo debajo. Texto único en `AVISO_BETA`
+     (`assets/config.js`); la portada, que no carga JS, lo lleva escrito y
+     `scripts/test_textos.py` comprueba que coincide. Sin cifras de usuarios ni «en vivo».

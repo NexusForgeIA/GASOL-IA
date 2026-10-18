@@ -15,3 +15,13 @@
 .portada-firma .firma a { color: var(--muted); }
 .portada-firma .enlaces-pie { margin: 0; font-size: .85rem; color: var(--muted); }
 .portada-firma .enlaces-pie a { display: inline-block; min-height: 44px; line-height: 44px; }
+.portada .logo { position: relative; }
+.portada .logo::after {
+  content: "Beta"; position: absolute; top: .75rem; right: .75rem; padding: 0 .5rem;
+  border: 1px solid var(--warn); border-radius: 999px; background: var(--bg); color: var(--warn);
+  font-size: .8rem; font-weight: 700; line-height: 1.6; letter-spacing: .03em;
+}
+.portada-beta { max-width: 24rem; display: grid; justify-items: center; gap: .5rem; }
+.portada-beta .nota-beta { margin: 0; }
+.portada-beta p { margin: 0; }
+.portada-beta .opinion { display: inline-flex; align-items: center; text-decoration: none; }

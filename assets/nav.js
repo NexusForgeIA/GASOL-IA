@@ -4,7 +4,7 @@
 //   lado por el que hay más secciones.
 // - Por debajo: barra fija inferior (Inicio, Comparador, Ruta, Facturación y Más) y el panel «Más»
 //   con el resto. Sin JS, el CSS (scripting: none) deja visibles los enlaces de la barra superior.
-import { enlaceOpinion } from "./config.js";
+import { AVISO_BETA, enlaceOpinion } from "./config.js";
 import { icono } from "./iconos.js";
 
 // ---- Barra superior (pantallas anchas) ------------------------------------------------------
@@ -63,6 +63,7 @@ function menuApp() {
   const panel = el("div", { id: "mas-panel", class: "mas-panel", role: "dialog", "aria-modal": "true", "aria-labelledby": "mas-titulo" },
     el("div", { class: "mas-cabecera" }, el("h2", { id: "mas-titulo", text: "Más" }), cerrarB),
     el("ul", { class: "mas-lista" }, ...EN_MAS.map(fila)),
+    el("p", { class: "nota nota-beta", text: AVISO_BETA }),
     el("p", { class: "mas-opinion" }, el("a", { class: "boton-sec opinion", href: enlaceOpinion(), "data-opinion": "" }, icono("correo"), "Enviar opinión")),
     legales);
   const fondo = el("div", { class: "mas-fondo" });
