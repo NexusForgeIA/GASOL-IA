@@ -1,6 +1,6 @@
 // Service worker: solo cachea la carcasa de la app. Los precios siempre van a la red,
 // para no enseñar nunca un precio guardado como si fuera el último.
-const VERSION = "gasol-v17";
+const VERSION = "gasol-v18";
 const CARCASA = [
   "./",
   "index.html",

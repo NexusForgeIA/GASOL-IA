@@ -52,7 +52,7 @@ export function validarCarrera(datos, hoy = hoyMadrid()) {
   if (d.canal === "app" && !app) return { error: "Escribe el nombre de la aplicación.", campo: "app" };
   if (app.length > LIM.app) return { error: "El nombre de la aplicación admite hasta 40 caracteres.", campo: "app" };
   const importe = typeof d.importe === "number" ? d.importe : leerImporte(d.importe);
-  if (!(Number.isFinite(importe) && importe >= 0 && importe <= LIM.importe)) return { error: "Escribe el importe con un solo separador decimal (p. ej. 12,50), sin negativos y hasta 10.000 €.", campo: "importe" };
+  if (!(Number.isFinite(importe) && importe > 0 && importe <= LIM.importe)) return { error: "Escribe un importe mayor que 0 y hasta 10.000 €, con un solo separador decimal (p. ej. 12,50).", campo: "importe" };
   const sinDetalle = d.sinDetalle === true || d.sinDetalle === "on" || d.hora === null;
   let hora = null;
   if (!sinDetalle) {

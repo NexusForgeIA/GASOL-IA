@@ -23,9 +23,11 @@ Deno.test("importe: un solo separador decimal, sin negativos", () => {
 
 Deno.test("validación: canal, método, aplicación, hora y textos", () => {
   assert(validarCarrera(C({}), HOY).carrera);
+  assertEquals(validarCarrera(C({ importe: "0,01" }), HOY).carrera.importe, 0.01);
+  assert(validarCarrera(C({ importe: "0" }), HOY).error.includes("mayor que 0"));
   for (const [o, campo] of [[{ canal: "bus" }, "canal"], [{ metodo: "app" }, "metodo"], [{ canal: "app", metodo: "tarjeta", app: "X" }, "metodo"],
     [{ canal: "app", metodo: "app", app: "  " }, "app"], [{ canal: "app", metodo: "app", app: "x".repeat(41) }, "app"],
-    [{ importe: "-1" }, "importe"], [{ importe: "10001" }, "importe"], [{ hora: "24:00" }, "hora"], [{ hora: "" }, "hora"],
+    [{ importe: "-1" }, "importe"], [{ importe: "0" }, "importe"], [{ importe: "0,00" }, "importe"], [{ importe: "10001" }, "importe"], [{ hora: "24:00" }, "hora"], [{ hora: "" }, "hora"],
     [{ fecha: "2026-10-20" }, "fecha"], [{ fecha: "2026-02-30" }, "fecha"], [{ nota: "x".repeat(81) }, "nota"]]) {
     assertEquals(validarCarrera(C(o), HOY).campo, campo, JSON.stringify(o));
   }
