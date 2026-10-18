@@ -261,6 +261,17 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Menú tipo app (18/10/2026): por debajo de 900 px, barra fija inferior (Inicio, Comparador, Ruta,
+  Facturación, Más) y panel «Más» (Gastos, Calculadoras, Favoritas, Vencimientos, «Enviar opinión»,
+  Privacidad y Aviso legal); desde 900 px, la barra superior de píldoras. Un solo componente en
+  `assets/nav.js`, que lo inyecta en las 11 páginas con cabecera (la portada no lleva menú). Teclado:
+  el foco entra en el panel y queda atrapado; Escape, el botón de cerrar, pulsar fuera y navegar lo
+  cierran y el foco vuelve a «Más». En las 11 páginas el pie queda por encima de la barra; 12 páginas
+  sin desbordamiento a 390 px; 0 errores de consola. Contraste: etiquetas 8,04:1 (inactiva) y
+  15,39:1 (actual), icono actual 5,02:1, filas del panel 16,95:1. Capturas
+  `docs/capturas/menu-antes-*.png` y `menu-despues-*.png`. Lighthouse móvil inicio, comparador, ruta,
+  facturación, gastos y privacidad: rendimiento 99-100, accesibilidad 100, buenas prácticas 100,
+  CLS 0. `<meta name="referrer" content="strict-origin-when-cross-origin">` en las 12 páginas.
 - Iconos, tarjetas y alturas (18/10/2026): sin emojis en HTML, JS ni CSS (quedan «→» en comentarios
   y en el resumen «Origen → Destino» de la ruta, que es texto). Sprite `assets/iconos.svg`
   (12 iconos) y `assets/iconos.js` para el DOM creado desde JS. 12 páginas a 390 px sin
