@@ -280,3 +280,15 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .avisos-venc li.vencido strong { color: var(--error); }
 .avisos-venc li.hoy strong, .avisos-venc li.proximo strong { color: var(--warn); }
 .avisos-venc a { display: inline-block; min-height: 44px; line-height: 44px; }
+
+/* Pie: aviso legal, opinión y firma de WhiteMoon */
+.pie .opinion { display: inline-flex; align-items: center; line-height: 1.2; text-decoration: none; }
+.firma { margin: 1rem 0 0; }
+.firma a { display: inline-flex; align-items: center; gap: .75rem; min-height: 44px; line-height: 1.3; color: var(--muted); text-decoration: none; }
+.firma a:hover span { text-decoration: underline; }
+.firma img { display: block; width: 110px; height: auto; border-radius: 6px; }
+.beta { margin: 0 0 1.25rem; color: var(--muted); }
+.beta a { display: inline-block; min-height: 44px; line-height: 44px; }
+.datos-titular { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .35rem 1rem; margin: .5rem 0 1rem; }
+.datos-titular dt { color: var(--muted); }
+.datos-titular dd { margin: 0; overflow-wrap: anywhere; }

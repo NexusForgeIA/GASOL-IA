@@ -10,3 +10,7 @@
 /* Solo movimiento: el contenido se ve desde el primer pintado aunque la animación no corra. */
 @keyframes sube { from { transform: translateY(8px); } to { transform: none; } }
 .portada .lema-sub { display: block; margin-top: .25rem; font-size: .95rem; }
+.portada-firma { margin-top: .5rem; display: grid; justify-items: center; gap: .25rem; }
+.portada-firma .firma a { color: var(--muted); }
+.portada-firma .enlaces-pie { margin: 0; font-size: .85rem; color: var(--muted); }
+.portada-firma .enlaces-pie a { display: inline-block; min-height: 44px; line-height: 44px; }

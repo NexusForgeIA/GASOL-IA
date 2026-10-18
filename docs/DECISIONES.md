@@ -188,3 +188,20 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 60. **Recarga eléctrica y gas en kg en ruta, calculadoras y gastos: aplazados** hasta tener
     opiniones de la beta (taxistas).
 61. **Se quedan las tarjetas de inicio** «Control de gastos» y «Vencimientos».
+
+# Decisiones — Firma y aviso legal (18/10/2026)
+
+62. **Decisión de Cris: la app lleva la firma «Desarrollado por WhiteMoon Agencia IA»** con el
+    logo de WhiteMoon y enlace a https://whitemoon.es, y usa **el mismo aviso legal y los mismos
+    datos de titular que WhiteMoon**. Contacto para opiniones: **solo** comercial@whitemoon.es,
+    **sin WhatsApp** (ni teléfono).
+63. **Datos del titular copiados tal cual** de los textos publicados en whitemoon.es: el aviso
+    legal (CRISTOBAL MARTINEZ COMAS; Calle Madrid 9, 2ºB – 28220 Majadahonda, Madrid; «C.I.F.:
+    14308839X»; comercial@whitemoon.es) y, para el responsable en privacidad, la política de
+    privacidad (que llama «NIF» al mismo número). **[revisar]** El aviso legal de whitemoon.es dice
+    «C.I.F.» y «la empresa titular» para una persona física: se ha copiado igual; si se corrige
+    allí, corregirlo aquí.
+64. **Condiciones generales por remisión** al aviso legal de WhiteMoon, más las secciones propias
+    de la app, para no duplicar un texto que se mantiene en otro sitio.
+65. **El logo de WhiteMoon se copia del repo** NexusForgeIA/WHITEMOON-WEB (`logo.png` y
+    `logo.webp`, 180×82, idénticos byte a byte) y se sirve desde `assets/img/` (CSP `img-src 'self'`).
