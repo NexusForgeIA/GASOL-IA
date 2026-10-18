@@ -34,13 +34,13 @@
   </header>
 
   <main class="contenedor">
-    <p class="tarjeta-info aviso aviso-fiscal"><strong>Resumen informativo con tus propios datos. No es una declaración ni asesoramiento fiscal.</strong></p>
+    <p class="tarjeta-info aviso aviso-fiscal"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#aviso"/></svg> <strong>Resumen informativo con tus propios datos. No es una declaración ni asesoramiento fiscal.</strong></p>
 
     <section class="resultados" aria-labelledby="t-mes">
       <div class="mes-nav">
-        <button type="button" class="boton-sec" id="mes-ant" aria-label="Mes anterior">‹</button>
+        <button type="button" class="boton-sec" id="mes-ant" aria-label="Mes anterior"><svg class="icono girado" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#chevron"/></svg></button>
         <h2 id="t-mes" aria-live="polite"></h2>
-        <button type="button" class="boton-sec" id="mes-sig" aria-label="Mes siguiente">›</button>
+        <button type="button" class="boton-sec" id="mes-sig" aria-label="Mes siguiente"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#chevron"/></svg></button>
       </div>
       <p class="botones"><button type="button" class="boton" id="ir-hoy">Hoy</button></p>
       <p class="nota">Pulsa un día para ver sus carreras y añadir más. Con el teclado, muévete con las flechas.</p>
@@ -57,15 +57,15 @@
           <fieldset>
             <legend>Canal</legend>
             <div class="segmentado grande">
-              <label><input type="radio" name="canal" value="calle"> Calle</label>
-              <label><input type="radio" name="canal" value="app"> Aplicación</label>
+              <label><input type="radio" name="canal" value="calle"> <svg class="icono icono-check" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg>Calle</label>
+              <label><input type="radio" name="canal" value="app"> <svg class="icono icono-check" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg>Aplicación</label>
             </div>
           </fieldset>
           <fieldset id="g-calle" hidden>
             <legend>Cobro en la calle</legend>
             <div class="segmentado">
-              <label><input type="radio" name="metodo_calle" value="efectivo"> Efectivo</label>
-              <label><input type="radio" name="metodo_calle" value="tarjeta"> Tarjeta</label>
+              <label><input type="radio" name="metodo_calle" value="efectivo"> <svg class="icono icono-check" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg>Efectivo</label>
+              <label><input type="radio" name="metodo_calle" value="tarjeta"> <svg class="icono icono-check" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg>Tarjeta</label>
             </div>
           </fieldset>
           <div id="g-app" class="grupo-app" hidden>
@@ -76,8 +76,8 @@
             <fieldset>
               <legend>Cobro por aplicación</legend>
               <div class="segmentado">
-                <label><input type="radio" name="metodo_app" value="app"> Cobrado por la app</label>
-                <label><input type="radio" name="metodo_app" value="efectivo"> Efectivo en mano</label>
+                <label><input type="radio" name="metodo_app" value="app"> <svg class="icono icono-check" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg>Cobrado por la app</label>
+                <label><input type="radio" name="metodo_app" value="efectivo"> <svg class="icono icono-check" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg>Efectivo en mano</label>
               </div>
             </fieldset>
           </div>

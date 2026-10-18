@@ -166,10 +166,13 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Inicio, favoritas y preferencias
 
-- Portada → «Entrar» → `inicio.html`: tres tarjetas (Planificador de rutas, Favoritas y preferencias,
-  Calculadora de repostaje, que abre la del depósito) y un acceso al comparador. El logo del menú
-  lleva a `inicio.html`.
-- `favoritas.html`: estrella «☆ Favorita» (botón de 44 px con `aria-pressed`) en el comparador y en
+- Portada → «Entrar» → `inicio.html`: tarjeta destacada «Comparar precios por provincia o cerca de
+  mí» a ancho completo y, debajo, Control de gastos, Facturación, Vencimientos, Planificador de rutas,
+  Favoritas y preferencias y Calculadora de repostaje (abre la del depósito). Cada tarjeta es un solo
+  enlace con icono SVG, título, texto y chevron; 1 columna a 390 px y 2 desde 600 px. El logo del
+  menú lleva a `inicio.html`.
+- `favoritas.html`: estrella «Favorita» con icono SVG de contorno o relleno (botón de 44 px con
+  `aria-pressed`) en el comparador y en
   la ruta. Se guarda solo en el navegador (`gasol.favoritas`, máx. 50): ID oficial, rótulo,
   dirección, municipio y provincia; nunca coordenadas ni la ubicación del usuario. La lista pide el
   último precio por ID a `gasol-buscar?ids=` (función SQL `gasol_estaciones_por_id`, mismas columnas
@@ -258,6 +261,13 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Iconos, tarjetas y alturas (18/10/2026): sin emojis en HTML, JS ni CSS (quedan «→» en comentarios
+  y en el resumen «Origen → Destino» de la ruta, que es texto). Sprite `assets/iconos.svg`
+  (12 iconos) y `assets/iconos.js` para el DOM creado desde JS. 12 páginas a 390 px sin
+  desbordamiento y con el pie abajo; capturas antes/después en `docs/capturas/v2-antes-*.png` y
+  `v2-despues-*.png` (portada, inicio, comparador, ruta, facturación, gastos). Contraste nuevo:
+  título 9,95:1, texto 8,04:1, destacada 5,02:1. Lighthouse móvil de esas seis: rendimiento 99-100,
+  accesibilidad 100, buenas prácticas 100, CLS 0, 0 errores de consola.
 - Calendario de facturación (18/10/2026): tests de meses de 28, 29, 30 y 31 días, mes que empieza
   en domingo (febrero y marzo de 2026), cambio a hora de invierno del 25/10/2026 (la hora repetida y
   la medianoche del 26 caen en su día), fin de mes y casilla con céntimos («<1 €», etiqueta con

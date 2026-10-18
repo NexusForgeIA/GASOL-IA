@@ -320,3 +320,25 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
       `X-Frame-Options` no funcionan en `<meta>`), `X-Content-Type-Options: nosniff`,
       `Permissions-Policy`, `Cross-Origin-Opener-Policy` y `Referrer-Policy` (esta última se podría
       poner con `<meta name="referrer">` si se quiere).
+
+# Decisiones — Iconos, tarjetas y alturas (18/10/2026)
+
+90. **Sin emojis ni símbolos como icono**: un sprite propio `assets/iconos.svg` (`<symbol>`, 24 × 24,
+    trazo uniforme, `currentColor`) con gastos, vencimientos, ruta, favorita (contorno y relleno),
+    calculadora (surtidor), facturación, comparador, chevron, check, aviso y ubicación. En HTML,
+    `<svg class="icono" aria-hidden="true"><use href="assets/iconos.svg#…"/></svg>`; desde JS,
+    `icono()` de `assets/iconos.js`. Siempre decorativos: el nombre accesible lo da el texto o el
+    `aria-label`. Sustituidos: los emojis del inicio, «→» del enlace de Facturación, ☆/★ de la
+    estrella (ahora «Favorita» con icono), el «✓» de las opciones elegidas, ▸/▾ de la ficha, ‹ › del
+    mes y ✓/✗ de la tendencia de la ruta (icono check y aviso; la nota pasa a «"Baja" y "Sube"
+    comparan…»). Se quedan como texto «€» en importes, «·» y el «→» de «Origen → Destino».
+91. **«Shell» con `svh`**: `body` en columna con `min-height: 100svh` (respaldo `100vh`), `<main>`
+    ocupa el resto y el pie queda abajo. Portada centrada en `100svh` con `env(safe-area-inset-*)`.
+92. **Tarjetas de enlace (`.tarjeta`)**: una por enlace, sin enlaces anidados; Facturación pasa a
+    tarjeta propia y el acceso al comparador a tarjeta destacada en verde de acción. Variables
+    comunes (`--tarjeta-fondo`, `--tarjeta-borde`, `--tarjeta-radio`, `--tarjeta-pad`) que usan
+    también `.calc` (calculadoras, gastos, facturación), `.estacion` (ficha), las listas (favoritas,
+    vencimientos) y los avisos. El componente de enlace solo encaja en el inicio: en las demás
+    páginas las tarjetas tienen formularios y botones dentro.
+93. **Icono de aviso** en los recuadros que ya eran avisos (ruta para camiones y aviso fiscal de
+    Facturación); «Mi ubicación» lleva el icono de ubicación.

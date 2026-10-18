@@ -3,6 +3,7 @@
 // a gasol-buscar?ficha= la dirección completa y los precios de todos los productos de la estación.
 // Las funciones de datos no tocan el DOM y se prueban con Deno (ficha.test.js).
 import { API } from "./config.js";
+import { icono } from "./iconos.js";
 import { enlaceComoLlegar, enlaceWaze, euros } from "./calculos.js";
 import { botonEstrella } from "./favoritas.js";
 
@@ -120,7 +121,7 @@ export function ficha(e, op = {}) {
     precio,
     linea ? el("span", { class: "ficha-linea", text: linea }) : null,
     el("span", { class: "meta" }, ...(op.chips || []), chip24(e.abierta_24h)),
-    el("span", { class: "ficha-abrir", "aria-hidden": "true", text: "Ver ficha" }),
+    el("span", { class: "ficha-abrir", "aria-hidden": "true" }, icono("chevron"), el("span", { class: "ficha-abrir-texto", text: "Ver ficha" })),
   );
 
   const dir = el("p", { class: "dir", text: [capitalizar(e.direccion), e.municipio].filter(Boolean).join(" · ") });
@@ -148,7 +149,7 @@ export function ficha(e, op = {}) {
 
   const details = el("details", {}, resumen, detalle);
   let pedida = false;
-  const abrir = resumen.querySelector(".ficha-abrir");
+  const abrir = resumen.querySelector(".ficha-abrir-texto");
   details.addEventListener("toggle", async () => {
     abrir.textContent = details.open ? "Ocultar ficha" : "Ver ficha";
     if (!details.open || pedida) return;
