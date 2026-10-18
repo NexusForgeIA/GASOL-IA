@@ -49,3 +49,19 @@ export function sumarMeses(mes, n) {
 const fmtDia = new Intl.DateTimeFormat("es-ES", { timeZone: "UTC", weekday: "short", day: "numeric" });
 /** "2026-10-18" → "dom 18". */
 export const diaSemana = (s) => { const [y, m, d] = s.split("-").map(Number); return fmtDia.format(new Date(Date.UTC(y, m - 1, d))).replace(/[.,]/g, ""); };
+
+/**
+ * Semanas de un mes "AAAA-MM", de lunes a domingo: cada semana son 7 casillas con la fecha
+ * "AAAA-MM-DD" o null (huecos antes del día 1 y después del último). Solo calendario, sin horas.
+ */
+export function cuadriculaMes(mes) {
+  const [y, m] = mes.split("-").map(Number);
+  const hueco = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7; // lunes = 0
+  const casillas = [...Array(hueco).fill(null), ...Array.from({ length: diasDelMes(mes) }, (_, i) => `${mes}-${String(i + 1).padStart(2, "0")}`)];
+  while (casillas.length % 7) casillas.push(null);
+  return Array.from({ length: casillas.length / 7 }, (_, i) => casillas.slice(i * 7, i * 7 + 7));
+}
+
+const fmtLargo = new Intl.DateTimeFormat("es-ES", { timeZone: "UTC", weekday: "long", day: "numeric", month: "long" });
+/** "2026-10-14" → "miércoles 14 de octubre". */
+export const fechaLarga = (s) => { const [y, m, d] = s.split("-").map(Number); return fmtLargo.format(new Date(Date.UTC(y, m - 1, d))).replace(",", ""); };

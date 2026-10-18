@@ -228,7 +228,7 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     entienda (JSON roto o versión futura) se copia tal cual a `gasol.ingresos.respaldo` antes de
     escribir, y «Borrar mis datos» borra las dos claves. Se lee también una lista suelta de
     carreras por si se guardaron así.
-72. **Un día desplegado a la vez y hoy abierto al entrar**; el mes no pasa del actual y los días
+72. *(La lista de días pasa a calendario: decisión 84.)* **Un día desplegado a la vez y hoy abierto al entrar**; el mes no pasa del actual y los días
     futuros no se despliegan. La hora por defecto es la de Madrid, como «hoy» (`assets/fechas.js`).
 73. **Tras guardar se conservan canal, cobro y aplicación** y se limpia el importe: lo habitual es
     apuntar varias seguidas del mismo tipo. Al entrar, todo vacío (ni canal elegido).
@@ -284,3 +284,21 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 83. **Opciones tipo radio**: la elegida en verde de acción con texto blanco (5,02:1), borde blanco y
     «✓» delante (oculto a lectores de pantalla), para no depender solo del color. Las demás,
     neutras (texto 15,39:1 sobre la superficie). Anillo de foco blanco.
+
+# Decisiones — Calendario de facturación (18/10/2026)
+
+84. **Decisión de Cris: calendario mensual completo en lugar de la lista de días.** Semana de lunes
+    a domingo; al pulsar un día se abre su detalle debajo con lo que ya había (carreras, «+ Carrera»,
+    total sin detallar). Hoy elegido al entrar; al cambiar de mes no se elige ningún día. Sin cambios
+    en `gasol.ingresos`: mismo formato, sin migración.
+85. **Euros enteros en la casilla** (redondeo; «<1 €» si el total no llega a medio euro, para que no
+    parezca vacío). El importe exacto con céntimos va en el `aria-label` y en el detalle.
+86. **Distinción sin depender del color**: con datos, barra inferior y total; hoy, borde discontinuo
+    y número subrayado; elegido, borde blanco continuo. Colores de la decisión 77.
+87. **`table role="grid"` con foco itinerante** (una sola casilla con `tabindex="0"`). Las flechas
+    mueven el foco sin abrir el día (Intro o Espacio lo abren); no pasan del mes actual. Al pulsar con
+    el dedo o el ratón la vista baja al detalle, con desplazamiento suave solo sin
+    `prefers-reduced-motion`.
+88. **Fechas de calendario sin horas** (`cuadriculaMes` en `assets/fechas.js`, día de la semana con
+    `Date.UTC`): el cambio de hora no puede mover un día. «Hoy» y la hora por defecto siguen en hora
+    de Madrid.

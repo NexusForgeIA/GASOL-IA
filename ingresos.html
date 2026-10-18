@@ -42,12 +42,61 @@
         <h2 id="t-mes" aria-live="polite"></h2>
         <button type="button" class="boton-sec" id="mes-sig" aria-label="Mes siguiente">›</button>
       </div>
-      <p class="botones"><button type="button" class="boton" id="ir-hoy">+ Carrera hoy</button></p>
-      <p class="nota">Pulsa un día para ver sus carreras y añadir más.</p>
-      <div class="dia-cabecera" aria-hidden="true">
-        <span>Día</span><span>Calle efectivo</span><span>Calle tarjeta</span><span>App cobrado por la app</span><span>App efectivo</span><span>Total</span><span>Nº</span>
-      </div>
-      <ol id="dias" class="dias"></ol>
+      <p class="botones"><button type="button" class="boton" id="ir-hoy">Hoy</button></p>
+      <p class="nota">Pulsa un día para ver sus carreras y añadir más. Con el teclado, muévete con las flechas.</p>
+      <div id="cal-wrap" class="cal-wrap"></div>
+      <p id="sin-dia" class="nota" hidden>Elige un día del calendario.</p>
+
+      <section id="detalle" class="calc detalle-dia" aria-labelledby="t-dia" hidden>
+        <h3 id="t-dia"></h3>
+        <p id="resumen-dia" class="nota"></p>
+        <ul id="carreras" class="carreras"></ul>
+        <p id="estado-dia" class="nota" role="status" aria-live="polite"></p>
+        <form id="f-carrera" class="form-carrera" novalidate>
+          <h4 id="t-form">+ Carrera</h4>
+          <fieldset>
+            <legend>Canal</legend>
+            <div class="segmentado grande">
+              <label><input type="radio" name="canal" value="calle"> Calle</label>
+              <label><input type="radio" name="canal" value="app"> Aplicación</label>
+            </div>
+          </fieldset>
+          <fieldset id="g-calle" hidden>
+            <legend>Cobro en la calle</legend>
+            <div class="segmentado">
+              <label><input type="radio" name="metodo_calle" value="efectivo"> Efectivo</label>
+              <label><input type="radio" name="metodo_calle" value="tarjeta"> Tarjeta</label>
+            </div>
+          </fieldset>
+          <div id="g-app" class="grupo-app" hidden>
+            <label class="campo"><span>Aplicación <em class="tuyo">tu dato</em></span>
+              <input type="text" name="app" maxlength="40" autocomplete="off" list="apps-lista"></label>
+            <datalist id="apps-lista"></datalist>
+            <div id="apps-rapidas" class="chips"></div>
+            <fieldset>
+              <legend>Cobro por aplicación</legend>
+              <div class="segmentado">
+                <label><input type="radio" name="metodo_app" value="app"> Cobrado por la app</label>
+                <label><input type="radio" name="metodo_app" value="efectivo"> Efectivo en mano</label>
+              </div>
+            </fieldset>
+          </div>
+          <div class="campos">
+            <label class="campo"><span>Importe (€) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="importe" autocomplete="off" enterkeyhint="done"></label>
+            <label class="campo" id="c-hora"><span>Hora</span>
+              <input type="time" name="hora"></label>
+          </div>
+          <label class="interruptor"><input type="checkbox" name="sinDetalle"> Añadir total sin detallar (sin hora)</label>
+          <label class="campo"><span>Nota (opcional)</span>
+            <input type="text" name="nota" maxlength="80" autocomplete="off"></label>
+          <div class="botones">
+            <button type="submit" class="boton" id="guardar">Guardar carrera</button>
+            <button type="button" class="boton-sec" id="cancelar" hidden>Cancelar edición</button>
+          </div>
+          <p id="estado-form" class="nota" role="status" aria-live="polite"></p>
+        </form>
+      </section>
 
       <h2 id="t-totales">Totales del mes</h2>
       <dl class="cifras" id="totales" aria-labelledby="t-totales"></dl>
@@ -90,52 +139,6 @@
       <p>Al volante, no: apunta la carrera cuando estés parado.</p>
     </aside>
 
-    <div hidden>
-      <form id="f-carrera" class="form-carrera" novalidate>
-        <h4 id="t-form">+ Carrera</h4>
-        <fieldset>
-          <legend>Canal</legend>
-          <div class="segmentado grande">
-            <label><input type="radio" name="canal" value="calle"> Calle</label>
-            <label><input type="radio" name="canal" value="app"> Aplicación</label>
-          </div>
-        </fieldset>
-        <fieldset id="g-calle" hidden>
-          <legend>Cobro en la calle</legend>
-          <div class="segmentado">
-            <label><input type="radio" name="metodo_calle" value="efectivo"> Efectivo</label>
-            <label><input type="radio" name="metodo_calle" value="tarjeta"> Tarjeta</label>
-          </div>
-        </fieldset>
-        <div id="g-app" class="grupo-app" hidden>
-          <label class="campo"><span>Aplicación <em class="tuyo">tu dato</em></span>
-            <input type="text" name="app" maxlength="40" autocomplete="off" list="apps-lista"></label>
-          <datalist id="apps-lista"></datalist>
-          <div id="apps-rapidas" class="chips"></div>
-          <fieldset>
-            <legend>Cobro por aplicación</legend>
-            <div class="segmentado">
-              <label><input type="radio" name="metodo_app" value="app"> Cobrado por la app</label>
-              <label><input type="radio" name="metodo_app" value="efectivo"> Efectivo en mano</label>
-            </div>
-          </fieldset>
-        </div>
-        <div class="campos">
-          <label class="campo"><span>Importe (€) <em class="tuyo">tu dato</em></span>
-            <input type="text" inputmode="decimal" name="importe" autocomplete="off" enterkeyhint="done"></label>
-          <label class="campo" id="c-hora"><span>Hora</span>
-            <input type="time" name="hora"></label>
-        </div>
-        <label class="interruptor"><input type="checkbox" name="sinDetalle"> Añadir total sin detallar (sin hora)</label>
-        <label class="campo"><span>Nota (opcional)</span>
-          <input type="text" name="nota" maxlength="80" autocomplete="off"></label>
-        <div class="botones">
-          <button type="submit" class="boton" id="guardar">Guardar carrera</button>
-          <button type="button" class="boton-sec" id="cancelar" hidden>Cancelar edición</button>
-        </div>
-        <p id="estado-form" class="nota" role="status" aria-live="polite"></p>
-      </form>
-    </div>
   </main>
 
   <footer class="pie">
