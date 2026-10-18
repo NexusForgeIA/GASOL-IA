@@ -376,3 +376,10 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      otro formato o registros descartados), antes de escribir se copia intacto a
      `gasol.vencimientos.respaldo`, como en Facturación. «Borrar mis datos» borra las dos claves. No
      se toca ninguna otra clave.
+
+# Decisiones — CSP de Privacidad (18/10/2026)
+
+101. **`privacidad.html` lleva el mismo `<meta http-equiv="Content-Security-Policy">` que las demás
+     páginas sin servidor** (copiado tal cual de `aviso-legal.html`). Era la única sin CSP. Carga
+     `assets/app.css` y `assets/nav.js` (mismo origen) sin violaciones y sin estilos ni scripts
+     inline.

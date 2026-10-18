@@ -262,6 +262,9 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- CSP en Privacidad (18/10/2026): `privacidad.html` ya tiene el CSP de las demás páginas
+  (decisión 101); estilos y menú de móvil sin violaciones de CSP ni errores de consola; Lighthouse
+  móvil 100/100/100.
 - Revista municipal (18/10/2026): el tipo «Licencia o autorización» pasa a «Revista municipal»
   (decisiones 99-100). Un dato guardado con el tipo antiguo se ve y se guarda como revista municipal
   con su vehículo y antelación; aparece en el aviso del inicio; CSV con «Revista municipal». Tests
