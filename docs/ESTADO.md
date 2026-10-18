@@ -186,6 +186,8 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Pendiente de decidir o de hacer
 
+- Si se publican las páginas generadas, añadir viewport-fit=cover en scripts/generar_paginas.py.
+
 - **Alertas de precio**: no se hacen todavía. Requieren cuentas y el proyecto Supabase propio
   (avisos push con VAPID, `gasol-alertas`, ya escrito y sin desplegar).
 
