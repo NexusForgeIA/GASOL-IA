@@ -318,8 +318,8 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
       retraso en algún recurso al abrir sin service worker.
     - **Sin cubrir**: protección contra incrustar la app en un marco (`frame-ancestors` /
       `X-Frame-Options` no funcionan en `<meta>`), `X-Content-Type-Options: nosniff`,
-      `Permissions-Policy`, `Cross-Origin-Opener-Policy` y `Referrer-Policy` (esta última se podría
-      poner con `<meta name="referrer">` si se quiere).
+      `Permissions-Policy` y `Cross-Origin-Opener-Policy`. (`Referrer-Policy` se cubre con
+      `<meta name="referrer">` desde la decisión 98.)
 
 # Decisiones — Iconos, tarjetas y alturas (18/10/2026)
 
@@ -342,3 +342,23 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     páginas las tarjetas tienen formularios y botones dentro.
 93. **Icono de aviso** en los recuadros que ya eran avisos (ruta para camiones y aviso fiscal de
     Facturación); «Mi ubicación» lleva el icono de ubicación.
+
+# Decisiones — Menú tipo app (18/10/2026)
+
+94. **Menú de app en móvil (< 900 px)**: barra fija inferior con Inicio, Comparador, Ruta,
+    Facturación y «Más»; el resto (Gastos, Calculadoras, Favoritas, Vencimientos, «Enviar opinión»,
+    Privacidad y Aviso legal) va en un panel inferior (`role="dialog"`, `aria-modal`). Desde 900 px
+    sigue la barra superior de píldoras. La página actual: píldora verde de acción con icono
+    blanco, trazo más grueso, texto en negrita y `aria-current="page"`; si está dentro de «Más», el
+    botón «Más» sale activo (y lo dice a los lectores de pantalla).
+95. **Un solo componente inyectado por `assets/nav.js`**, que ya cargaban todas las páginas con
+    cabecera (ahora también Privacidad y Aviso legal). Sin `<noscript>` copiado en cada página:
+    la barra superior que ya existe es el respaldo, porque los enlaces solo se ocultan en móvil con
+    `@media (scripting: enabled)`; sin JS siguen visibles. La portada no lleva menú.
+96. **La barra no tapa contenido**: el hueco se reserva en el `<body>` (altura de la barra + borde
+    + `env(safe-area-inset-bottom)`), no en `<main>`, para que también el pie quede por encima. Se
+    reserva con CSS desde el primer pintado (`body:not(:has(.portada))`), sin depender del JS: CLS 0.
+97. **Iconos nuevos en el sprite**: inicio, más (tres líneas), cerrar y correo.
+98. **`<meta name="referrer" content="strict-origin-when-cross-origin">` en las 12 páginas**, para
+    cubrir con `<meta>` la cabecera `Referrer-Policy` que GitHub Pages no permite (decisión 89).
+    Las páginas generadas (`scripts/generar_paginas.py`) no lo llevan: no se publican.
