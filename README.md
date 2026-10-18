@@ -34,6 +34,10 @@ python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-L
 python -m http.server 8080            # sirve la PWA en local
 ```
 
+Desarrollado por [WhiteMoon Agencia IA](https://whitemoon.es). Titular, aviso legal y
+privacidad: los mismos que whitemoon.es (`aviso-legal.html`, `privacidad.html`). Opiniones de la
+beta: comercial@whitemoon.es.
+
 Reglas del proyecto en [`CLAUDE.md`](CLAUDE.md).
 
 Estado actual: [`docs/ESTADO.md`](docs/ESTADO.md). Decisiones y lo pendiente de revisar: [`docs/DECISIONES.md`](docs/DECISIONES.md).

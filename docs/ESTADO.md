@@ -13,6 +13,7 @@ del proyecto Supabase propio de Gasol-IA.
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
 | Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
+| Firma, aviso legal y opiniones | **Publicado**: pie con WhiteMoon, `aviso-legal.html`, privacidad con responsable y «Enviar opinión» por correo. |
 | Gas (GNC, GNL, biogás) | **En el comparador, la ficha y favoritas**, en €/kg. Ver abajo. |
 | Recarga eléctrica | **Investigada, no integrada** (`docs/FUENTE-DATOS.md` §9). |
 | Vencimientos | **Publicado** (`vencimientos.html`), solo en el navegador. Ver abajo. |
@@ -62,6 +63,22 @@ la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribuci�
 
 Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
 `try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
+
+## Firma, aviso legal y opiniones
+
+- Pie de todas las páginas: «Privacidad · Aviso legal», botón «Enviar opinión»
+  (`mailto:comercial@whitemoon.es`, asunto «Opinión Gasol-IA beta»; constante en
+  `assets/config.js`) y logo de WhiteMoon (WebP con PNG de respaldo, copiado tal cual de
+  NexusForgeIA/WHITEMOON-WEB) con «Desarrollado por WhiteMoon Agencia IA» enlazado a
+  whitemoon.es. En la portada, firma y enlaces legales; en el inicio, una línea de beta con la
+  opinión y la firma. Sin WhatsApp.
+- `aviso-legal.html`: datos del titular copiados del aviso legal publicado de whitemoon.es
+  (titular, domicilio, C.I.F. y correo), remisión a sus condiciones generales y secciones propias
+  (precios oficiales con fecha de captura, beta gratuita sin garantía, ruta no verificada para
+  camiones, atribución sin sugerir participación del Ministerio).
+- `privacidad.html`: responsable = mismo titular (datos de la política de privacidad de
+  whitemoon.es, sin teléfono), derechos y AEPD, y tratamiento de las opiniones por correo.
+- Portada: el logo de Gasol-IA se sirve en WebP (28 KB frente a 372 KB) con prioridad alta.
 
 ## Combustibles alternativos
 
@@ -147,7 +164,7 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/*.test.js`: 92 OK. `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/*.test.js`: 93 OK. `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -171,6 +188,10 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   favoritas; teclado; 0 desbordamiento con todas las fichas abiertas; 0 errores de consola.
   Lighthouse móvil `comparador` 99, `ruta` y `favoritas` 100 (accesibilidad y buenas prácticas
   100). Contraste de 50 precios en 10 fichas: iguales al oficial de la fecha de captura.
+- Firma (18/10/2026): 11 páginas a 390 px con firma, logo WebP cargado, aviso legal enlazado y
+  mailto correcto; sin WhatsApp ni teléfono; sin desbordamiento; 0 errores de consola. Lighthouse
+  móvil portada, inicio, aviso legal, privacidad y comparador: 100/100/100 (la portada bajaba a
+  92 por el logo PNG de 372 KB; con WebP, 100).
 - Gas (18/10/2026): comparador con GNC, GNL y biogás licuado en Madrid («por kg»), ficha y
   popup del mapa en €/kg, preferencia de gas aplicada en comparador y favoritas e ignorada en la
   ruta; 0 errores de consola. Contraste con el histórico oficial del 17/10: 241/241 precios.

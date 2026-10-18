@@ -11,3 +11,14 @@ export const CUENTAS = false;
 export function mostrarCuentas() {
   if (CUENTAS) document.querySelectorAll("[data-cuentas]").forEach((n) => { n.hidden = false; });
 }
+
+// Contacto para opiniones de la beta: solo correo (sin WhatsApp). Mismo titular que whitemoon.es.
+export const CORREO_CONTACTO = "comercial@whitemoon.es";
+export const ASUNTO_OPINION = "Opinión Gasol-IA beta";
+export const enlaceOpinion = () => `mailto:${CORREO_CONTACTO}?subject=${encodeURIComponent(ASUNTO_OPINION)}`;
+
+// Los enlaces «Enviar opinión» del HTML ya llevan el mailto; aquí se rehacen desde la constante
+// para que haya una sola fuente. Sin DOM (Deno, tests) no hace nada.
+if (typeof document !== "undefined") {
+  document.querySelectorAll("a[data-opinion]").forEach((a) => { a.href = enlaceOpinion(); });
+}
