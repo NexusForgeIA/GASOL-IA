@@ -32,6 +32,12 @@ export function enlaceGoogleMaps(origen, intermedios, destino) {
   return { url: `https://www.google.com/maps/dir/?${q}`, recortado };
 }
 
+/** «Cómo llegar» a una estación con Google Maps: solo destino, el origen lo pone el móvil. */
+export function enlaceComoLlegar(punto) {
+  const q = new URLSearchParams({ api: "1", destination: coord(punto), travelmode: "driving" });
+  return `https://www.google.com/maps/dir/?${q}`;
+}
+
 /** Waze solo admite un destino por enlace: se usa para la siguiente parada. */
 export function enlaceWaze(punto) {
   return `https://waze.com/ul?ll=${encodeURIComponent(coord(punto))}&navigate=yes`;

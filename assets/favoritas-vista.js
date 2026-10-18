@@ -1,10 +1,8 @@
 // Gasol-IA · página de favoritas y preferencias. Los datos viven en este navegador
 // (favoritas.js); al servidor solo se piden los precios por ID de estación.
 import { API, mostrarCuentas } from "./config.js";
-import { euros } from "./calculos.js";
-import {
-  borrarMisDatos, botonEstrella, guardarPreferencias, leerFavoritas, leerPreferencias,
-} from "./favoritas.js";
+import { ficha, precargarFichas } from "./ficha.js";
+import { borrarMisDatos, guardarPreferencias, leerFavoritas, leerPreferencias } from "./favoritas.js";
 
 mostrarCuentas();
 
@@ -16,18 +14,6 @@ const formPref = $("f-pref");
 const fechaHora = new Intl.DateTimeFormat("es-ES", {
   timeZone: "Europe/Madrid", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
 });
-const capitalizar = (s) => s.toLowerCase().replace(/(^|[\s(/-])(\p{L})/gu, (_, a, b) => a + b.toUpperCase());
-
-function el(tag, attrs = {}, ...hijos) {
-  const n = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (k === "class") n.className = v;
-    else if (k === "text") n.textContent = v;
-    else n.setAttribute(k, v);
-  }
-  for (const h of hijos) if (h) n.append(h);
-  return n;
-}
 const avisar = (t, error = false) => { estado.textContent = t; estado.classList.toggle("error", error); };
 
 // ---- Lista -----------------------------------------------------------------------
@@ -54,6 +40,7 @@ async function pintarFavoritas() {
     error = true;
   }
   const porId = new Map(filas.map((f) => [f.ideess, f]));
+  precargarFichas(favs.map((f) => f.ideess)); // una petición para todas las fichas
   const nombreComb = selComb.selectedOptions[0].textContent;
   favs.forEach((fav) => lista.append(tarjeta(fav, porId.get(fav.ideess), nombreComb, error)));
 
@@ -71,35 +58,20 @@ async function pintarFavoritas() {
 
 function tarjeta(fav, f, nombreComb, error) {
   // Datos de la última captura si llegan; si no, lo guardado para poder reconocerla.
-  const d = f || fav;
-  const chip = f?.abierta_24h === "si"
-    ? el("span", { class: "chip si", text: "Abierta 24 h" })
-    : f?.abierta_24h === "sin_confirmar"
-      ? el("span", { class: "chip duda", text: "Horario sin confirmar" })
-      : null;
-  const precio = f?.precio != null
-    ? el("div", { class: "precio" }, el("strong", { text: `${euros(f.precio, 3)} €` }), el("span", { class: "unidad", text: "por litro" }))
-    : null;
-  const sinPrecio = error ? "Precio no disponible ahora mismo."
-    : !f ? "No aparece en la última captura oficial."
-      : f.precio == null ? `Sin precio de ${nombreComb} en la última captura.` : null;
-
-  const li = el("li", { class: "estacion" },
-    el("h3", { text: capitalizar(d.rotulo || "Sin rótulo") }),
-    precio,
-    el("p", { class: "dir", text: `${capitalizar(d.direccion || "")} · ${d.municipio} (${capitalizar(d.provincia || "")})` }),
-    el("div", { class: "meta" }, chip,
-      f ? el("span", { text: f.horario_texto ? `Horario oficial: ${f.horario_texto}` : "Sin horario publicado" }) : null),
-    sinPrecio ? el("p", { class: "captura", text: sinPrecio }) : null,
-    f?.fecha_captura ? el("p", { class: "captura", text: `Precio capturado el ${fechaHora.format(new Date(f.fecha_captura))} (hora peninsular) · Fuente: MITECO` }) : null,
-    botonEstrella(fav, (on) => {
+  const sinPrecio = error ? "Precio no disponible ahora mismo"
+    : !f ? "No aparece en la última captura oficial"
+      : f.precio == null ? `Sin precio de ${nombreComb} en la última captura` : null;
+  const li = ficha({ ...fav, ...(f || {}) }, {
+    combustible: selComb.value,
+    sinPrecio,
+    alQuitar: (on) => {
       if (on) return;
       li.remove();
       avisar("Quitada de tus favoritas.");
       estado.focus();
       if (!leerFavoritas().length) pintarFavoritas();
-    }),
-  );
+    },
+  });
   return li;
 }
 

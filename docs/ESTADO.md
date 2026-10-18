@@ -10,6 +10,7 @@ del proyecto Supabase propio de Gasol-IA.
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
 | Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
+| Ficha de estación | **Publicada** en comparador, ruta y favoritas. Ver abajo. |
 | Inicio, favoritas y preferencias | **Publicadas** (`inicio.html`, `favoritas.html`), solo en el navegador. Ver abajo. |
 | 2 · Cuentas, rutas en servidor y avisos push | Escritas, **desactivadas**. Pendientes del proyecto Supabase propio. |
 | 3 · 4 · 5 | Pendientes del proyecto Supabase propio. |
@@ -55,6 +56,18 @@ la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribuci�
 Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
 `try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
 
+## Ficha de estación
+
+Cada estación del comparador, la ruta y favoritas es una ficha plegable (`<details>`, accesible con
+teclado). Resumen: rótulo, precio del combustible elegido con su captura, distancia (en línea
+recta en «Cerca de mí»; km de la ruta y desvío en la ruta) y etiquetas. Al abrirla se piden a
+`gasol-buscar?ficha=` (función `gasol_fichas`) la dirección completa (dirección, C.P., localidad,
+municipio, provincia) y los precios de la estación: Gasóleo A y Premium, Diésel renovable,
+Gasolina 95 E5, 95 E5 Premium y 98 E5, GLP y AdBlue, solo los que tienen precio, cada uno con
+fecha y hora de captura y el elegido destacado. Horario tal cual lo publica la estación con el
+indicador de 24 h de siempre. «Cómo llegar» con Google Maps y Waze por coordenadas, estrella de
+favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DATOS.md` §7).
+
 ## Inicio, favoritas y preferencias
 
 - Portada → «Entrar» → `inicio.html`: tres tarjetas (Planificador de rutas, Favoritas y preferencias,
@@ -73,6 +86,9 @@ Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculador
 
 ## Pendiente de decidir o de hacer
 
+- **Alertas de precio**: no se hacen todavía. Requieren cuentas y el proyecto Supabase propio
+  (avisos push con VAPID, `gasol-alertas`, ya escrito y sin desplegar).
+
 - **`gasol-cuenta` está desplegada (v1) en el proyecto compartido** desde la sesión anterior,
   aunque la web ya no la enlaza. Es pública y permite registrarse en el Auth compartido.
   Hay que decidir si se elimina hasta tener el proyecto propio.
@@ -86,7 +102,7 @@ Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculador
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/calculos.test.js assets/favoritas.test.js`: 69 OK (8 de favoritas y 1 de IDs). `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/calculos.test.js assets/favoritas.test.js assets/ficha.test.js`: 74 OK. `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -106,6 +122,11 @@ Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculador
   corruptos y almacenamiento bloqueado sin errores. 8 páginas a 390 px sin desbordamiento ni errores
   de consola. Lighthouse móvil `inicio`, `favoritas`, `ruta`: 100/100/100 (SEO 60 por `noindex`).
   Precios por ID contra el servicio oficial (Getafe, Valdemoro, Zaragoza): 15 de 15 iguales.
+- Ficha (18/10/2026): abierta y cerrada en comparador (zona y «Cerca de mí» con AdBlue), ruta y
+  favoritas; teclado; 0 desbordamiento con todas las fichas abiertas; 0 errores de consola.
+  Lighthouse móvil `comparador` 99, `ruta` y `favoritas` 100 (accesibilidad y buenas prácticas
+  100). Contraste de 50 precios en 10 fichas: iguales al oficial de la fecha de captura.
+- Corregido: «Repostar aquí» desmarcaba también las estrellas de favoritas de la ruta.
 - Corregido: el enlace «Cuenta» y la casilla de avisos de la ruta se veían aunque `CUENTAS = false`
   (las clases con `display` anulaban `hidden`). Ahora `[hidden]` siempre oculta.
 - **URL pública verificada tras fusionar (#2, 18/10/2026):** el planificador carga, Madrid →

@@ -174,3 +174,36 @@ Supabase Edge Functions (Deno/rustls) no soporta ese cifrado y la conexión se c
 handshake. pg_net (libcurl/OpenSSL) desde la base de datos sí conecta, así que la descarga
 se hace con pg_net y el resto (normalización, parser, carga) sigue en `gasol-ingest`.
 Si el Ministerio cambia la configuración TLS, se puede volver a `fetch` directo.
+
+## 7. Revisión de campos para la ficha de estación — 18/10/2026
+
+Comprobado con el JSON real completo (`Fecha` 18/10/2026 3:41:42, 11.429 estaciones), no con la
+documentación. Cada estación trae **41 campos**, todos presentes en todas las estaciones:
+
+- Identificación y dirección: `IDEESS`, `Rótulo`, `Dirección`, `C.P.`, `Localidad`, `Municipio`,
+  `Provincia`, `IDMunicipio`, `IDProvincia`, `IDCCAA`, `Latitud`, `Longitud (WGS84)`.
+- Operación: `Horario`, `Margen`, `Remisión`, `Tipo Venta`, `% BioEtanol`, `% Éster metílico`.
+- 23 campos `Precio …` (con valor: Gasóleo A 11.218 · Gasolina 95 E5 10.878 · Gasóleo Premium
+  5.887 · Gasolina 98 E5 5.473 · AdBlue 2.940 · Gasóleo B 2.257 · Diésel renovable 1.618 ·
+  Gasolina 95 E5 Premium 1.115 · GLP 996 · GNC 97 · GNL 52 · Biogás licuado 50 · Biogás
+  comprimido 42 · Gasolina renovable 31 · Biodiésel 28 · 95 E10 27 · 98 E10 15 · 95 E85 2 ·
+  Hidrógeno 2 · 95 E25 1 · Bioetanol 1 · Amoniaco 0 · Metanol 0).
+
+**Teléfono: no existe.** Ningún campo de teléfono, correo ni web. No se muestra ni se busca en
+otra fuente.
+
+**Lo que guardamos hoy**: `gasol_estaciones` tiene `ideess, rotulo, direccion, cp, localidad,
+municipio, id_municipio, provincia, id_provincia, id_ccaa, lat, lon, margen, remision,
+tipo_venta, horario_texto, abierta_24h, actualizada_en` (no se guardan los porcentajes de
+bioetanol y éster). `gasol_precios` guarda **todos** los campos `Precio …` con valor (un código
+por producto, p. ej. `gasolina_95_e5_premium`), con `fecha_captura` y `fuente`. Para la ficha
+no hizo falta ampliar la ingesta.
+
+**Ficha**: muestra Gasóleo A, Gasóleo Premium, Diésel renovable, Gasolina 95 E5, Gasolina 95 E5
+Premium, Gasolina 98 E5, GLP y AdBlue, solo si tienen precio en la última captura. Fuera:
+Gasóleo B (agrícola) y GNC, GNL, biogás e hidrógeno (unidades sin confirmar; el hidrógeno sale a
+9,90–25,00, compatible con €/kg).
+
+**Contraste** (10 estaciones con 5 o más productos, 50 precios): 39 iguales al JSON de las 3:41
+del 18/10; los 11 restantes, de 3 estaciones, coinciden con el histórico oficial del 17/10
+(`EstacionesTerrestresHist/17-10-2026`): cambiaron de precio después de nuestra captura.
