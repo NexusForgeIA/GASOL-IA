@@ -302,3 +302,21 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 88. **Fechas de calendario sin horas** (`cuadriculaMes` en `assets/fechas.js`, día de la semana con
     `Date.UTC`): el cambio de hora no puede mover un día. «Hoy» y la hora por defecto siguen en hora
     de Madrid.
+
+# Decisiones — Publicación (18/10/2026)
+
+89. **Decisión de Cris: Gasol-IA se publica solo en GitHub Pages**; la dirección oficial es
+    <https://nexusforgeia.github.io/GASOL-IA/>. Netlify se abandona (crédito agotado; el sitio
+    `gasol-ia` se quedó en el PR #18) y se retira `netlify.toml`. Lo que ese archivo hacía y Pages
+    no permite (no admite cabeceras propias):
+    - `noindex`: ya va en el `<meta name="robots">` de las 12 páginas y de las páginas generadas
+      (`scripts/generar_paginas.py`, `noindex` salvo `GASOL_INDEXAR=1`). Sin `X-Robots-Tag`, los
+      archivos que no son HTML (JS, CSS, imágenes, `docs/*.md`) no llevan `noindex`.
+    - Manifiesto: Pages ya lo sirve como `application/manifest+json`.
+    - `sw.js`: Pages lo sirve con `max-age=600`, pero el navegador comprueba el service worker sin
+      pasar por la caché HTTP y la app pide todo con `cache: "no-cache"`. Como mucho, 10 minutos de
+      retraso en algún recurso al abrir sin service worker.
+    - **Sin cubrir**: protección contra incrustar la app en un marco (`frame-ancestors` /
+      `X-Frame-Options` no funcionan en `<meta>`), `X-Content-Type-Options: nosniff`,
+      `Permissions-Policy`, `Cross-Origin-Opener-Policy` y `Referrer-Policy` (esta última se podría
+      poner con `<meta name="referrer">` si se quiere).

@@ -40,8 +40,7 @@ beta: comercial@whitemoon.es.
 
 Reglas del proyecto en [`CLAUDE.md`](CLAUDE.md).
 
-Dirección oficial: **<https://gasol-ia.netlify.app>** (Netlify, sitio `gasol-ia`). Cada fusión en
-`main` se publica sola: sin compilación, raíz del repositorio como directorio de publicación y
-cabeceras en [`netlify.toml`](netlify.toml). GitHub Pages queda como copia de respaldo.
+Dirección oficial: **<https://nexusforgeia.github.io/GASOL-IA/>** (GitHub Pages). Cada fusión en `main`
+se despliega sola, sin compilación. Netlify está descartado.
 
 Estado actual: [`docs/ESTADO.md`](docs/ESTADO.md). Decisiones y lo pendiente de revisar: [`docs/DECISIONES.md`](docs/DECISIONES.md).
