@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Instalar la app · Gasol-IA</title>
+  <meta name="description" content="Cómo instalar Gasol-IA en la pantalla de inicio del móvil: Android con Chrome e iPhone o iPad con Safari.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/instalar.js"></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="inicio.html">Gasol-IA</a>
+        <a href="comparador.html">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="calculadoras.html">Calculadoras</a>
+        <a href="favoritas.html">Favoritas</a>
+        <a href="gastos.html">Gastos</a>
+        <a href="ingresos.html">Facturación</a>
+        <a href="vencimientos.html">Vencimientos</a>
+        <a href="instalar.html" aria-current="page">Instalar</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
+      </nav>
+      <h1>Instalar la app</h1>
+      <p class="sub">Gasol-IA se instala desde el navegador, sin tienda de aplicaciones: queda un icono en la pantalla de inicio y se abre como una app.</p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <p id="ya-instalada" class="tarjeta-info instalada" hidden><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg> <strong>Ya la tienes instalada.</strong> Estás usando Gasol-IA desde su icono.</p>
+
+    <div id="pasos" class="pasos-instalar">
+      <section id="android" class="calc" aria-labelledby="t-android">
+        <h2 id="t-android">Android (Chrome)</h2>
+        <ol class="pasos">
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#movil"/></svg></span>
+            <span>Abre Gasol-IA en <strong>Chrome</strong>.</span></li>
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#puntos"/></svg></span>
+            <span>Toca <strong>Más</strong> (los tres puntos, a la derecha de la barra de direcciones).</span></li>
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#instalar"/></svg></span>
+            <span>Toca <strong>Instalar y crear acceso directo</strong> y después <strong>Instalar</strong>. Según tu móvil, puede aparecer como «Instalar aplicación» o «Añadir a pantalla de inicio».</span></li>
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg></span>
+            <span>Sigue las instrucciones de la pantalla. El icono de Gasol-IA aparece en tu pantalla de inicio.</span></li>
+        </ol>
+      </section>
+
+      <section id="ios" class="calc" aria-labelledby="t-ios">
+        <h2 id="t-ios">iPhone o iPad (Safari)</h2>
+        <p class="nota"><strong>Ábrela en Safari.</strong> Estos pasos son los de Safari.</p>
+        <ol class="pasos">
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#movil"/></svg></span>
+            <span>Abre Gasol-IA en <strong>Safari</strong>.</span></li>
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#compartir"/></svg></span>
+            <span>Toca <strong>Compartir</strong> (el cuadrado con una flecha hacia arriba). Según tu versión, puede estar dentro del menú de la página.</span></li>
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#anadir"/></svg></span>
+            <span>Desplázate por la lista y toca <strong>Añadir a pantalla de inicio</strong>. Si no la ves, toca «Editar acciones» al final de la lista y añádela.</span></li>
+          <li><span class="paso-icono"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#check"/></svg></span>
+            <span>Si aparece, activa <strong>Abrir como app web</strong>. Toca <strong>Añadir</strong>: el icono aparece en tu pantalla de inicio.</span></li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="tarjeta-info aviso" aria-labelledby="t-datos">
+      <h2 id="t-datos" class="titulo-aviso"><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/iconos.svg#aviso"/></svg> Tus datos se quedan en este móvil</h2>
+      <p>Lo que apuntas en <a href="ingresos.html">Facturación</a>, <a href="gastos.html">Gastos</a> y <a href="vencimientos.html">Vencimientos</a> se guarda solo en este navegador, sin cuenta. Si cambias de móvil o de navegador, o borras los datos del navegador, antes exporta el CSV desde cada sección.</p>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p class="enlaces-pie"><a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></p>
+      <p><a class="boton-sec opinion" href="mailto:comercial@whitemoon.es?subject=Opini%C3%B3n%20Gasol-IA%20beta" data-opinion>Enviar opinión</a></p>
+      <p class="firma"><a href="https://whitemoon.es" target="_blank" rel="noopener"><picture><source srcset="assets/img/whitemoon-logo-3d.webp" type="image/webp"><img src="assets/img/whitemoon-logo-3d.png" width="72" height="72" alt="WhiteMoon" loading="lazy" decoding="async"></picture><span>Desarrollado por WhiteMoon Agencia IA</span></a></p>
+    </div>
+  </footer>
+</body>
+</html>

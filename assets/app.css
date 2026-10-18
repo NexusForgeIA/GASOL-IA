@@ -523,3 +523,15 @@ td[aria-selected="true"] .dia-cal .dia-tot { color: var(--accion-texto); }
   font-size: .7rem; font-weight: 700; line-height: 1.5; letter-spacing: .03em; text-decoration: none;
 }
 .nota-beta { margin: 0 0 .75rem; }
+
+/* Guía de instalación */
+.pasos { display: grid; gap: .75rem; margin: .75rem 0 0; padding: 0; list-style: none; counter-reset: paso; }
+.pasos li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: .75rem; counter-increment: paso; }
+.paso-icono { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: var(--radius); background: var(--accion-suave); color: var(--accent); }
+.paso-icono .icono { width: 1.35rem; height: 1.35rem; }
+.pasos li > span:last-child { padding-top: .45rem; }
+.pasos li > span:last-child::before { content: counter(paso) ". "; font-weight: 800; color: var(--accent); }
+.titulo-aviso { display: flex; align-items: center; gap: .5rem; margin: 0 0 .5rem; font-size: 1.1rem; }
+.titulo-aviso .icono { color: var(--warn); }
+.tarjeta-info.instalada { margin: 1.25rem 0; border-color: var(--accent); }
+.tarjeta-info.instalada .icono { color: var(--accent); }
