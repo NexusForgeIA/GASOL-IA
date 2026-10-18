@@ -187,6 +187,8 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 ## Pendiente de decidir o de hacer
 
 - Si se publican las páginas generadas, añadir viewport-fit=cover en scripts/generar_paginas.py.
+- **Comprobar el resumen de Telegram el 25/10/2026 y el 26/10/2026 a las 08:00** (primer día de
+  horario de invierno: debe salir a las 07:00 UTC; decisión 119).
 - `gasol_uso_demo` (y su función `gasol_uso_demo_ruta`): ya no se usa desde el tope por hora y día
   (`gasol_uso_ruta`, decisión 110). Pendiente de `DROP` manual, solo con confirmación de Cris.
 - Conocido y sin tocar: sin conexión, el service worker devuelve la portada para páginas abiertas
@@ -268,6 +270,10 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Resumen por Telegram (18/10/2026): `gasol-resumen` desplegada y cron `gasol-resumen-diario`
+  (`0 6,7 * * *`, filtro de las 08:00 de Madrid), migración `20261018220000` (decisiones 117-119).
+  Sin clave o con clave falsa, 401. Prueba manual lanzada desde la base con la clave de Vault: 200,
+  Telegram aceptó el mensaje del 17/10 (todo «sin datos»: las tablas se crearon el 18/10).
 - Contador de aperturas (18/10/2026): `gasol-visita` desplegada; tablas `gasol_visitas` y
   `gasol_visitas_hora` (migración `20261018210000`), tope de 300 por hora (decisiones 113-116).
   Función SQL probada en una transacción deshecha (ok, tope, inválidas). Con la función desplegada:
