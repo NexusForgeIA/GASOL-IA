@@ -13,6 +13,7 @@ del proyecto Supabase propio de Gasol-IA.
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
 | Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
+| Vencimientos | **Publicado** (`vencimientos.html`), solo en el navegador. Ver abajo. |
 | Control de gastos | **Publicado** (`gastos.html`), solo en el navegador. Ver abajo. |
 | Ficha de estación | **Publicada** en comparador, ruta y favoritas. Ver abajo. |
 | Inicio, favoritas y preferencias | **Publicadas** (`inicio.html`, `favoritas.html`), solo en el navegador. Ver abajo. |
@@ -59,6 +60,16 @@ la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribuci�
 
 Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
 `try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
+
+## Vencimientos
+
+`vencimientos.html` (menú y tarjeta del inicio). El usuario apunta tipo (ITV, seguro, revisión
+del taxímetro, licencia o autorización, otro), descripción y vehículo opcionales, la fecha y con
+cuántos días de antelación avisar (7, 15, 30 o 60). **La fecha la pone él**: la app no calcula ni
+afirma plazos legales. Lista por fecha con vencidos (rojo), de hoy y próximos (ámbar). Al abrir
+el inicio, un recuadro lista los vencidos y próximos (sin push ni servidor). «Hoy» es el día en
+Madrid aunque el móvil esté en otra zona horaria. Editar, borrar con «Deshacer», exportar CSV y
+borrar todo con confirmación. `localStorage` (`gasol.vencimientos`, máx. 500).
 
 ## Control de gastos
 
@@ -117,7 +128,7 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/*.test.js`: 85 OK (7 de gastos y 4 de fechas). `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/*.test.js`: 91 OK (6 de vencimientos). `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -141,6 +152,11 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   favoritas; teclado; 0 desbordamiento con todas las fichas abiertas; 0 errores de consola.
   Lighthouse móvil `comparador` 99, `ruta` y `favoritas` 100 (accesibilidad y buenas prácticas
   100). Contraste de 50 precios en 10 fichas: iguales al oficial de la fecha de captura.
+- Vencimientos (18/10/2026): alta con errores frenados, estados vencido/hoy/próximo/al día,
+  editar, borrar y deshacer, aviso en el inicio, CSV, borrar todo, corruptos y sin
+  almacenamiento; con el navegador en `Pacific/Pago_Pago` (otro día) «hoy» sigue siendo el de
+  Madrid. 10 páginas a 390 px sin desbordamiento; 0 errores de consola. Lighthouse móvil
+  `vencimientos` e `inicio` 100/100/100.
 - Gastos (18/10/2026): alta con errores de tecleo frenados, resumen por turno, día y mes
   comprobado a mano, editar, borrar y deshacer, CSV descargado, borrar todo, datos corruptos y
   almacenamiento bloqueado; 390 px sin desbordamiento (tampoco dentro de las tablas); 0 errores

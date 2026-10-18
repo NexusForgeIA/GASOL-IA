@@ -12,6 +12,7 @@
   <link rel="icon" href="assets/icons/favicon-48.png" type="image/png" sizes="48x48">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/inicio.js"></script>
 </head>
 <body>
   <header class="cabecera">
@@ -23,6 +24,7 @@
         <a href="calculadoras.html">Calculadoras</a>
         <a href="favoritas.html">Favoritas</a>
         <a href="gastos.html">Gastos</a>
+        <a href="vencimientos.html">Vencimientos</a>
       </nav>
       <h1>¿Qué quieres hacer?</h1>
       <p class="sub">Para conductores profesionales: taxi, VTC, furgoneta y camión. Precios oficiales con su fecha de captura; planifica antes de salir.</p>
@@ -30,12 +32,23 @@
   </header>
 
   <main class="contenedor">
+    <section id="avisos-vencimientos" class="tarjeta-info aviso avisos-venc" aria-labelledby="t-avisos" hidden>
+      <h2 id="t-avisos">Revisa tus vencimientos</h2>
+      <p><a href="vencimientos.html">Ver tus vencimientos</a> · Son las fechas que apuntaste tú.</p>
+    </section>
     <ul class="tarjetas">
       <li>
         <a class="tarjeta" href="gastos.html">
           <span class="tarjeta-icono" aria-hidden="true">€</span>
           <span class="tarjeta-titulo">Control de gastos</span>
           <span class="tarjeta-texto">Apunta tus repostajes y mira tu coste por km, por turno, por día y por mes.</span>
+        </a>
+      </li>
+      <li>
+        <a class="tarjeta" href="vencimientos.html">
+          <span class="tarjeta-icono" aria-hidden="true">📅</span>
+          <span class="tarjeta-titulo">Vencimientos</span>
+          <span class="tarjeta-texto">Apunta la ITV, el seguro, el taxímetro o la licencia y te lo recordamos al abrir la app.</span>
         </a>
       </li>
       <li>

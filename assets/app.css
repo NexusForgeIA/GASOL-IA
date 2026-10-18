@@ -266,3 +266,17 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .tabla-wrap .tabla-calculo td { white-space: nowrap; }
 .celda-linea { display: block; }
 @media (min-width: 40rem) { .tarjetas { grid-template-columns: repeat(2, 1fr); } }
+
+/* Vencimientos */
+.etiqueta-estado { display: inline-block; margin: 0 .5rem .25rem 0; padding: .1rem .6rem; border-radius: 999px; border: 1px solid var(--line); font-size: .85rem; font-weight: 700; }
+.etiqueta-estado.vencido { background: var(--error); border-color: var(--error); color: #2b0906; }
+.etiqueta-estado.hoy, .etiqueta-estado.proximo { border-color: var(--warn); color: var(--warn); }
+.etiqueta-estado.al_dia { color: var(--muted); }
+.vencimientos li.vencido { border-color: var(--error); }
+.vencimientos li.hoy, .vencimientos li.proximo { border-color: var(--warn); }
+.avisos-venc { margin: 1.5rem 0 0; }
+.avisos-venc h2 { font-size: 1.1rem; margin-bottom: .5rem; }
+.avisos-venc ul { margin: 0 0 .5rem; padding-left: 1.1rem; }
+.avisos-venc li.vencido strong { color: var(--error); }
+.avisos-venc li.hoy strong, .avisos-venc li.proximo strong { color: var(--warn); }
+.avisos-venc a { display: inline-block; min-height: 44px; line-height: 44px; }

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vencimientos · Gasol-IA</title>
+  <meta name="description" content="Apunta las fechas de ITV, seguro, revisión del taxímetro o licencia y te las recordamos al abrir la app. Guardado solo en tu navegador.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/vencimientos-vista.js"></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="inicio.html">Gasol-IA</a>
+        <a href="comparador.html">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="calculadoras.html">Calculadoras</a>
+        <a href="favoritas.html">Favoritas</a>
+        <a href="gastos.html">Gastos</a>
+        <a href="vencimientos.html" aria-current="page">Vencimientos</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
+      </nav>
+      <h1>Vencimientos</h1>
+      <p class="sub">Apunta tus fechas y te las recordamos al abrir la app. Se guardan solo en este navegador.</p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <p class="tarjeta-info aviso"><strong>La fecha la pones tú.</strong> Gasol-IA no calcula ni comprueba plazos legales: mira la fecha en tu documentación o pregunta en el organismo correspondiente.</p>
+
+    <section class="resultados" aria-labelledby="t-lista">
+      <h2 id="t-lista">Tus vencimientos</h2>
+      <p id="estado-lista" class="estado" role="status" aria-live="polite"></p>
+      <ul id="lista" class="lista-simple vencimientos"></ul>
+    </section>
+
+    <section class="calc" aria-labelledby="t-form">
+      <h2 id="t-form">Añadir vencimiento</h2>
+      <form id="f-venc" class="filtros" novalidate>
+        <fieldset>
+          <legend>Tus datos</legend>
+          <div class="campos">
+            <label class="campo"><span>Tipo</span>
+              <select name="tipo">
+                <option value="itv">ITV</option>
+                <option value="seguro">Seguro</option>
+                <option value="taximetro">Revisión del taxímetro</option>
+                <option value="licencia">Licencia o autorización</option>
+                <option value="otro">Otro</option>
+              </select></label>
+            <label class="campo"><span>Fecha de vencimiento <em class="tuyo">tu dato</em></span>
+              <input type="date" name="fecha" required></label>
+            <label class="campo"><span>Descripción (opcional; obligatoria en «Otro»)</span>
+              <input type="text" name="nota" maxlength="60" autocomplete="off" placeholder="p. ej. póliza, tarjeta de transporte"></label>
+            <label class="campo"><span>Vehículo (opcional)</span>
+              <input type="text" name="vehiculo" maxlength="40" autocomplete="off" placeholder="p. ej. Taxi 1, matrícula"></label>
+            <label class="campo"><span>Avisar con antelación</span>
+              <select name="antelacion">
+                <option value="7">7 días</option>
+                <option value="15">15 días</option>
+                <option value="30" selected>30 días</option>
+                <option value="60">60 días</option>
+              </select></label>
+          </div>
+        </fieldset>
+        <div class="botones">
+          <button type="submit" class="boton" id="guardar">Añadir vencimiento</button>
+          <button type="button" class="boton-sec" id="cancelar" hidden>Cancelar edición</button>
+        </div>
+      </form>
+      <p id="estado-form" class="nota" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="peligro" aria-labelledby="t-datos">
+      <h2 id="t-datos">Tus datos</h2>
+      <p class="nota">Los avisos salen al abrir la app en este navegador; no hay notificaciones ni servidor. Exporta tus vencimientos a CSV o bórralos.</p>
+      <div class="botones">
+        <button type="button" id="exportar" class="boton-sec">Exportar CSV</button>
+        <button type="button" id="borrar" class="boton-peligro">Borrar todo</button>
+        <button type="button" id="borrar-si" class="boton-peligro" hidden>Sí, borrar todos</button>
+        <button type="button" id="borrar-no" class="boton-sec" hidden>Cancelar</button>
+      </div>
+      <p id="estado-datos" class="nota" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Las fechas son las que introduces tú. No es asesoramiento legal.</p>
+      <p><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+</body>
+</html>
