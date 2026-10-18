@@ -205,3 +205,7 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     de la app, para no duplicar un texto que se mantiene en otro sitio.
 65. **El logo de WhiteMoon se copia del repo** NexusForgeIA/WHITEMOON-WEB (`logo.png` y
     `logo.webp`, 180×82, idénticos byte a byte) y se sirve desde `assets/img/` (CSP `img-src 'self'`).
+66. **Logo 3D de WhiteMoon en la firma (18/10/2026)**, en lugar del de WHITEMOON-WEB, a petición
+    de Cris. Original cuadrado de 1254×1254 (subido a la raíz del repo; movido a `assets/img/`);
+    se sirve reducido a 144×144 (WebP y PNG de 256 colores) y se muestra a 72×72. El logo
+    anterior (`whitemoon-logo.png/.webp`) se ha eliminado: ya no se usaba.
