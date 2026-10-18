@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "jsr:@std/assert@1.0.13";
 import {
-  aCSV, anadirVencimiento, avisos, borrarVencimiento, borrarVencimientos, CLAVE_VENCIMIENTOS, editarVencimiento, estado,
-  leerVencimientos, nombreVencimiento, textoEstado, validarVencimiento,
+  aCSV, anadirVencimiento, avisos, borrarVencimiento, borrarVencimientos, CLAVE_RESPALDO, CLAVE_VENCIMIENTOS, editarVencimiento, estado,
+  leerVencimientos, migrarVencimientos, nombreVencimiento, textoEstado, TIPOS, validarVencimiento,
 } from "./vencimientos.js";
 import { hoyMadrid } from "./fechas.js";
 
@@ -83,4 +83,50 @@ Deno.test("nombre y CSV", () => {
   const csv = aCSV([{ fecha: "2026-11-01", tipo: "itv", nota: "", vehiculo: "=Taxi", antelacion: 30 }]).split("\r\n");
   assertEquals(csv[0], "fecha;tipo;descripcion;vehiculo;avisar_dias_antes");
   assertEquals(csv[1], "2026-11-01;ITV;;'=Taxi;30");
+});
+
+Deno.test("revista municipal: tipo propio, distinto de ITV y taxímetro", () => {
+  assertEquals(TIPOS.revista, "Revista municipal");
+  assertEquals(Object.keys(TIPOS).filter((t) => ["itv", "taximetro", "revista"].includes(t)).length, 3);
+  assert(!("licencia" in TIPOS));
+  assert(validarVencimiento(V({ tipo: "revista" })).vencimiento);
+  assertEquals(nombreVencimiento({ tipo: "revista", nota: "" }), "Revista municipal");
+});
+
+Deno.test("migración: lo guardado como «licencia» aparece como revista municipal, sin perder datos", () => {
+  const antiguo = [
+    { id: "a", tipo: "licencia", fecha: "2027-03-01", nota: "Ayuntamiento", vehiculo: "Taxi 1", antelacion: 60 },
+    { id: "b", tipo: "Licencia o autorización", fecha: "2027-04-01", nota: "", vehiculo: "", antelacion: 30 },
+    { id: "c", tipo: "itv", fecha: "2027-01-10", nota: "", vehiculo: "", antelacion: 15 },
+  ];
+  const s = memoria({ [CLAVE_VENCIMIENTOS]: JSON.stringify(antiguo), "gasol.gastos": "[1]" });
+  // Se ve como revista municipal aunque aún no se haya migrado.
+  assertEquals(leerVencimientos(s).map((v) => [v.id, v.tipo]), [["c", "itv"], ["a", "revista"], ["b", "revista"]]);
+  assertEquals(migrarVencimientos(s), 2);
+  const guardado = JSON.parse(s.get(CLAVE_VENCIMIENTOS));
+  assertEquals(guardado.find((v) => v.id === "a"), { id: "a", tipo: "revista", fecha: "2027-03-01", nota: "Ayuntamiento", vehiculo: "Taxi 1", antelacion: 60 });
+  assertEquals(guardado.length, 3);
+  assertEquals(s.get(CLAVE_RESPALDO), null); // se entendía todo: sin respaldo
+  assertEquals(s.get("gasol.gastos"), "[1]"); // no toca otras claves
+  assertEquals(migrarVencimientos(s), 0); // la segunda vez no hace nada
+  // El CSV exporta «Revista municipal».
+  const csv = aCSV(leerVencimientos(s)).split("\r\n");
+  assertEquals(csv[2], "2027-03-01;Revista municipal;Ayuntamiento;Taxi 1;60");
+});
+
+Deno.test("migración: lo que no se entiende se copia intacto al respaldo antes de escribir", () => {
+  const raro = JSON.stringify([{ id: "a", tipo: "licencia", fecha: "2027-03-01", nota: "", vehiculo: "", antelacion: 30 }, { id: "x", tipo: "carnet", fecha: "2027-01-01" }]);
+  const s = memoria({ [CLAVE_VENCIMIENTOS]: raro });
+  assertEquals(migrarVencimientos(s), 1);
+  assertEquals(s.get(CLAVE_RESPALDO), raro);
+  assertEquals(leerVencimientos(s).map((v) => v.tipo), ["revista"]);
+  for (const roto of ["{roto", '{"v":9}']) {
+    const r = memoria({ [CLAVE_VENCIMIENTOS]: roto });
+    assertEquals(migrarVencimientos(r), 0); // nada que traducir: no escribe
+    assertEquals(r.get(CLAVE_VENCIMIENTOS), roto);
+    assert(anadirVencimiento(V({}), r).vencimiento);
+    assertEquals(r.get(CLAVE_RESPALDO), roto); // al escribir encima, primero el respaldo
+  }
+  borrarVencimientos(s);
+  assertEquals([s.get(CLAVE_VENCIMIENTOS), s.get(CLAVE_RESPALDO)], [null, null]);
 });

@@ -4,8 +4,10 @@ import { mostrarCuentas } from "./config.js";
 import { fechaCorta, hoyMadrid } from "./fechas.js";
 import {
   aCSV, anadirVencimiento, borrarVencimiento, borrarVencimientos, editarVencimiento, estado, leerVencimientos,
-  nombreVencimiento, textoEstado,
+  migrarVencimientos, nombreVencimiento, textoEstado,
 } from "./vencimientos.js";
+
+migrarVencimientos(); // tipos de versiones anteriores (decisión 100)
 
 mostrarCuentas();
 
