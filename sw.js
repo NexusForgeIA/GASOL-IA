@@ -1,6 +1,6 @@
 // Service worker: solo cachea la carcasa de la app. Los precios siempre van a la red,
 // para no enseñar nunca un precio guardado como si fuera el último.
-const VERSION = "gasol-v16";
+const VERSION = "gasol-v17";
 const CARCASA = [
   "./",
   "index.html",
@@ -18,6 +18,7 @@ const CARCASA = [
   "calculadoras.html",
   "favoritas.html",
   "gastos.html",
+  "ingresos.html",
   "vencimientos.html",
   "assets/app.css",
   "assets/app.js",
@@ -32,6 +33,8 @@ const CARCASA = [
   "assets/fechas.js",
   "assets/gastos.js",
   "assets/gastos-vista.js",
+  "assets/ingresos.js",
+  "assets/ingresos-vista.js",
   "assets/vencimientos.js",
   "assets/vencimientos-vista.js",
   "assets/inicio.js",

@@ -18,6 +18,7 @@ del proyecto Supabase propio de Gasol-IA.
 | Recarga eléctrica | **Investigada, no integrada** (`docs/FUENTE-DATOS.md` §9). |
 | Vencimientos | **Publicado** (`vencimientos.html`), solo en el navegador. Ver abajo. |
 | Control de gastos | **Publicado** (`gastos.html`), solo en el navegador. Ver abajo. |
+| Facturación (taxistas beta) | **Publicada** (`ingresos.html`), solo en el navegador. Ver abajo. |
 | Ficha de estación | **Publicada** en comparador, ruta y favoritas. Ver abajo. |
 | Inicio, favoritas y preferencias | **Publicadas** (`inicio.html`, `favoritas.html`), solo en el navegador. Ver abajo. |
 | 2 · Cuentas, rutas en servidor y avisos push | Escritas, **desactivadas**. Pendientes del proyecto Supabase propio. |
@@ -110,6 +111,39 @@ fórmulas) y «Borrar mis datos» con confirmación en la página. Se guarda en 
 (`gasol.gastos`, máx. 5.000). La validación solo frena errores de tecleo. Resumen informativo:
 ni declaración ni consejo fiscal.
 
+## Facturación
+
+Petición de los taxistas de la beta. `ingresos.html` (menú «Facturación» y enlace dentro de la
+tarjeta de Control de gastos del inicio).
+- **Tabla mensual**: una fila por día del mes, con mes anterior/siguiente (no pasa del mes actual)
+  y el mes actual por defecto, hoy resaltado y desplegado al abrir. Columnas: Calle efectivo ·
+  Calle tarjeta · App cobrado por la app · App efectivo · Total · Nº de carreras. A 390 px cada día
+  es una tarjeta (fecha y total arriba, las cuatro columnas en 2 × 2); desde 48rem, fila de tabla
+  con cabecera. Los días futuros no se despliegan. Totales del mes con las mismas columnas y los
+  subtotales «Efectivo en mano (calle + app)» y «Cobrado por banco, datáfono o app».
+- **Día desplegable**: botón con `aria-expanded`/`aria-controls` dentro de un `h3` y panel
+  `region`; un día abierto a la vez. Lista de carreras (hora, canal o aplicación, método e
+  importe) con Editar y Borrar + «Deshacer». Formulario «+ Carrera»: Calle/Aplicación en botones
+  grandes; efectivo o tarjeta; o aplicación (texto libre con atajos de las del usuario, ninguna
+  preinstalada) y cobrado por la app o efectivo en mano; importe con teclado numérico; hora de
+  Madrid automática y editable; nota opcional. Tras guardar, queda listo para la siguiente con el
+  mismo canal, cobro y aplicación. «+ Carrera hoy» abre hoy y pone el foco en el importe.
+  «Añadir total sin detallar»: línea sin hora que suma al día pero no cuenta como carrera.
+- **Con tus gastos** (etiquetado «tus datos», informativo): facturación del mes menos los
+  repostajes del mes de Control de gastos, y facturación por km si hay dos lecturas del
+  cuentakilómetros en el mes.
+- **Tus aplicaciones**: añadir y quitar nombres (quitar no cambia carreras ya apuntadas).
+- Exportar CSV del mes (una fila por carrera: fecha, hora, canal, aplicación, método, importe y las
+  cuatro columnas; `;`, coma decimal, sin fórmulas) y «Borrar mis datos» con confirmación en la
+  página (no toca los gastos).
+- `localStorage` `gasol.ingresos` con versión (`{v: 1, carreras, apps}`, máx. 20.000 carreras y
+  30 aplicaciones). Si lo guardado no se entiende (corrupto o de una versión futura), se copia
+  intacto a `gasol.ingresos.respaldo` antes de escribir. No se tocan las demás claves.
+- Aviso visible arriba y abajo: «Resumen informativo con tus propios datos. No es una declaración
+  ni asesoramiento fiscal.» Sin IVA, IRPF ni cuotas. «Al volante, no: apunta la carrera cuando
+  estés parado.» Validación solo de tecleo: importe de 0 a 10.000 € con un solo separador decimal
+  (coma o punto) y hasta 2 decimales; hora HH:MM; textos con límite.
+
 ## Ficha de estación
 
 Cada estación del comparador, la ruta y favoritas es una ficha plegable (`<details>`, accesible con
@@ -165,7 +199,7 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/*.test.js`: 93 OK. `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/*.test.js`: 102 OK (9 nuevos de facturación). `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -205,6 +239,17 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   comprobado a mano, editar, borrar y deshacer, CSV descargado, borrar todo, datos corruptos y
   almacenamiento bloqueado; 390 px sin desbordamiento (tampoco dentro de las tablas); 0 errores
   de consola. Lighthouse móvil `gastos` e `inicio` 100/100/100.
+- Facturación (18/10/2026): tests con casos a mano (día con calle efectivo y tarjeta, dos apps con
+  las dos formas de cobro y un total sin detallar: 111,45 €, 7 carreras, efectivo en mano 65,20 €,
+  cobrado por banco/app 46,25 €; cambio de mes con carreras el 30/09 a las 23:50 y el 01/10;
+  octubre con 29 días sin carreras; febrero de 28 y 29 días; migración desde lista sin versión,
+  JSON roto y versión futura con respaldo). En el navegador, el mismo día metido con el formulario
+  da las mismas cifras; editar, borrar y deshacer, cambio de mes, «+ Carrera hoy», teclado,
+  aplicaciones, confirmación de borrado y cruce con gastos (0,124 €/km con 900 km) comprobados.
+  Captura a 390 px con el día desplegado (`docs/capturas/ingresos-dia-abierto.png`). 9 páginas a
+  390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
+  `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
+  días, corregido reservando altura).
 - Posicionamiento (18/10/2026): textos de portada, inicio, comparador y manifiesto para
   conductores profesionales. Lighthouse móvil portada 100/100/100 (antes fallaba con `NO_FCP`
   por la animación de opacidad), inicio y comparador 100/100/100.

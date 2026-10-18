@@ -292,3 +292,86 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .datos-titular { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .35rem 1rem; margin: .5rem 0 1rem; }
 .datos-titular dt { color: var(--muted); }
 .datos-titular dd { margin: 0; overflow-wrap: anywhere; }
+
+/* Facturación (ingresos) */
+.visualmente-oculto { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.aviso-fiscal { margin: 1.25rem 0 0; }
+.mes-nav { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: .5rem; align-items: center; margin: 1.25rem 0 .75rem; }
+.mes-nav h2 { margin: 0; text-align: center; font-size: 1.2rem; }
+.mes-nav .boton-sec { padding: 0; font-size: 1.4rem; line-height: 1; }
+.mes-nav .boton-sec:disabled { opacity: .35; cursor: default; }
+.resultados > .botones { margin: 0 0 .5rem; }
+.dias { list-style: none; margin: .75rem 0 1.5rem; padding: 0; display: grid; gap: .4rem; }
+.dias:empty { min-height: 100vh; } /* reserva sitio hasta pintar los días: sin saltos (CLS) */
+.dia { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.dia.hoy { border-color: var(--accent); }
+.dia-h { margin: 0; font-size: 1rem; }
+.dia-fila {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .3rem .75rem; align-items: center; width: 100%;
+  min-height: 52px; padding: .6rem .8rem; font: inherit; color: var(--text); text-align: left;
+  background: transparent; border: 0; border-radius: var(--radius); font-variant-numeric: tabular-nums;
+}
+button.dia-fila { cursor: pointer; }
+.dia-fila.futuro { color: var(--muted); min-height: 44px; }
+.dia-fecha { display: flex; align-items: center; gap: .5rem; font-weight: 700; text-transform: capitalize; }
+.dia-fecha .chip { font-size: .75rem; text-transform: none; }
+.dia-total { justify-self: end; font-weight: 800; }
+.dia-total .lbl { font-weight: 600; color: var(--muted); font-size: .85rem; }
+.dia-n { grid-column: 1 / -1; color: var(--muted); font-size: .85rem; }
+.dia-n:empty { display: none; }
+.dia-col { display: flex; justify-content: space-between; gap: .5rem; font-size: .85rem; min-width: 0; }
+.dia-col .lbl { color: var(--muted); overflow-wrap: anywhere; }
+.dia-col.cero .val { color: var(--muted); }
+.dia-panel { padding: 0 .8rem .9rem; border-top: 1px solid var(--line); }
+.dia-panel[hidden] { display: none; }
+.dia-cabecera { display: none; }
+.carreras { list-style: none; margin: .75rem 0; padding: 0; display: grid; gap: .4rem; }
+.carreras li { display: grid; gap: .35rem; padding: .6rem .7rem; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow-wrap: anywhere; }
+.carreras li.sin-detalle { border-style: dashed; }
+.carrera-linea { display: flex; justify-content: space-between; gap: .75rem; font-variant-numeric: tabular-nums; }
+.carrera-linea strong { white-space: nowrap; }
+.form-carrera { display: grid; gap: .75rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+.form-carrera h4 { margin: 0; font-size: 1.05rem; }
+.form-carrera input[type=text], .form-carrera input[type=time], .form-carrera .segmentado label, .form-carrera .interruptor { background: var(--bg); }
+.segmentado.grande label { min-height: 56px; font-size: 1.05rem; }
+.grupo-app { display: grid; gap: .75rem; }
+.grupo-app[hidden], .campo[hidden] { display: none; }
+input[type=time] {
+  width: 100%; min-height: 48px; padding: .6rem .75rem; font: inherit; color: var(--text); color-scheme: dark;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.chips { list-style: none; margin: .5rem 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+.chips:empty { display: none; }
+.chip-boton { min-height: 44px; padding: .4rem .9rem; font: inherit; font-weight: 600; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
+.chip-boton[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.chip-app { display: flex; align-items: center; gap: .5rem; padding: .25rem .25rem .25rem .75rem; border: 1px solid var(--line); border-radius: var(--radius); overflow-wrap: anywhere; }
+.chip-app .boton-sec { min-height: 44px; padding: .4rem .75rem; }
+.fila-campo { align-items: end; }
+.fila-campo .campo { flex: 1; }
+.cifras .fuerte { color: var(--text); font-weight: 800; }
+.tarjeta-doble { display: grid; }
+.tarjeta-doble .tarjeta { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.tarjeta-enlace {
+  display: flex; align-items: center; min-height: 48px; padding: .5rem 1rem; font-weight: 700; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--radius) var(--radius);
+}
+.tarjeta-enlace:hover { text-decoration: underline; }
+@media (max-width: 47.99rem) {
+  /* Tarjeta por día: fecha y total arriba, nº de carreras y las cuatro columnas en 2 × 2. */
+  .dia-fila { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .dia-total { order: 1; }
+  .dia-n { order: 2; }
+  .dia-col { order: 3; }
+}
+@media (min-width: 48rem) {
+  .dia-cabecera, .dia-fila { grid-template-columns: 5.5rem repeat(4, minmax(0, 1fr)) 6.5rem 6.5rem; }
+  .dia-cabecera { display: grid; gap: .75rem; padding: 0 .8rem; color: var(--muted); font-size: .8rem; font-weight: 600; text-align: right; }
+  .dia-cabecera span:first-child { text-align: left; }
+  .dia-fila { gap: .75rem; }
+  .dia-fecha { grid-column: 1; }
+  .dia-col { display: block; text-align: right; font-size: .95rem; }
+  .dia-col .lbl, .dia-total .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .dia-total { grid-column: 6; text-align: right; }
+  .dia-n { grid-column: 7; text-align: right; font-size: .95rem; }
+  .dia-n:empty { display: block; }
+}

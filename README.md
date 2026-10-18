@@ -16,7 +16,7 @@ eléctrica, pendientes (ver `docs/FUENTE-DATOS.md` §8 y §9).
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html` (portada), `inicio.html`, `comparador.html`, `ruta.html`, `calculadoras.html`, `favoritas.html`, `gastos.html`, `vencimientos.html`, `assets/`, `sw.js` | PWA: inicio, comparador, planificador de ruta, calculadoras, favoritas, control de gastos y vencimientos (vanilla JS) |
+| `index.html` (portada), `inicio.html`, `comparador.html`, `ruta.html`, `calculadoras.html`, `favoritas.html`, `gastos.html`, `ingresos.html`, `vencimientos.html`, `assets/`, `sw.js` | PWA: inicio, comparador, planificador de ruta, calculadoras, favoritas, control de gastos, facturación y vencimientos (vanilla JS) |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web (también precios por ID para favoritas y la ficha de estación) |
@@ -28,7 +28,7 @@ eléctrica, pendientes (ver `docs/FUENTE-DATOS.md` §8 y §9).
 ## Desarrollo
 
 ```bash
-deno test supabase/functions assets/*.test.js   # horarios, normalización, corredor, calculadoras, favoritas, ficha, gastos, vencimientos y fechas
+deno test supabase/functions assets/*.test.js   # horarios, normalización, corredor, calculadoras, favoritas, ficha, gastos, facturación, vencimientos y fechas
 python scripts/generar_paginas.py                         # genera gasolineras/ y sitemap.xml
 python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-LD de las páginas
 python -m http.server 8080            # sirve la PWA en local

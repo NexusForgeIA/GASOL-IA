@@ -209,3 +209,30 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     de Cris. Original cuadrado de 1254×1254 (subido a la raíz del repo; movido a `assets/img/`);
     se sirve reducido a 144×144 (WebP y PNG de 256 colores) y se muestra a 72×72. El logo
     anterior (`whitemoon-logo.png/.webp`) se ha eliminado: ya no se usaba.
+
+# Decisiones — Facturación (18/10/2026)
+
+67. **Página propia (`ingresos.html`, menú «Facturación»)**, enlazada también desde la tarjeta de
+    Control de gastos del inicio con un segundo enlace bajo la tarjeta (un enlace no puede ir
+    dentro de otro).
+68. **Cuatro columnas fijas** (calle efectivo, calle tarjeta, app cobrado por la app, app
+    efectivo). La aplicación es texto libre: se guarda en cada carrera y sale en el CSV, pero la
+    tabla no se parte por aplicación.
+69. **Un total sin detallar no cuenta como carrera**: suma al día y al mes, pero el «Nº» solo
+    cuenta las carreras con hora. **[revisar]** con los taxistas.
+70. **Importe 0 admitido** (la regla es «sin negativos»); máximo 10.000 € y un solo separador
+    decimal con hasta 2 decimales, solo para frenar errores de tecleo. **[revisar]** si prefieren
+    que 0 no se admita.
+71. **Formato con versión y respaldo**: `gasol.ingresos` = `{v: 1, carreras, apps}`. Lo que no se
+    entienda (JSON roto o versión futura) se copia tal cual a `gasol.ingresos.respaldo` antes de
+    escribir, y «Borrar mis datos» borra las dos claves. Se lee también una lista suelta de
+    carreras por si se guardaron así.
+72. **Un día desplegado a la vez y hoy abierto al entrar**; el mes no pasa del actual y los días
+    futuros no se despliegan. La hora por defecto es la de Madrid, como «hoy» (`assets/fechas.js`).
+73. **Tras guardar se conservan canal, cobro y aplicación** y se limpia el importe: lo habitual es
+    apuntar varias seguidas del mismo tipo. Al entrar, todo vacío (ni canal elegido).
+74. **Cruce con gastos solo informativo**: facturación del mes menos los repostajes del mes; por km
+    con los km entre la primera y la última lectura del mes en cada vehículo o turno (se queda corto
+    si la primera lectura del mes no es el día 1, y la página lo dice). No resta otros gastos.
+75. **CSV solo del mes que se ve**, una fila por carrera, con las cuatro columnas además de canal,
+    aplicación y método, para sumarlas en una hoja de cálculo.
