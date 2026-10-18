@@ -141,8 +141,9 @@ tarjeta de Control de gastos del inicio).
   intacto a `gasol.ingresos.respaldo` antes de escribir. No se tocan las demás claves.
 - Aviso visible arriba y abajo: «Resumen informativo con tus propios datos. No es una declaración
   ni asesoramiento fiscal.» Sin IVA, IRPF ni cuotas. «Al volante, no: apunta la carrera cuando
-  estés parado.» Validación solo de tecleo: importe de 0 a 10.000 € con un solo separador decimal
-  (coma o punto) y hasta 2 decimales; hora HH:MM; textos con límite.
+  estés parado.» Validación solo de tecleo: importe mayor que 0 y hasta 10.000 € con un solo
+  separador decimal (coma o punto) y hasta 2 decimales; hora HH:MM; textos con límite. Bajo los
+  totales, la nota «Carreras: solo las detalladas» (un total sin detallar no cuenta como carrera).
 
 ## Ficha de estación
 

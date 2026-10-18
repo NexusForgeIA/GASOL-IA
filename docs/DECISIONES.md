@@ -218,11 +218,12 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 68. **Cuatro columnas fijas** (calle efectivo, calle tarjeta, app cobrado por la app, app
     efectivo). La aplicación es texto libre: se guarda en cada carrera y sale en el CSV, pero la
     tabla no se parte por aplicación.
-69. **Un total sin detallar no cuenta como carrera**: suma al día y al mes, pero el «Nº» solo
-    cuenta las carreras con hora. **[revisar]** con los taxistas.
-70. **Importe 0 admitido** (la regla es «sin negativos»); máximo 10.000 € y un solo separador
-    decimal con hasta 2 decimales, solo para frenar errores de tecleo. **[revisar]** si prefieren
-    que 0 no se admita.
+69. **Un total sin detallar no cuenta como carrera** (confirmado por Cris, 18/10/2026): suma al día
+    y al mes, pero el «Nº» solo cuenta las carreras con hora. Nota visible bajo los totales:
+    «Carreras: solo las detalladas».
+70. **Importe mayor que 0** (decidido por Cris, 18/10/2026; antes se admitía 0): hasta 10.000 € y
+    un solo separador decimal con hasta 2 decimales, solo para frenar errores de tecleo. El error se
+    muestra en la página, junto al formulario.
 71. **Formato con versión y respaldo**: `gasol.ingresos` = `{v: 1, carreras, apps}`. Lo que no se
     entienda (JSON roto o versión futura) se copia tal cual a `gasol.ingresos.respaldo` antes de
     escribir, y «Borrar mis datos» borra las dos claves. Se lee también una lista suelta de
