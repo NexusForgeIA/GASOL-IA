@@ -1,7 +1,7 @@
 // Gasol-IA · comparador. Vanilla JS, sin dependencias salvo Leaflet bajo demanda.
 import { API as BASE, mostrarCuentas } from "./config.js";
 import { leerPreferencias } from "./favoritas.js";
-import { ficha } from "./ficha.js";
+import { ficha, unidad } from "./ficha.js";
 
 mostrarCuentas();
 
@@ -203,7 +203,7 @@ function pintarMapa() {
     });
     const div = el("div", {},
       el("strong", { text: capitalizar(f.rotulo || "Sin rótulo") }), el("br"),
-      document.createTextNode(`${euros.format(f.precio)} €/l · ${fechaHora.format(new Date(f.fecha_captura))}`));
+      document.createTextNode(`${euros.format(f.precio)} €/${unidad(f.combustible)} · ${fechaHora.format(new Date(f.fecha_captura))}`));
     m.bindPopup(div);
     capaMarcadores.addLayer(m);
     puntos.push([f.lat, f.lon]);

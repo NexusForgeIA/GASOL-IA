@@ -442,7 +442,8 @@ mostrarCuentas();
 {
   // Valores iniciales de las preferencias de este navegador (una ruta guardada los sustituye).
   const pref = leerPreferencias();
-  if (pref.combustible) form.combustible.value = pref.combustible;
+  // La ruta trabaja en litros (calculadora de desvío): un gas de la preferencia no se aplica.
+  if (pref.combustible && form.combustible.querySelector(`option[value="${pref.combustible}"]`)) form.combustible.value = pref.combustible;
   if (pref.corredor) form.lateral.value = pref.corredor;
 }
 if (!CUENTAS) {

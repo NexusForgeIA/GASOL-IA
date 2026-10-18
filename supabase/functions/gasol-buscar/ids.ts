@@ -8,8 +8,9 @@ export function idsValidos(texto: string): string[] | null {
 }
 
 /**
- * Productos de la ficha, en este orden. Solo los de unidad confirmada (€/l). Fuera: Gasóleo B
- * (agrícola) y GNC, GNL, biogás e hidrógeno hasta confirmar sus unidades (docs/FUENTE-DATOS.md).
+ * Productos de la ficha, en este orden. Solo los de unidad confirmada: €/l y, desde el 18/10/2026,
+ * GNC, GNL y biogás en €/kg (docs/FUENTE-DATOS.md §8). Fuera: Gasóleo B (agrícola) e hidrógeno
+ * (dos estaciones con precios muy dispares).
  */
 export const FICHA_COMBUSTIBLES = [
   "gasoleo_a",
@@ -19,5 +20,9 @@ export const FICHA_COMBUSTIBLES = [
   "gasolina_95_e5_premium",
   "gasolina_98_e5",
   "glp",
+  "gnc",
+  "gnl",
+  "biogas_comprimido",
+  "biogas_licuado",
   "adblue",
 ];

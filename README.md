@@ -8,6 +8,10 @@ Precios procedentes del servicio oficial del Ministerio para la Transición
 Ecológica y el Reto Demográfico, mostrados siempre con la fecha y hora de la
 captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 
+Productos: gasóleos, gasolinas, diésel renovable, GLP y AdBlue en €/l; GNC, GNL y biogás en
+€/kg (unidades confirmadas en la orden oficial de remisión). Hidrógeno y puntos de recarga
+eléctrica, pendientes (ver `docs/FUENTE-DATOS.md` §8 y §9).
+
 ## Estructura
 
 | Ruta | Qué es |
