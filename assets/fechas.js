@@ -32,3 +32,20 @@ const fmtMes = new Intl.DateTimeFormat("es-ES", { timeZone: "UTC", month: "long"
 export const fechaCorta = (s) => { const [y, m, d] = s.split("-").map(Number); return fmt.format(new Date(Date.UTC(y, m - 1, d))); };
 /** "2026-10" → "octubre de 2026". */
 export const nombreMes = (s) => { const [y, m] = s.split("-").map(Number); return fmtMes.format(new Date(Date.UTC(y, m - 1, 1))); };
+
+const horaEnMadrid = new Intl.DateTimeFormat("es-ES", { timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+/** Hora de ahora en Madrid como "HH:MM". */
+export const horaMadrid = (ahora = new Date()) => horaEnMadrid.format(ahora);
+
+/** Días que tiene un mes "AAAA-MM" (28 a 31). */
+export const diasDelMes = (mes) => { const [y, m] = mes.split("-").map(Number); return new Date(Date.UTC(y, m, 0)).getUTCDate(); };
+
+/** Suma meses a "AAAA-MM": ("2026-12", 1) → "2027-01". */
+export function sumarMeses(mes, n) {
+  const [y, m] = mes.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1 + n, 1)).toISOString().slice(0, 7);
+}
+
+const fmtDia = new Intl.DateTimeFormat("es-ES", { timeZone: "UTC", weekday: "short", day: "numeric" });
+/** "2026-10-18" → "dom 18". */
+export const diaSemana = (s) => { const [y, m, d] = s.split("-").map(Number); return fmtDia.format(new Date(Date.UTC(y, m - 1, d))).replace(/[.,]/g, ""); };
