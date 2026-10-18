@@ -9,6 +9,7 @@ del proyecto Supabase propio de Gasol-IA.
 | 0 · Fuente de datos | Hecha. Licencia comercial pendiente de confirmar (`docs/FUENTE-DATOS.md`). |
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
+| Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
 | 2 · Cuentas, rutas en servidor y avisos push | Escritas, **desactivadas**. Pendientes del proyecto Supabase propio. |
 | 3 · 4 · 5 | Pendientes del proyecto Supabase propio. |
 
@@ -37,6 +38,22 @@ Desactivado (código presente, no se borra):
   `GASOL_CUENTAS=1` (secreto de la función; hoy sin definir).
 - `gasol-alertas` (avisos push con VAPID): **no desplegada**.
 
+## Calculadoras
+
+`calculadoras.html`, enlazada en el menú junto a Comparador y Ruta. Todo se calcula en el navegador
+(`assets/calculos.js`, con tests); consumos, litros, km, capacidad y precio habitual los pone el
+usuario y se etiquetan «tu dato». Lo único que se pide al servidor es el precio oficial más bajo de
+la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribución.
+
+1. Ahorro por repostaje: gasolinera habitual frente al precio más bajo de la zona, restando el
+   desvío opcional (km extra y consumo). Dice si compensa con esos datos.
+2. Coste del viaje. 3. Consumo real (l/100 km). 4. Coste por km y proyección mensual y anual.
+5. Litros por depósito: nivel en % o litros, litros y coste para llenar, autonomía y coste hasta
+   un nivel elegido. Valida nivel negativo o por encima de la capacidad.
+
+Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
+`try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
+
 ## Pendiente de decidir o de hacer
 
 - **`gasol-cuenta` está desplegada (v1) en el proyecto compartido** desde la sesión anterior,
@@ -52,7 +69,7 @@ Desactivado (código presente, no se borra):
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/calculos.test.js`: 49 OK. `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/calculos.test.js`: 60 OK (11 nuevos de las calculadoras). `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -63,6 +80,10 @@ Desactivado (código presente, no se borra):
   `cuenta` y `privacidad`.
 - Lighthouse móvil (`index`, `ruta`, `privacidad`): rendimiento, accesibilidad y buenas
   prácticas en 100. SEO en 60 solo por el `noindex` (buscado).
+- Calculadoras (18/10/2026): capturas a 390 px de las 5 (`docs/capturas/calc-*.png`), sin
+  desbordamiento ni errores de consola; Lighthouse móvil 100/100/100 (SEO 60 por `noindex`);
+  precio de zona contra el servicio oficial (Getafe y Zaragoza gasóleo A, Sevilla gasolina 95):
+  12 de 12 iguales.
 - **URL pública verificada tras fusionar (#2, 18/10/2026):** el planificador carga, Madrid →
   Valencia y Getafe → Alcalá calculan con 1/2/5/10 km, guardar/cargar/borrar en el navegador
   funciona, sin desbordamiento a 390 px y sin errores de consola.

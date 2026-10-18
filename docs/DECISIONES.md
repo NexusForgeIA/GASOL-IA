@@ -91,3 +91,13 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 25. **La lista de municipios la sirve `gasol-ruta`** (`GET ?listado=lugares`) para desplegar una
     sola función; `gasol-buscar` también la tiene en el repo, pero la versión desplegada no.
 26. **Atribución con fecha junto al corredor** («Datos actualizados el …»), además del pie.
+
+# Decisiones — Calculadoras (18/10/2026)
+
+27. **Precio de referencia = el más bajo de la zona** (provincia o municipio y combustible) en la
+    última captura, con estación, fecha y atribución. Sin medias: el más bajo es comprobable en el
+    comparador. En el ahorro por repostaje no se edita; en las demás es sugerencia editable.
+28. **El combustible del desvío se valora al precio de la zona**, como en la calculadora de ruta.
+29. **Límites de validación** (p. ej. hasta 2.000 l, 10 €/l, 100 l/100 km, 5.000 l de depósito):
+    solo descartan errores de tecleo; no son valores por defecto ni se muestran como datos.
+30. **AdBlue fuera de las calculadoras**: no se consume en l/100 km como el combustible.
