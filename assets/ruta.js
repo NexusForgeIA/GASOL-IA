@@ -2,6 +2,7 @@
 import { API, CUENTAS, mostrarCuentas } from "./config.js";
 import { compararDesvio, enlaceGoogleMaps, enlaceWaze, euros, puntosIntermedios } from "./calculos.js";
 import { llamar, sesion } from "./sesion.js";
+import { botonEstrella, leerPreferencias } from "./favoritas.js";
 
 const LEAFLET = {
   css: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
@@ -254,7 +255,7 @@ function tarjeta(e, minima) {
       chip, el("span", { text: `Horario oficial: ${e.horario_texto || "sin publicar"}` })),
     el("p", { class: "dir", text: desvio }),
     el("p", { class: "captura", text: `Precio capturado el ${fechaHora.format(new Date(e.fecha_captura))} (hora peninsular) · Fuente: MITECO` }),
-    elegir,
+    el("div", { class: "botones" }, elegir, botonEstrella(e)),
   );
 }
 
@@ -437,6 +438,12 @@ async function pintarMisRutas() {
 
 // ---- Arranque --------------------------------------------------------------------
 mostrarCuentas();
+{
+  // Valores iniciales de las preferencias de este navegador (una ruta guardada los sustituye).
+  const pref = leerPreferencias();
+  if (pref.combustible) form.combustible.value = pref.combustible;
+  if (pref.corredor) form.lateral.value = pref.corredor;
+}
 if (!CUENTAS) {
   $("nota-guardar-local").hidden = false;
 } else {

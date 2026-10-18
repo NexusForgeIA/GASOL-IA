@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Favoritas y preferencias · Gasol-IA</title>
+  <meta name="description" content="Tus gasolineras de siempre con su último precio oficial y la fecha de captura, y tus preferencias de combustible y radio. Guardado solo en tu navegador.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://mlaqtniujnvfxcvcourm.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/favoritas-vista.js"></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="inicio.html">Gasol-IA</a>
+        <a href="comparador.html">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="calculadoras.html">Calculadoras</a>
+        <a href="favoritas.html" aria-current="page">Favoritas</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
+      </nav>
+      <h1>Favoritas y preferencias</h1>
+      <p class="sub">Se guardan solo en este navegador: sin cuenta y sin enviar nada a ningún servidor.</p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="resultados" aria-labelledby="t-favoritas">
+      <div class="resumen">
+        <h2 id="t-favoritas">Tus favoritas</h2>
+        <label class="campo campo-corto">
+          <span>Precio de</span>
+          <select id="f-combustible">
+            <option value="gasoleo_a" selected>Gasóleo A</option>
+            <option value="gasoleo_premium">Gasóleo Premium</option>
+            <option value="diesel_renovable">Diésel renovable</option>
+            <option value="adblue">AdBlue</option>
+            <option value="gasolina_95_e5">Gasolina 95 E5</option>
+            <option value="gasolina_98_e5">Gasolina 98 E5</option>
+            <option value="glp">GLP (autogás)</option>
+          </select>
+        </label>
+      </div>
+      <p id="estado" class="estado" role="status" aria-live="polite" tabindex="-1">Cargando…</p>
+      <div id="vacio" class="botones" hidden>
+        <a class="boton" href="comparador.html">Ir al comparador</a>
+        <a class="boton-sec" href="ruta.html">Ir a la ruta</a>
+      </div>
+      <ol id="lista" class="lista"></ol>
+      <p id="atribucion" class="captura" hidden></p>
+    </section>
+
+    <section class="calc" aria-labelledby="t-pref">
+      <h2 id="t-pref">Preferencias</h2>
+      <p class="nota">El comparador y la ruta empiezan con estos valores. Siempre puedes cambiarlos allí.</p>
+      <form id="f-pref" class="filtros" novalidate>
+        <div class="campos">
+          <label class="campo"><span>Combustible habitual</span>
+            <select name="combustible">
+              <option value="">Sin preferencia (Gasóleo A)</option>
+              <option value="gasoleo_a">Gasóleo A</option>
+              <option value="gasoleo_premium">Gasóleo Premium</option>
+              <option value="diesel_renovable">Diésel renovable</option>
+              <option value="adblue">AdBlue</option>
+              <option value="gasolina_95_e5">Gasolina 95 E5</option>
+              <option value="gasolina_98_e5">Gasolina 98 E5</option>
+              <option value="glp">GLP (autogás)</option>
+            </select></label>
+          <label class="campo"><span>Radio de «Cerca de mí» (comparador)</span>
+            <select name="radio">
+              <option value="">Sin preferencia (10 km)</option>
+              <option value="5">5 km</option>
+              <option value="10">10 km</option>
+              <option value="25">25 km</option>
+              <option value="50">50 km</option>
+            </select></label>
+          <label class="campo"><span>Distancia máxima a la ruta</span>
+            <select name="corredor">
+              <option value="">Sin preferencia (2 km)</option>
+              <option value="1">1 km</option>
+              <option value="2">2 km</option>
+              <option value="5">5 km</option>
+              <option value="10">10 km</option>
+            </select></label>
+        </div>
+        <button type="submit" class="boton">Guardar preferencias</button>
+      </form>
+      <p id="estado-pref" class="nota" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="peligro" aria-labelledby="t-borrar">
+      <h2 id="t-borrar">Borrar mis datos</h2>
+      <p class="nota">Borra de este navegador tus favoritas y tus preferencias. Las rutas guardadas se borran desde <a href="ruta.html">Ruta</a>.</p>
+      <div class="botones">
+        <button type="button" id="borrar" class="boton-peligro">Borrar mis datos</button>
+        <button type="button" id="borrar-si" class="boton-peligro" hidden>Sí, borrar</button>
+        <button type="button" id="borrar-no" class="boton-sec" hidden>Cancelar</button>
+      </div>
+      <p id="estado-borrar" class="nota" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Origen de los datos: Ministerio para la Transición Ecológica y el Reto Demográfico (servicio de precios de carburantes en estaciones terrestres). Cada precio indica la fecha y hora en que lo capturamos; puede haber cambiado desde entonces. El Ministerio no participa en esta aplicación ni la patrocina.</p>
+      <p><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+</body>
+</html>

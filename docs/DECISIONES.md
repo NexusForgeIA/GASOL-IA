@@ -101,3 +101,19 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 29. **Límites de validación** (p. ej. hasta 2.000 l, 10 €/l, 100 l/100 km, 5.000 l de depósito):
     solo descartan errores de tecleo; no son valores por defecto ni se muestran como datos.
 30. **AdBlue fuera de las calculadoras**: no se consume en l/100 km como el combustible.
+
+# Decisiones — Inicio y favoritas (18/10/2026)
+
+31. **Favoritas solo en el navegador** y sin coordenadas: se guarda el ID oficial y lo justo para
+    reconocer la estación si no llega su precio. Máximo 50 (lo que acepta `gasol-buscar?ids=`).
+32. **Precio de favoritas por ID en el servidor** (`gasol_estaciones_por_id`, solo `service_role`,
+    vía `gasol-buscar`, desplegada v4): las estaciones de la ruta no traen municipio, y así la
+    lógica de 24 h es la misma del comparador. Estación sin ese combustible → «Sin precio de … en
+    la última captura»; estación que ya no aparece → se avisa y se mantiene en la lista.
+33. **Preferencias como valor inicial**, nunca forzado: en el comparador manda la URL compartida y
+    en la ruta, una ruta guardada. La distancia a la ruta (1/2/5/10 km) es una preferencia aparte
+    del radio de «Cerca de mí» (5/10/25/50 km), porque las escalas no coinciden.
+34. **«Borrar mis datos» sin diálogos del navegador**: confirmación en la propia página. No borra
+    las rutas guardadas, que tienen su propio botón en Ruta (se indica en la página).
+35. **`[hidden] { display: none !important }`** global: evita que una clase con `display` muestre
+    lo que está oculto (pasaba con el enlace «Cuenta»).
