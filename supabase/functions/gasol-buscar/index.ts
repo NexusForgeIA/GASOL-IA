@@ -3,10 +3,13 @@
 //   ?combustible=gasoleo_a&lat=40.42&lon=-3.70&radio=10[&solo24=1]
 //   ?listado=territorios
 //   ?listado=lugares   (municipios con estaciones y su centroide, para origen/destino)
+//   ?combustible=gasoleo_a&ids=4375,5122   (favoritas: último precio por ID, máx. 50)
 //   &limite=1..1000 (por defecto 200)
 // Consulta con service_role a funciones gasol_* sin acceso público.
 // RGPD: las coordenadas se redondean a 2 decimales (~1 km), no se guardan ni se
 // escriben en logs, y la respuesta no se cachea.
+
+import { idsValidos } from "./ids.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -76,6 +79,13 @@ Deno.serve(async (req) => {
 
     const combustible = q.get("combustible") ?? "gasoleo_a";
     if (!COMBUSTIBLES.has(combustible)) return json({ error: "Combustible no válido" }, 400);
+
+    if (q.has("ids")) {
+      const ids = idsValidos(q.get("ids")!);
+      if (!ids) return json({ error: "IDs no válidos" }, 400);
+      const filas = await rpc("gasol_estaciones_por_id", { p_ids: ids, p_combustible: combustible });
+      return json({ combustible, atribucion: ATRIBUCION, resultados: filas }, 200, "public, max-age=600");
+    }
     const provincia = q.get("provincia");
     const municipio = q.get("municipio");
     const lat = q.has("lat") ? Number(q.get("lat")) : null;

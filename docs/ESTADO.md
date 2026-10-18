@@ -10,6 +10,7 @@ del proyecto Supabase propio de Gasol-IA.
 | 1 · Comparador | Hecha y publicada. |
 | 2 · Ruta y corredor | **En demo, sin cuentas.** Ver abajo. |
 | Calculadoras | **Publicadas** (`calculadoras.html`), sin servidor. Ver abajo. |
+| Inicio, favoritas y preferencias | **Publicadas** (`inicio.html`, `favoritas.html`), solo en el navegador. Ver abajo. |
 | 2 · Cuentas, rutas en servidor y avisos push | Escritas, **desactivadas**. Pendientes del proyecto Supabase propio. |
 | 3 · 4 · 5 | Pendientes del proyecto Supabase propio. |
 
@@ -54,6 +55,22 @@ la zona elegida (`gasol-buscar`), siempre con su fecha de captura y la atribuci�
 Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculadoras`), con
 `try/catch`: sin almacenamiento la página funciona igual. Sin consejo fiscal ni legal.
 
+## Inicio, favoritas y preferencias
+
+- Portada → «Entrar» → `inicio.html`: tres tarjetas (Planificador de rutas, Favoritas y preferencias,
+  Calculadora de repostaje, que abre la del depósito) y un acceso al comparador. El logo del menú
+  lleva a `inicio.html`.
+- `favoritas.html`: estrella «☆ Favorita» (botón de 44 px con `aria-pressed`) en el comparador y en
+  la ruta. Se guarda solo en el navegador (`gasol.favoritas`, máx. 50): ID oficial, rótulo,
+  dirección, municipio y provincia; nunca coordenadas ni la ubicación del usuario. La lista pide el
+  último precio por ID a `gasol-buscar?ids=` (función SQL `gasol_estaciones_por_id`, mismas columnas
+  y misma `abierta_24h` que el comparador), con fecha de captura, fuente y atribución.
+- Preferencias (`gasol.preferencias`): combustible habitual, radio de «Cerca de mí» y distancia a la
+  ruta. Son el valor inicial del comparador (si la URL no trae otro) y de la ruta (una ruta guardada
+  los sustituye).
+- «Borrar mis datos» con confirmación en la página: borra favoritas y preferencias.
+- Sincronización con cuenta preparada (`sincronizarFavoritas`) y apagada mientras `CUENTAS = false`.
+
 ## Pendiente de decidir o de hacer
 
 - **`gasol-cuenta` está desplegada (v1) en el proyecto compartido** desde la sesión anterior,
@@ -69,7 +86,7 @@ Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculador
 
 ## Verificación de esta versión
 
-- `deno test supabase/functions assets/calculos.test.js`: 60 OK (11 nuevos de las calculadoras). `python -m unittest`: 7 OK.
+- `deno test supabase/functions assets/calculos.test.js assets/favoritas.test.js`: 69 OK (8 de favoritas y 1 de IDs). `python -m unittest`: 7 OK.
 - Pruebas reales contra la base (captura del 17/10/2026, 23:12):
   - Madrid → Valencia (353,1 km): 142 / 214 / 399 / 625 estaciones con 1 / 2 / 5 / 10 km.
   - Getafe → Alcalá de Henares (45,4 km): 67 / 113 / 240 / 437.
@@ -84,6 +101,13 @@ Los últimos valores y la zona se recuerdan en `localStorage` (`gasol.calculador
   desbordamiento ni errores de consola; Lighthouse móvil 100/100/100 (SEO 60 por `noindex`);
   precio de zona contra el servicio oficial (Getafe y Zaragoza gasóleo A, Sevilla gasolina 95):
   12 de 12 iguales.
+- Favoritas e inicio (18/10/2026): flujo portada → Entrar → inicio → cada tarjeta; estrella en
+  comparador y ruta; precios, 24 h y capturas en favoritas; preferencias aplicadas; borrar; datos
+  corruptos y almacenamiento bloqueado sin errores. 8 páginas a 390 px sin desbordamiento ni errores
+  de consola. Lighthouse móvil `inicio`, `favoritas`, `ruta`: 100/100/100 (SEO 60 por `noindex`).
+  Precios por ID contra el servicio oficial (Getafe, Valdemoro, Zaragoza): 15 de 15 iguales.
+- Corregido: el enlace «Cuenta» y la casilla de avisos de la ruta se veían aunque `CUENTAS = false`
+  (las clases con `display` anulaban `hidden`). Ahora `[hidden]` siempre oculta.
 - **URL pública verificada tras fusionar (#2, 18/10/2026):** el planificador carga, Madrid →
   Valencia y Getafe → Alcalá calculan con 1/2/5/10 km, guardar/cargar/borrar en el navegador
   funciona, sin desbordamiento a 390 px y sin errores de consola.

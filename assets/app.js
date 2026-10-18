@@ -1,5 +1,6 @@
 // Gasol-IA · comparador. Vanilla JS, sin dependencias salvo Leaflet bajo demanda.
 import { API as BASE, mostrarCuentas } from "./config.js";
+import { botonEstrella, leerPreferencias } from "./favoritas.js";
 
 mostrarCuentas();
 
@@ -78,8 +79,12 @@ function rellenarMunicipios(idProvincia, seleccionado = "") {
 function leerUrl() {
   const q = new URLSearchParams(location.search);
   if (q.get("modo") === "cerca") form.modo.value = "cerca";
-  if (q.get("combustible")) form.combustible.value = q.get("combustible");
-  if (q.get("radio")) form.radio.value = q.get("radio");
+  // La URL manda; si no trae valor, las preferencias guardadas en este navegador.
+  const pref = leerPreferencias();
+  const combustible = q.get("combustible") || pref.combustible;
+  const radio = q.get("radio") || pref.radio;
+  if (combustible) form.combustible.value = combustible;
+  if (radio) form.radio.value = radio;
   form.solo24.checked = q.get("solo24") === "1";
   return { provincia: q.get("provincia") ?? "", municipio: q.get("municipio") ?? "" };
 }
@@ -188,6 +193,7 @@ function tarjeta(f, minima, cerca) {
     el("div", { class: "meta" },
       minima ? el("span", { class: "primera-etiqueta", text: "Precio más bajo" }) : null,
       chip, horario, distancia, enlace),
+    botonEstrella(f),
     el("p", { class: "captura", text: `Precio capturado el ${fechaHora.format(new Date(f.fecha_captura))} (hora peninsular) · Fuente: MITECO` }),
   );
 }
