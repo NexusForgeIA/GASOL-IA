@@ -3,7 +3,12 @@
 Público: servicio de transporte de pasajeros y de mercancías. El diferencial es el control
 del gasto en combustible.
 
-Demo pública: <https://nexusforgeia.github.io/GASOL-IA/> (GitHub Pages desde `main`, `noindex`).
+**Dirección oficial: <https://gasol-ia.netlify.app>** (la única que se da a los taxistas; `noindex`).
+Se publica en Netlify (sitio `gasol-ia`) desde el repositorio NexusForgeIA/GASOL-IA, rama `main`:
+cada fusión se publica sola, sin comando de compilación y con la raíz como directorio de
+publicación. Configuración y cabeceras en `netlify.toml` (seguridad, `X-Robots-Tag: noindex`,
+`sw.js` sin caché larga). GitHub Pages (<https://nexusforgeia.github.io/GASOL-IA/>) sigue
+publicando `main` como copia de respaldo; no se reparte.
 Backend: proyecto Supabase compartido `mlaqtniujnvfxcvcourm` (prefijo `gasol_*`), a la espera
 del proyecto Supabase propio de Gasol-IA.
 
