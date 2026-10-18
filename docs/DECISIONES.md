@@ -251,3 +251,24 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     vehículo» y «Vehículo», «Aparcamiento (camiones)» en el informe de la fuente, los datos de
     prueba de los tests, las referencias a los taxistas de la beta (quién pidió la facturación) y
     el histórico (decisión 41 y verificaciones pasadas). Sin cambios en la atribución al Ministerio.
+
+# Decisiones — Botones verdes (18/10/2026)
+
+77. **Decisión de Cris: botones y enlaces de acción en verde con texto blanco**, para que se vean
+    pulsables. Variables en `assets/app.css`: `--accion` #15803d (blanco 5,02:1), `--accion-hover`
+    #166534 (7,13:1) y `--accion-activo` #14532d (9,11:1). Se aplica a `.boton`, `.boton-sec`
+    (que ya no es transparente), la estrella de favoritas, los atajos de aplicación, el índice de
+    calculadoras, el enlace de Facturación del inicio y «Entrar». Los conmutadores pulsados
+    (`aria-pressed`) pasan al verde oscuro con borde blanco (la estrella, borde ámbar).
+78. **Destructivos en rojo con texto blanco**: `--peligro` #c62828 (5,62:1), hover #b91c1c
+    (6,47:1), pulsado #991b1b (8,31:1). El borde del botón contra el fondo es 3,39:1.
+79. **Barra superior en píldoras verdes que pasan a varias filas** (tres a 390 px), no en una
+    tira con desplazamiento: así se ven todas las secciones sin esconder ninguna y sin JS. La página
+    actual: verde más oscuro, borde blanco y subrayado. «Gasol-IA» sigue como marca (texto verde).
+80. **«Precio a la baja» en la misma gama**: `--accent` pasa de #3ddc84 a #4ade80 (10,95:1 sobre
+    el fondo). Se sigue usando para textos de acento, precios a la baja y la estación más barata.
+81. **Foco**: anillo blanco de 3 px con 2 px de separación en toda la app (19,08:1 contra el
+    fondo, 5,02:1 contra el verde). Tamaño mínimo 44×44, separación de 0,75rem entre botones,
+    hover y pulsado con tonos más oscuros y una transición de 0,15 s solo con
+    `prefers-reduced-motion: no-preference`. Las opciones tipo radio (Calle/Aplicación, Buscar
+    por…) no cambian: son elecciones, no acciones.
