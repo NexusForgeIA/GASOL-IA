@@ -139,7 +139,8 @@ captura en cada precio y aviso de que el Ministerio no participa ni patrocina.
 >
 > Buenos días:
 >
-> Estamos desarrollando una aplicación para transportistas que muestra los precios de
+> Estamos desarrollando una aplicación para conductores profesionales (taxi, VTC, furgoneta y
+> camión) que muestra los precios de
 > carburantes publicados en el servicio
 > https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/
 > con la fecha de captura y la cita "Origen de los datos: Ministerio para la Transición

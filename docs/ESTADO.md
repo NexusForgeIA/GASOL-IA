@@ -1,5 +1,8 @@
 # Estado — 18/10/2026
 
+Público: conductores profesionales (taxi, VTC, furgoneta y camión). El diferencial es el control
+del gasto en combustible.
+
 Demo pública: <https://nexusforgeia.github.io/GASOL-IA/> (GitHub Pages desde `main`, `noindex`).
 Backend: proyecto Supabase compartido `mlaqtniujnvfxcvcourm` (prefijo `gasol_*`), a la espera
 del proyecto Supabase propio de Gasol-IA.
@@ -126,6 +129,9 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   favoritas; teclado; 0 desbordamiento con todas las fichas abiertas; 0 errores de consola.
   Lighthouse móvil `comparador` 99, `ruta` y `favoritas` 100 (accesibilidad y buenas prácticas
   100). Contraste de 50 precios en 10 fichas: iguales al oficial de la fecha de captura.
+- Posicionamiento (18/10/2026): textos de portada, inicio, comparador y manifiesto para
+  conductores profesionales. Lighthouse móvil portada 100/100/100 (antes fallaba con `NO_FCP`
+  por la animación de opacidad), inicio y comparador 100/100/100.
 - Corregido: «Repostar aquí» desmarcaba también las estrellas de favoritas de la ruta.
 - Corregido: el enlace «Cuenta» y la casilla de avisos de la ruta se veían aunque `CUENTAS = false`
   (las clases con `display` anulaban `hidden`). Ahora `[hidden]` siempre oculta.

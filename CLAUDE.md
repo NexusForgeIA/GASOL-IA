@@ -1,7 +1,8 @@
 # CLAUDE.md — Gasol-IA
 
-App para transportistas autónomos (camión y furgoneta de reparto): gasolineras
-más baratas en su ruta, con filtro de abiertas 24 h.
+App para conductores profesionales (taxi, VTC, furgoneta y camión). Su diferencial es el
+control del gasto en combustible; además, gasolineras más baratas en su ruta, con filtro de
+abiertas 24 h.
 
 ## Stack
 - Cliente: HTML/CSS/JS vanilla, PWA instalable. Sin frameworks ni npm en el cliente.

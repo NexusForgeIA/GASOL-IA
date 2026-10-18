@@ -1,7 +1,8 @@
 # Gasol-IA
 
-Comparador de precios de carburantes para transportistas autónomos (camión y
-furgoneta de reparto), con filtro de gasolineras abiertas 24 horas.
+App para conductores profesionales (taxi, VTC, furgoneta y camión): control del gasto
+en combustible y precios de carburantes en su zona y en su ruta, con filtro de gasolineras
+abiertas 24 horas.
 
 Precios procedentes del servicio oficial del Ministerio para la Transición
 Ecológica y el Reto Demográfico, mostrados siempre con la fecha y hora de la
