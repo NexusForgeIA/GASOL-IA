@@ -383,3 +383,11 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      páginas sin servidor** (copiado tal cual de `aviso-legal.html`). Era la única sin CSP. Carga
      `assets/app.css` y `assets/nav.js` (mismo origen) sin violaciones y sin estilos ni scripts
      inline.
+
+# Decisiones — Viewport (18/10/2026)
+
+102. **Las 12 páginas llevan la misma etiqueta viewport**
+     (`width=device-width, initial-scale=1, viewport-fit=cover`), copiada de `inicio.html`.
+     Privacidad y Aviso legal no tenían `viewport-fit=cover`, y sin ella `env(safe-area-inset-*)`
+     vale 0: en móviles con muesca la barra inferior no dejaba su margen. El generador de páginas
+     queda fuera porque sus páginas no se publican (pendiente en ESTADO).
