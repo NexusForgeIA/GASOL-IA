@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Vencimientos · Gasol-IA</title>
-  <meta name="description" content="Apunta las fechas de ITV, seguro, revisión del taxímetro o licencia y te las recordamos al abrir la app. Guardado solo en tu navegador.">
+  <meta name="description" content="Apunta las fechas de ITV, seguro, revisión del taxímetro o revista municipal y te las recordamos al abrir la app. Guardado solo en tu navegador.">
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#0d1013">
@@ -50,11 +50,11 @@
           <legend>Tus datos</legend>
           <div class="campos">
             <label class="campo"><span>Tipo</span>
-              <select name="tipo">
+              <select name="tipo" aria-describedby="ayuda-tipo">
                 <option value="itv">ITV</option>
                 <option value="seguro">Seguro</option>
                 <option value="taximetro">Revisión del taxímetro</option>
-                <option value="licencia">Licencia o autorización</option>
+                <option value="revista">Revista municipal</option>
                 <option value="otro">Otro</option>
               </select></label>
             <label class="campo"><span>Fecha de vencimiento <em class="tuyo">tu dato</em></span>
@@ -71,6 +71,7 @@
                 <option value="60">60 días</option>
               </select></label>
           </div>
+          <p class="nota" id="ayuda-tipo">ITV, revisión del taxímetro y revista municipal son inspecciones distintas: apunta cada una con su fecha.</p>
         </fieldset>
         <div class="botones">
           <button type="submit" class="boton" id="guardar">Añadir vencimiento</button>

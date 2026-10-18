@@ -96,12 +96,13 @@ pendiente con fuente, licencia y recomendación (§9).
 ## Vencimientos
 
 `vencimientos.html` (menú y tarjeta del inicio). El usuario apunta tipo (ITV, seguro, revisión
-del taxímetro, licencia o autorización, otro), descripción y vehículo opcionales, la fecha y con
+del taxímetro, revista municipal, otro), descripción y vehículo opcionales, la fecha y con
 cuántos días de antelación avisar (7, 15, 30 o 60). **La fecha la pone él**: la app no calcula ni
 afirma plazos legales. Lista por fecha con vencidos (rojo), de hoy y próximos (ámbar). Al abrir
 el inicio, un recuadro lista los vencidos y próximos (sin push ni servidor). «Hoy» es el día en
 Madrid aunque el móvil esté en otra zona horaria. Editar, borrar con «Deshacer», exportar CSV y
-borrar todo con confirmación. `localStorage` (`gasol.vencimientos`, máx. 500).
+borrar todo con confirmación. `localStorage` (`gasol.vencimientos`, máx. 500; respaldo en
+`gasol.vencimientos.respaldo` de lo que no se entienda).
 
 ## Control de gastos
 
@@ -261,6 +262,11 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Revista municipal (18/10/2026): el tipo «Licencia o autorización» pasa a «Revista municipal»
+  (decisiones 99-100). Un dato guardado con el tipo antiguo se ve y se guarda como revista municipal
+  con su vehículo y antelación; aparece en el aviso del inicio; CSV con «Revista municipal». Tests
+  108 OK. Captura `docs/capturas/vencimientos-revista.png`; 12 páginas a 390 px sin desbordamiento;
+  0 errores de consola.
 - Menú tipo app (18/10/2026): por debajo de 900 px, barra fija inferior (Inicio, Comparador, Ruta,
   Facturación, Más) y panel «Más» (Gastos, Calculadoras, Favoritas, Vencimientos, «Enviar opinión»,
   Privacidad y Aviso legal); desde 900 px, la barra superior de píldoras. Un solo componente en

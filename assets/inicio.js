@@ -1,7 +1,9 @@
 // Inicio: avisos de vencimientos al abrir la app (sin push ni servidor) y registro del SW.
 import "./nav.js";
 import { fechaCorta } from "./fechas.js";
-import { avisos, leerVencimientos, nombreVencimiento, textoEstado } from "./vencimientos.js";
+import { avisos, leerVencimientos, migrarVencimientos, nombreVencimiento, textoEstado } from "./vencimientos.js";
+
+migrarVencimientos(); // tipos de versiones anteriores (decisión 100)
 
 const caja = document.getElementById("avisos-vencimientos");
 const lista = avisos(leerVencimientos());

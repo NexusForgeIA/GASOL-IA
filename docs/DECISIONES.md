@@ -159,7 +159,7 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 # Decisiones — Vencimientos (18/10/2026)
 
 49. **Sin plazos legales**: la fecha la pone el usuario y la página lo dice arriba. No se sugieren
-    periodicidades de ITV, taxímetro ni licencias.
+    periodicidades de ITV, taxímetro ni revista municipal (antes «licencia»; decisión 99).
 50. **La antelación del aviso la elige el usuario** (7, 15, 30 o 60 días; 30 por defecto). Es una
     preferencia de la app, no un plazo.
 51. **Días de calendario en hora peninsular** (`assets/fechas.js`): «hoy» no depende de la zona
@@ -362,3 +362,17 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 98. **`<meta name="referrer" content="strict-origin-when-cross-origin">` en las 12 páginas**, para
     cubrir con `<meta>` la cabecera `Referrer-Policy` que GitHub Pages no permite (decisión 89).
     Las páginas generadas (`scripts/generar_paginas.py`) no lo llevan: no se publican.
+
+# Decisiones — Revista municipal (18/10/2026)
+
+99. **Decisión de Cris: el tipo «Licencia o autorización» pasa a «Revista municipal».** En el taxi la
+    licencia no caduca; lo que vence es la revista municipal, una inspección aparte de la ITV. Quedan
+    tres tipos de inspección distintos: ITV, Revisión del taxímetro (verificación anual con la
+    actualización de tarifas) y Revista municipal. La app no sugiere periodicidades ni normas: la
+    fecha la pone el usuario. Clave interna nueva `revista`.
+100. **Migración silenciosa** (`migrarVencimientos`, al abrir Vencimientos y el inicio): lo guardado
+     con el tipo antiguo (clave `licencia` o la etiqueta «Licencia…») se lee y se guarda como
+     `revista`, sin perder campos. Si en `gasol.vencimientos` hay algo que no se entiende (JSON roto,
+     otro formato o registros descartados), antes de escribir se copia intacto a
+     `gasol.vencimientos.respaldo`, como en Facturación. «Borrar mis datos» borra las dos claves. No
+     se toca ninguna otra clave.
