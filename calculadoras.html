@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadoras de combustible · Gasol-IA</title>
+  <meta name="description" content="Calcula con tus propios datos el coste de un viaje, tu consumo real, el coste por km, los litros para llenar el depósito y si compensa repostar en otra zona.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1013">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://mlaqtniujnvfxcvcourm.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/app.css">
+  <script type="module" src="assets/calculadoras.js"></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="navegacion" aria-label="Secciones">
+        <a class="marca" href="comparador.html">Gasol-IA</a>
+        <a href="comparador.html">Comparador</a>
+        <a href="ruta.html">Ruta</a>
+        <a href="calculadoras.html" aria-current="page">Calculadoras</a>
+        <a href="cuenta.html" data-cuentas hidden>Cuenta</a>
+      </nav>
+      <h1>Calculadoras</h1>
+      <p class="sub">Con tus datos. Todo se calcula en este navegador: no se envía nada.</p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <nav class="indice" aria-label="Calculadoras">
+      <a href="#c-ahorro">Ahorro por repostaje</a>
+      <a href="#c-viaje">Coste del viaje</a>
+      <a href="#c-consumo">Consumo real</a>
+      <a href="#c-km">Coste por km</a>
+      <a href="#c-deposito">Litros por depósito</a>
+    </nav>
+
+    <section class="calc" aria-labelledby="t-zona">
+      <h2 id="t-zona">Precio de referencia de una zona</h2>
+      <p class="nota">Opcional, salvo para el ahorro por repostaje. Es el precio oficial más bajo de la zona en nuestra última captura, no el de ahora mismo.</p>
+      <form id="f-zona" class="filtros" novalidate>
+        <div class="campos">
+          <label class="campo">
+            <span>Provincia</span>
+            <select id="z-provincia" name="provincia" required>
+              <option value="">Cargando provincias…</option>
+            </select>
+          </label>
+          <label class="campo">
+            <span>Municipio</span>
+            <select id="z-municipio" name="municipio" disabled>
+              <option value="">Todos los municipios</option>
+            </select>
+          </label>
+          <label class="campo">
+            <span>Combustible</span>
+            <select id="z-combustible" name="combustible">
+              <option value="gasoleo_a" selected>Gasóleo A</option>
+              <option value="gasoleo_premium">Gasóleo Premium</option>
+              <option value="diesel_renovable">Diésel renovable</option>
+              <option value="gasolina_95_e5">Gasolina 95 E5</option>
+              <option value="gasolina_98_e5">Gasolina 98 E5</option>
+              <option value="glp">GLP (autogás)</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit" class="boton">Consultar precio de la zona</button>
+      </form>
+      <div id="zona-resultado" class="resultado-calc" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="c-ahorro" class="calc" aria-labelledby="t-ahorro">
+      <h2 id="t-ahorro">1 · Ahorro por repostaje</h2>
+      <p class="nota">Compara lo que pagas en tu gasolinera habitual con el precio más bajo de la zona elegida, restando el desvío si lo hay.</p>
+      <form id="f-ahorro" class="filtros" novalidate>
+        <fieldset>
+          <legend>Tus datos</legend>
+          <div class="campos">
+            <label class="campo"><span>Litros a repostar <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="litros" autocomplete="off"></label>
+            <label class="campo"><span>Precio en tu gasolinera habitual (€/l) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="precioHabitual" autocomplete="off"></label>
+            <label class="campo"><span>Km extra del desvío, ida y vuelta (opcional) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="kmDesvio" autocomplete="off"></label>
+            <label class="campo"><span>Tu consumo (l/100 km), si hay desvío <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="consumoL100" autocomplete="off"></label>
+          </div>
+        </fieldset>
+        <p class="nota" data-precio-zona>Precio de la zona: consulta una zona arriba.</p>
+        <button type="submit" class="boton">Calcular</button>
+      </form>
+      <div class="resultado-calc" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="c-viaje" class="calc" aria-labelledby="t-viaje">
+      <h2 id="t-viaje">2 · Coste del viaje</h2>
+      <form id="f-viaje" class="filtros" novalidate>
+        <fieldset>
+          <legend>Tus datos</legend>
+          <div class="campos">
+            <label class="campo"><span>Km del viaje <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="km" autocomplete="off"></label>
+            <label class="campo"><span>Tu consumo (l/100 km) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="consumoL100" autocomplete="off"></label>
+            <label class="campo"><span>Precio por litro (€/l) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="precio" autocomplete="off"></label>
+          </div>
+        </fieldset>
+        <div class="sugerencia" data-sugerencia="precio" hidden></div>
+        <button type="submit" class="boton">Calcular</button>
+      </form>
+      <div class="resultado-calc" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="c-consumo" class="calc" aria-labelledby="t-consumo">
+      <h2 id="t-consumo">3 · Consumo real</h2>
+      <p class="nota">Llena el depósito hasta arriba, apunta los km y, en el siguiente llenado completo, los litros que entran.</p>
+      <form id="f-consumo" class="filtros" novalidate>
+        <fieldset>
+          <legend>Tus datos</legend>
+          <div class="campos">
+            <label class="campo"><span>Litros del último llenado <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="litros" autocomplete="off"></label>
+            <label class="campo"><span>Km desde el llenado anterior <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="km" autocomplete="off"></label>
+          </div>
+        </fieldset>
+        <button type="submit" class="boton">Calcular</button>
+      </form>
+      <div class="resultado-calc" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="c-km" class="calc" aria-labelledby="t-km">
+      <h2 id="t-km">4 · Coste por km y proyección</h2>
+      <form id="f-km" class="filtros" novalidate>
+        <fieldset>
+          <legend>Tus datos</legend>
+          <div class="campos">
+            <label class="campo"><span>Tu consumo (l/100 km) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="consumoL100" autocomplete="off"></label>
+            <label class="campo"><span>Km al mes <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="kmMes" autocomplete="off"></label>
+            <label class="campo"><span>Precio por litro (€/l) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="precio" autocomplete="off"></label>
+          </div>
+        </fieldset>
+        <div class="sugerencia" data-sugerencia="precio" hidden></div>
+        <button type="submit" class="boton">Calcular</button>
+      </form>
+      <div class="resultado-calc" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="c-deposito" class="calc" aria-labelledby="t-deposito">
+      <h2 id="t-deposito">5 · Litros por depósito</h2>
+      <form id="f-deposito" class="filtros" novalidate>
+        <fieldset>
+          <legend>Tus datos</legend>
+          <div class="campos">
+            <label class="campo"><span>Capacidad del depósito (litros) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="capacidad" autocomplete="off"></label>
+            <fieldset class="campo">
+              <legend>Nivel en</legend>
+              <div class="segmentado" role="radiogroup">
+                <label><input type="radio" name="unidad" value="pct" checked> %</label>
+                <label><input type="radio" name="unidad" value="litros"> Litros</label>
+              </div>
+            </fieldset>
+            <label class="campo"><span>Nivel actual <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="nivel" autocomplete="off"></label>
+            <label class="campo"><span>Rellenar hasta (opcional) <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="objetivo" autocomplete="off"></label>
+            <label class="campo"><span>Tu consumo (l/100 km), para la autonomía <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="consumoL100" autocomplete="off"></label>
+            <label class="campo"><span>Precio por litro (€/l), para el coste <em class="tuyo">tu dato</em></span>
+              <input type="text" inputmode="decimal" name="precio" autocomplete="off"></label>
+          </div>
+        </fieldset>
+        <div class="sugerencia" data-sugerencia="precio" hidden></div>
+        <button type="submit" class="boton">Calcular</button>
+      </form>
+      <div class="resultado-calc" role="status" aria-live="polite"></div>
+    </section>
+
+    <aside class="avisos">
+      <p><strong>Son estimaciones con tus datos.</strong> El precio real en el surtidor puede ser distinto del capturado.</p>
+      <p>No son consejo fiscal ni legal.</p>
+    </aside>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Origen de los datos: Ministerio para la Transición Ecológica y el Reto Demográfico (servicio de precios de carburantes en estaciones terrestres). Cada precio indica la fecha y hora en que lo capturamos; puede haber cambiado desde entonces. El Ministerio no participa en esta aplicación ni la patrocina.</p>
+      <p><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+</body>
+</html>

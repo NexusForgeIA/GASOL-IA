@@ -11,7 +11,7 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html` (portada), `comparador.html`, `ruta.html`, `assets/`, `sw.js` | PWA: comparador y planificador de ruta (vanilla JS) |
+| `index.html` (portada), `comparador.html`, `ruta.html`, `calculadoras.html`, `assets/`, `sw.js` | PWA: comparador, planificador de ruta y calculadoras (vanilla JS) |
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web |
@@ -23,7 +23,7 @@ captura. Ver [`docs/FUENTE-DATOS.md`](docs/FUENTE-DATOS.md).
 ## Desarrollo
 
 ```bash
-deno test supabase/functions assets/calculos.test.js      # horarios, normalización, corredor y calculadora
+deno test supabase/functions assets/calculos.test.js      # horarios, normalización, corredor y calculadoras
 python scripts/generar_paginas.py                         # genera gasolineras/ y sitemap.xml
 python -m unittest discover -s scripts -p "test_*.py"     # slugs, hora y JSON-LD de las páginas
 python -m http.server 8080            # sirve la PWA en local
