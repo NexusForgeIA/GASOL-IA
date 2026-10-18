@@ -14,5 +14,18 @@ class NotaBeta(unittest.TestCase):
         self.assertNotRegex(aviso.lower(), r"en vivo|tiempo real")
 
 
+class ListaPaginas(unittest.TestCase):
+    def test_codigo_igual_que_migracion(self):
+        ts = (RAIZ / "supabase" / "functions" / "gasol-visita" / "limites.ts").read_text(encoding="utf-8")
+        bloque = re.search(r"PAGINAS = \[(.*?)\] as const", ts, re.S).group(1)
+        codigo = re.findall(r'"([^"]+)"', bloque)
+        sql = (RAIZ / "supabase" / "migrations" / "20261018210000_gasol_visitas.sql").read_text(encoding="utf-8")
+        listas = re.findall(r"pagina\s+not in \(([^)]*)\)|pagina in \(([^)]*)\)", sql)
+        for a, b in listas:
+            self.assertEqual(re.findall(r"'([^']+)'", a or b), codigo)
+        self.assertEqual(len(listas), 2)
+        self.assertEqual(len(codigo), 13)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -20,6 +20,7 @@ eléctrica, pendientes (ver `docs/FUENTE-DATOS.md` §8 y §9).
 | `supabase/migrations/` | Esquema `gasol_*` (aplicado) |
 | `supabase/functions/gasol-ingest/` | Carga diaria del JSON oficial |
 | `supabase/functions/gasol-buscar/` | Lectura pública para la web (también precios por ID para favoritas y la ficha de estación) |
+| `supabase/functions/gasol-visita/` | Contador de aperturas por día, página y modo (aperturas, no personas; sin IP ni identificadores) |
 | `supabase/functions/gasol-ruta/` | Ruta y corredor (pública en la demo), con topes de cálculos por hora y día en `limites.ts` |
 | `scripts/generar_paginas.py` | Páginas estáticas por provincia y municipio |
 | `scripts/generar_iconos.py` | Iconos provisionales de la PWA |

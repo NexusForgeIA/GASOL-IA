@@ -449,3 +449,27 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      sería falso). El 429 lleva CORS y `limite: "hora" | "dia"`. Dos peticiones a OSRM seguidas de
      dos usuarios a la vez pueden pasar puntualmente de 1 por segundo: no se añade espera por no
      hacer más lenta cada ruta.
+
+# Decisiones — Contador de aperturas (18/10/2026)
+
+113. **Se cuentan aperturas, no personas.** `gasol_visitas` (día de Madrid, página de una lista
+     cerrada de 13, modo «navegador» o «instalada» y recuento) y `gasol_visitas_hora` (hora y
+     número, para el tope), con RLS sin políticas: solo `service_role`. `gasol_contar_visita` suma 1
+     y rechaza lo que no esté en la lista. Sin IP, coordenadas ni identificadores, y nada guardado
+     en el dispositivo para contar. La lista está en el `check` de la tabla, en la función SQL y en
+     `gasol-visita/limites.ts`; `scripts/test_textos.py` comprueba que coinciden.
+114. **Tope de 300 aperturas por hora entre todos** (`LIMITE_VISITAS_HORA`). No impide inflar el
+     contador, solo lo limita: como mucho 7.200 aperturas falsas al día. Con el tope lleno, el resto
+     de la hora no se cuenta. **El contador es orientativo y no auditable**: el dato puede quedar
+     por encima de lo real (avisos falsos, recargas) o por debajo (tope lleno, bloqueadores,
+     navegadores sin `sendBeacon` ni `fetch keepalive`).
+115. **Cliente `assets/visita.js`**, cargado desde `nav.js` y, en la portada, con su propio
+     `<script>`: `sendBeacon` con `text/plain` (sin preflight) y `fetch keepalive` de respaldo; no
+     espera respuesta y, si falla, solo `console.warn`. No envía en `localhost`/`127.0.0.1`/`.test`;
+     una página precargada cuenta al abrirse de verdad y una pestaña abierta en segundo plano, al
+     verse por primera vez. CSP: se añade solo `https://mlaqtniujnvfxcvcourm.supabase.co` a
+     `connect-src` en las 8 páginas que no lo tenían (calculadoras ya lo tenía).
+116. **Privacidad**: la app no almacena la IP; Supabase puede conservar registros técnicos un
+     tiempo limitado. Según su página de precios (<https://supabase.com/pricing>, consultada el
+     18/10/2026), con el plan del proyecto (Pro) «Log retention (API & Database)» es de 7 días. Para
+     los registros de Edge Functions no hay plazo publicado en esa página: no se escribe ninguno.

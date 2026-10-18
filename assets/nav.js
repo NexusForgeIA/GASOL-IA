@@ -6,6 +6,7 @@
 //   con el resto. Sin JS, el CSS (scripting: none) deja visibles los enlaces de la barra superior.
 import { AVISO_BETA, enlaceOpinion } from "./config.js";
 import { icono } from "./iconos.js";
+import "./visita.js";
 
 // ---- Barra superior (pantallas anchas) ------------------------------------------------------
 const nav = document.querySelector(".navegacion");
