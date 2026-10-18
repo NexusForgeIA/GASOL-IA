@@ -1,6 +1,6 @@
 # CLAUDE.md — Gasol-IA
 
-App para conductores profesionales (taxi, VTC, furgoneta y camión). Su diferencial es el
+App para el servicio de transporte de pasajeros y de mercancías. Su diferencial es el
 control del gasto en combustible; además, gasolineras más baratas en su ruta, con filtro de
 abiertas 24 h.
 

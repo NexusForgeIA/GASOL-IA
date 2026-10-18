@@ -133,7 +133,7 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 
 # Decisiones — Posicionamiento (18/10/2026)
 
-41. **Público: conductores profesionales (taxi, VTC, furgoneta y camión)**, en CLAUDE.md, README,
+41. *(Sustituida por la 76.)* **Público: conductores profesionales (taxi, VTC, furgoneta y camión)**, en CLAUDE.md, README,
     portada, inicio, comparador y manifiesto. El diferencial es el control del gasto, no el
     comparador. Se mantienen el aviso «Ruta no verificada para camiones» y la atribución a MITECO.
     Sin cifras ni promesas de ahorro.
@@ -237,3 +237,17 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
     si la primera lectura del mes no es el día 1, y la página lo dice). No resta otros gastos.
 75. **CSV solo del mes que se ve**, una fila por carrera, con las cuatro columnas además de canal,
     aplicación y método, para sumarlas en una hoja de cálculo.
+
+# Decisiones — Texto de posicionamiento (18/10/2026)
+
+76. **Decisión de Cris: fuera «conductores profesionales» y la lista «Taxi, VTC, furgoneta y
+    camión».** El texto es «Servicio de transporte de pasajeros y de mercancías». Solo, como lema de
+    la portada y subtítulo de inicio y comparador; dentro de una frase, «para el servicio de
+    transporte de pasajeros y de mercancías» (títulos, descripciones, `og:`, manifiesto, README,
+    CLAUDE.md y docs). El `h1` del comparador queda en «Gasolineras más baratas» y la frase pasa al
+    subtítulo. Se mantienen las menciones funcionales: el aviso «Ruta no verificada para camiones»
+    y su texto, el taxímetro como tipo de vencimiento (opción, tarjeta del inicio,
+    descripción de `vencimientos.html` y privacidad), los ejemplos de los campos «Turno o
+    vehículo» y «Vehículo», «Aparcamiento (camiones)» en el informe de la fuente, los datos de
+    prueba de los tests, las referencias a los taxistas de la beta (quién pidió la facturación) y
+    el histórico (decisión 41 y verificaciones pasadas). Sin cambios en la atribución al Ministerio.

@@ -1,6 +1,6 @@
 # Gasol-IA
 
-App para conductores profesionales (taxi, VTC, furgoneta y camión): control del gasto
+App para el servicio de transporte de pasajeros y de mercancías: control del gasto
 en combustible y precios de carburantes en su zona y en su ruta, con filtro de gasolineras
 abiertas 24 horas.
 

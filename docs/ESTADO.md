@@ -1,6 +1,6 @@
 # Estado — 18/10/2026
 
-Público: conductores profesionales (taxi, VTC, furgoneta y camión). El diferencial es el control
+Público: servicio de transporte de pasajeros y de mercancías. El diferencial es el control
 del gasto en combustible.
 
 Demo pública: <https://nexusforgeia.github.io/GASOL-IA/> (GitHub Pages desde `main`, `noindex`).
@@ -251,6 +251,11 @@ favoritas y atribución con fecha. La fuente no trae teléfono (`docs/FUENTE-DAT
   390 px sin desbordamiento con el menú nuevo; 0 errores de consola. Lighthouse móvil `ingresos` e
   `inicio` 100/100/100 (SEO 63 por `noindex`; `ingresos` bajaba a 85 por CLS 0,29 al pintar los
   días, corregido reservando altura).
+- Texto de posicionamiento (18/10/2026): «Servicio de transporte de pasajeros y de mercancías» en
+  lugar de «conductores profesionales» y la lista de vehículos (decisión 76). Capturas a 390 px
+  (`docs/capturas/posicionamiento-portada.png`, `posicionamiento-inicio.png`), sin desbordamiento
+  ni errores de consola. Lighthouse móvil portada, inicio y comparador 100/100/100 (SEO 63 por
+  `noindex`).
 - Posicionamiento (18/10/2026): textos de portada, inicio, comparador y manifiesto para
   conductores profesionales. Lighthouse móvil portada 100/100/100 (antes fallaba con `NO_FCP`
   por la animación de opacidad), inicio y comparador 100/100/100.
