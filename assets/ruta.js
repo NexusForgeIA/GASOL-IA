@@ -1,4 +1,5 @@
 // Planificador de ruta y corredor. Solo antes de salir.
+import "./nav.js";
 import { API, CUENTAS, mostrarCuentas } from "./config.js";
 import { compararDesvio, enlaceGoogleMaps, enlaceWaze, euros, puntosIntermedios } from "./calculos.js";
 import { llamar, sesion } from "./sesion.js";

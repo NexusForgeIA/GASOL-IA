@@ -1,4 +1,5 @@
 // Gasol-IA · control de gastos. Sin cuenta ni servidor: los repostajes viven en este navegador.
+import "./nav.js";
 import { mostrarCuentas } from "./config.js";
 import { euros } from "./calculos.js";
 import { fechaCorta, hoyMadrid, nombreMes } from "./fechas.js";

@@ -47,9 +47,23 @@ a { color: var(--accent); }
 .saltar:focus { top: 1rem; }
 
 .cabecera { padding: 1rem 0 1rem; border-bottom: 1px solid var(--line); }
-.navegacion { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: .75rem; }
-/* Píldoras verdes que pasan a varias filas en el móvil: nunca desbordan la página. */
-.navegacion a {
+.cabecera .contenedor { min-width: 0; }
+/* Una fila de píldoras que se desplaza dentro de la barra (nunca la página). El hueco vertical
+   deja ver el anillo de foco; el degradado (clases de nav.js) avisa de que hay más. */
+.navegacion {
+  position: relative; display: flex; flex-wrap: nowrap; gap: .5rem; align-items: center;
+  margin: 0 -1rem .75rem; padding: .4rem 1rem; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.navegacion::-webkit-scrollbar { display: none; }
+.navegacion.mas-der { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent); }
+.navegacion.mas-izq { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 3rem), transparent); }
+.navegacion.mas-izq.mas-der {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+}
+.navegacion a { flex: none; white-space: nowrap;
+
   display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 .9rem;
   border: 2px solid transparent; border-radius: 999px; background: var(--accion); color: var(--accion-texto);
   text-decoration: none; font-weight: 700; font-size: .95rem;
@@ -78,8 +92,11 @@ legend { font-weight: 600; margin-bottom: .5rem; }
   background: var(--surface); cursor: pointer; font-weight: 600;
 }
 .segmentado input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.segmentado label:has(input:checked) { background: var(--surface-2); border-color: var(--accent); color: var(--text); }
-.segmentado label:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+.segmentado label { border-width: 2px; }
+/* Elegida: verde con texto blanco, borde blanco y ✓ (no solo color). Las demás, neutras. */
+.segmentado label:has(input:checked) { background: var(--accion); border-color: var(--foco); color: var(--accion-texto); }
+.segmentado label:has(input:checked)::before { content: "✓"; content: "✓" / ""; font-weight: 800; }
+.segmentado label:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
 
 .campos { display: grid; gap: .75rem; }
 @media (min-width: 34rem) { .campos { grid-template-columns: 1fr 1fr; align-items: end; } }

@@ -1,5 +1,6 @@
 // Gasol-IA · página de favoritas y preferencias. Los datos viven en este navegador
 // (favoritas.js); al servidor solo se piden los precios por ID de estación.
+import "./nav.js";
 import { API, mostrarCuentas } from "./config.js";
 import { ficha, precargarFichas } from "./ficha.js";
 import { borrarMisDatos, guardarPreferencias, leerFavoritas, leerPreferencias } from "./favoritas.js";
