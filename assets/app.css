@@ -535,3 +535,78 @@ td[aria-selected="true"] .dia-cal .dia-tot { color: var(--accion-texto); }
 .titulo-aviso .icono { color: var(--warn); }
 .tarjeta-info.instalada { margin: 1.25rem 0; border-color: var(--accent); }
 .tarjeta-info.instalada .icono { color: var(--accent); }
+
+/* ===== Capa visual moderna + tipografía (21/10/2026): mismas variables, más profundidad. Solo estilo. ===== */
+/* Plus Jakarta Sans (OFL), variable, alojada en el sitio: la CSP no permite fuentes externas. */
+@font-face { font-family: "Plus Jakarta Sans"; font-style: normal; font-weight: 200 800; font-display: swap; src: url("fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+:root {
+  --radius: 16px;
+  --tarjeta-radio: 22px;
+  --tarjeta-pad: 1.1rem;
+  --line: #27313a;
+  --muted: #cfd8df;
+  --brillo: 0 10px 30px -12px rgba(74, 222, 128, .35);
+  --sombra: 0 12px 32px -16px rgba(0, 0, 0, .9);
+  --cristal: rgba(16, 20, 24, .8);
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 600; line-height: 1.55; letter-spacing: -.005em;
+}
+button, input, select, textarea { font-family: inherit; font-weight: 600; }
+body { background: radial-gradient(120% 60% at 50% -10%, rgba(74, 222, 128, .14), transparent 60%), var(--bg); background-attachment: fixed; }
+h1 { font-size: clamp(1.7rem, 7vw, 2.4rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.08; }
+h2 { font-weight: 800; letter-spacing: -.025em; font-size: 1.35rem; }
+h3 { font-weight: 700; letter-spacing: -.015em; }
+strong, b { font-weight: 800; }
+.sub { font-size: 1.05rem; font-weight: 600; }
+.nota, .estado, .captura, .meta, .dir, .detalle { font-weight: 600; }
+.campo span { font-weight: 700; }
+.cabecera { border-bottom: 0; padding: 1.1rem 0 1.4rem; background: linear-gradient(to bottom, rgba(74, 222, 128, .07), transparent); }
+.navegacion a { font-weight: 700; }
+.navegacion a.marca { font-size: 1.15rem; letter-spacing: -.02em; font-weight: 800; }
+
+/* Tarjetas: cristal oscuro, borde fino y elevación */
+.tarjeta, .calc, .tarjeta-info, .estacion, .avisos {
+  background: linear-gradient(160deg, #1b2229 0%, #12171c 100%); border-color: rgba(255, 255, 255, .08); box-shadow: var(--sombra);
+}
+.estacion.baja { background: linear-gradient(160deg, #143324 0%, #0f1f17 100%); }
+.tarjeta { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; overflow: hidden; }
+.tarjeta:hover { background: linear-gradient(160deg, #202931 0%, #151b21 100%); border-color: rgba(74, 222, 128, .55); box-shadow: var(--brillo); transform: translateY(-2px); }
+.tarjeta:active { transform: scale(.985); }
+.tarjeta-destacada { background: linear-gradient(135deg, #1fa152 0%, #15803d 100%); border-color: transparent; box-shadow: 0 14px 36px -14px rgba(74, 222, 128, .5); }
+.tarjeta-destacada:hover { background: linear-gradient(135deg, #25b05b 0%, #1a8f45 100%); border-color: transparent; }
+.tarjeta-icono { border-radius: 16px; width: 3.1rem; height: 3.1rem; background: linear-gradient(145deg, #17402a, #10281b); box-shadow: inset 0 0 0 1px rgba(74, 222, 128, .25); }
+.tarjeta-titulo { font-size: 1.2rem; font-weight: 800; letter-spacing: -.02em; }
+.tarjeta-texto { font-size: 1rem; font-weight: 600; color: #e4ebf0; line-height: 1.45; }
+.tarjeta-info.aviso { border-color: rgba(242, 193, 78, .45); background: linear-gradient(160deg, rgba(242, 193, 78, .10), rgba(242, 193, 78, .02)); }
+.precio strong { font-weight: 800; letter-spacing: -.03em; }
+.cifras dt { font-weight: 600; }
+.cifras dd { font-weight: 800; }
+
+/* Botones y campos */
+.boton, .boton-sec, .boton-peligro { border-radius: 999px; padding: .75rem 1.5rem; font-weight: 800; transition: transform .15s ease, box-shadow .2s ease, background .2s ease; }
+.boton, .boton-sec { background: linear-gradient(135deg, #1fa152, #15803d); box-shadow: 0 8px 22px -10px rgba(74, 222, 128, .55); }
+.boton:hover, .boton-sec:hover { background: linear-gradient(135deg, #25b05b, #1a8f45); }
+.boton:active, .boton-sec:active, .boton-peligro:active { transform: scale(.97); }
+.boton-sec[aria-pressed="true"] { background: var(--accion-activo); }
+input, select, textarea { border-radius: 14px !important; background: #12171c; border-color: rgba(255, 255, 255, .12); transition: border-color .2s ease, box-shadow .2s ease; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(74, 222, 128, .25); }
+.chip-boton { font-weight: 800; }
+.dia-cal { border-radius: 14px; }
+.mapa { border-radius: 22px; }
+
+/* Barra inferior de cristal */
+@media (max-width: 56.24rem) {
+  .barra-app { background: var(--cristal); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); border-top: 1px solid rgba(255, 255, 255, .1); border-radius: 22px 22px 0 0; }
+  .barra-item { font-weight: 700; }
+  .barra-item[aria-current="page"] .barra-icono, .barra-item.activo .barra-icono { background: linear-gradient(135deg, #1fa152, #15803d); box-shadow: var(--brillo); }
+  .mas-panel:not([hidden]) { background: #12171c; border-radius: 24px 24px 0 0; }
+}
+.pie { border-top-color: rgba(255, 255, 255, .08); }
+
+/* Entrada suave (solo si el usuario no pide menos movimiento) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes sube { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .tarjetas > li, .resultados, .calc { animation: sube .45s ease both; }
+  .tarjetas > li:nth-child(2) { animation-delay: .05s; } .tarjetas > li:nth-child(3) { animation-delay: .1s; }
+  .tarjetas > li:nth-child(n+4) { animation-delay: .15s; }
+}

@@ -494,3 +494,6 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
      UTC+2 → 06:00 UTC; invierno UTC+1 → 07:00 UTC). El **25/10/2026** se pasa a horario de invierno
      (a las 03:00 los relojes vuelven a las 02:00), así que ese día las 08:00 de Madrid son las 07:00
      UTC: hay que comprobar que el resumen llega a las 08:00 el 25 y el 26 de octubre.
+
+## Capa visual moderna (21/10/2026)
+Plus Jakarta Sans (OFL, variable) alojada en `assets/fonts/` (la CSP no permite fuentes externas); degradados, tarjetas con relieve, botones en píldora, barra inferior de cristal y texto con más cuerpo, en el verde de Gasol-IA. Solo estilo, al final de `assets/app.css`. SW gasol-v34.
