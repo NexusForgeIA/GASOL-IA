@@ -12,9 +12,9 @@ export function paginaDe(pathname) {
   return f === "index.html" ? "portada" : f.replace(/\.html$/, "");
 }
 
-function enviar() {
-  const modo = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true ? "instalada" : "navegador";
-  const cuerpo = JSON.stringify({ pagina: paginaDe(location.pathname), modo });
+function enviar(pagina = paginaDe(location.pathname), modoFijo) {
+  const modo = modoFijo || (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true ? "instalada" : "navegador");
+  const cuerpo = JSON.stringify({ pagina, modo });
   const url = `${API}/gasol-visita`;
   try {
     // text/plain: petición simple, sin preflight.
@@ -25,7 +25,14 @@ function enviar() {
   }
 }
 
+/** Cuenta un hecho de la instalación ("instalar-clic" o "instalacion"). Anónimo, igual que las aperturas. */
+export function contarInstalacion(pagina) {
+  if (typeof document !== "undefined" && !LOCAL.test(location.hostname)) enviar(pagina, "navegador");
+}
+
 if (typeof document !== "undefined" && !LOCAL.test(location.hostname)) {
+  // Chrome y Edge (Android y ordenador) avisan cuando la app queda instalada. Safari en iPhone no avisa.
+  window.addEventListener("appinstalled", () => enviar("instalacion", "navegador"));
   if (document.prerendering) {
     // Página precargada: solo cuenta si de verdad se abre.
     document.addEventListener("prerenderingchange", enviar, { once: true });

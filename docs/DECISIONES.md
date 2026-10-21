@@ -497,3 +497,6 @@ Tomadas al construir la fase 0-1. Las marcadas con **[revisar]** necesitan tu vi
 
 ## Capa visual moderna (21/10/2026)
 Plus Jakarta Sans (OFL, variable) alojada en `assets/fonts/` (la CSP no permite fuentes externas); degradados, tarjetas con relieve, botones en píldora, barra inferior de cristal y texto con más cuerpo, en el verde de Gasol-IA. Solo estilo, al final de `assets/app.css`. SW gasol-v34.
+
+## Contar instalaciones (21/10/2026)
+`instalar.html` tiene un botón «Instalar» real que solo aparece si el navegador ofrece la instalación (`beforeinstallprompt`: Chrome y Edge en Android y ordenador). Dos recuentos anónimos más en el contador de aperturas, como páginas de la lista cerrada: `instalar-clic` (pulsan el botón) e `instalacion` (el evento `appinstalled` confirma la instalación). En iPhone (Safari) el navegador no avisa: ahí solo se ve de forma indirecta en las aperturas en modo «instalada». Sin identificadores. El resumen diario los cuenta aparte, sin mezclarlos con las aperturas. Migración 20261021160000. SW gasol-v35.

@@ -1,8 +1,8 @@
 import { assertEquals } from "jsr:@std/assert@1.0.13";
 import { contarVisita, LIMITE_VISITAS_HORA, leerVisita, MODOS, PAGINAS } from "./limites.ts";
 
-Deno.test("lista cerrada: 13 páginas y dos modos; lo demás se rechaza", () => {
-  assertEquals(PAGINAS.length, 13);
+Deno.test("lista cerrada: 15 páginas y dos modos; lo demás se rechaza", () => {
+  assertEquals(PAGINAS.length, 15);
   assertEquals([...MODOS], ["navegador", "instalada"]);
   assertEquals(leerVisita('{"pagina":"ruta","modo":"instalada"}'), { pagina: "ruta", modo: "instalada" });
   for (const malo of ['{"pagina":"otra","modo":"navegador"}', '{"pagina":"ruta","modo":"app"}', '{"pagina":"ruta"}', "{roto", "null", "", '["ruta","navegador"]',
