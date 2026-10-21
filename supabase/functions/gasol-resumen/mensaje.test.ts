@@ -8,7 +8,7 @@ Deno.test("resumen sin datos: «sin datos», sin cifras inventadas", () => {
     "Aperturas: sin datos",
     "Páginas más abiertas: sin datos",
     "Cálculos de ruta pedidos: sin datos",
-    "Instalación: clics en Instalar 0 · instalaciones confirmadas 0 (solo Android y ordenador; iPhone no avisa)",
+    "Instalación: clics en Instalar 0 · instalaciones confirmadas 0 (solo Android y ordenador) · móviles que abren la app instalada por primera vez 0 (también iPhone)",
   ].join("\n"));
 });
 
@@ -30,7 +30,7 @@ Deno.test("resumen con datos: total, modos, tres páginas más abiertas, rutas y
     "Aperturas: 1285 (navegador 945 · instalada 340)",
     "Páginas más abiertas: inicio 1200 · comparador 40 · ruta 40",
     "Cálculos de ruta pedidos: 8",
-    "Instalación: clics en Instalar 0 · instalaciones confirmadas 0 (solo Android y ordenador; iPhone no avisa)",
+    "Instalación: clics en Instalar 0 · instalaciones confirmadas 0 (solo Android y ordenador) · móviles que abren la app instalada por primera vez 0 (también iPhone)",
     "Dato orientativo: tope alcanzado en 2 horas.",
   ].join("\n"));
 });
@@ -41,7 +41,7 @@ Deno.test("resumen con un modo que falta: ese modo vale 0; una hora de tope en s
     "Aperturas: 2 (navegador 2 · instalada 0)",
     "Páginas más abiertas: privacidad 2",
     "Cálculos de ruta pedidos: 0",
-    "Instalación: clics en Instalar 0 · instalaciones confirmadas 0 (solo Android y ordenador; iPhone no avisa)",
+    "Instalación: clics en Instalar 0 · instalaciones confirmadas 0 (solo Android y ordenador) · móviles que abren la app instalada por primera vez 0 (también iPhone)",
     "Dato orientativo: tope alcanzado en 1 hora.",
   ]);
 });
