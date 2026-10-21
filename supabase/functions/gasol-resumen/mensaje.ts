@@ -20,18 +20,22 @@ const n = (x: number) => new Intl.NumberFormat("es-ES").format(x);
 export function componerResumen(dia: string, datos: DatosResumen): string {
   const lineas = [`Gasol-IA · resumen de ayer (${fecha(dia)})`, "Aperturas, no personas."];
   const v = datos.visitas ?? [];
-  if (!v.length) {
+  // "instalar-clic" e "instalacion" no son aperturas: se cuentan aparte.
+  const vApp = v.filter((x) => x.pagina !== "instalar-clic" && x.pagina !== "instalacion");
+  const hechos = (p: string) => v.filter((x) => x.pagina === p).reduce((s, x) => s + x.recuento, 0);
+  if (!vApp.length) {
     lineas.push("Aperturas: sin datos", "Páginas más abiertas: sin datos");
   } else {
-    const total = v.reduce((s, x) => s + x.recuento, 0);
-    const porModo = (m: string) => v.filter((x) => x.modo === m).reduce((s, x) => s + x.recuento, 0);
+    const total = vApp.reduce((s, x) => s + x.recuento, 0);
+    const porModo = (m: string) => vApp.filter((x) => x.modo === m).reduce((s, x) => s + x.recuento, 0);
     lineas.push(`Aperturas: ${n(total)} (navegador ${n(porModo("navegador"))} · instalada ${n(porModo("instalada"))})`);
     const paginas = new Map<string, number>();
-    for (const x of v) paginas.set(x.pagina, (paginas.get(x.pagina) ?? 0) + x.recuento);
+    for (const x of vApp) paginas.set(x.pagina, (paginas.get(x.pagina) ?? 0) + x.recuento);
     const top = [...paginas].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es")).slice(0, 3);
     lineas.push(`Páginas más abiertas: ${top.map(([p, r]) => `${p} ${n(r)}`).join(" · ")}`);
   }
   lineas.push(`Cálculos de ruta pedidos: ${datos.rutas == null ? "sin datos" : n(datos.rutas)}`);
+  lineas.push(`Instalación: clics en Instalar ${n(hechos("instalar-clic"))} · instalaciones confirmadas ${n(hechos("instalacion"))} (solo Android y ordenador; iPhone no avisa)`);
   if (datos.horas_tope > 0) {
     lineas.push(`Dato orientativo: tope alcanzado en ${datos.horas_tope} ${datos.horas_tope === 1 ? "hora" : "horas"}.`);
   }

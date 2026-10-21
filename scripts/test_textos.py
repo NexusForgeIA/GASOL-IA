@@ -19,12 +19,12 @@ class ListaPaginas(unittest.TestCase):
         ts = (RAIZ / "supabase" / "functions" / "gasol-visita" / "limites.ts").read_text(encoding="utf-8")
         bloque = re.search(r"PAGINAS = \[(.*?)\] as const", ts, re.S).group(1)
         codigo = re.findall(r'"([^"]+)"', bloque)
-        sql = (RAIZ / "supabase" / "migrations" / "20261018210000_gasol_visitas.sql").read_text(encoding="utf-8")
+        sql = (RAIZ / "supabase" / "migrations" / "20261021160000_gasol_instalacion.sql").read_text(encoding="utf-8")
         listas = re.findall(r"pagina\s+not in \(([^)]*)\)|pagina in \(([^)]*)\)", sql)
         for a, b in listas:
             self.assertEqual(re.findall(r"'([^']+)'", a or b), codigo)
         self.assertEqual(len(listas), 2)
-        self.assertEqual(len(codigo), 13)
+        self.assertEqual(len(codigo), 15)
 
 
 if __name__ == "__main__":
