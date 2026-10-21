@@ -1,10 +1,10 @@
 // Contador de aperturas: lista cerrada, modos y tope por hora. Se cuentan aperturas, no personas.
-// La lista es la misma que en la migración 20261021160000_gasol_instalacion.sql (lo comprueba
+// La lista es la misma que en la migración 20261021180000_gasol_primera_instalada.sql (lo comprueba
 // scripts/test_textos.py). Decisión 113 en docs/DECISIONES.md.
 
 export const PAGINAS = [
   "portada", "inicio", "comparador", "ruta", "calculadoras", "favoritas",
-  "gastos", "ingresos", "vencimientos", "cuenta", "privacidad", "aviso-legal", "instalar", "instalar-clic", "instalacion",
+  "gastos", "ingresos", "vencimientos", "cuenta", "privacidad", "aviso-legal", "instalar", "instalar-clic", "instalacion", "primera-instalada",
 ] as const;
 export const MODOS = ["navegador", "instalada"] as const;
 

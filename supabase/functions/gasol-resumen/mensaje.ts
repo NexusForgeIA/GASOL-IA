@@ -20,8 +20,8 @@ const n = (x: number) => new Intl.NumberFormat("es-ES").format(x);
 export function componerResumen(dia: string, datos: DatosResumen): string {
   const lineas = [`Gasol-IA · resumen de ayer (${fecha(dia)})`, "Aperturas, no personas."];
   const v = datos.visitas ?? [];
-  // "instalar-clic" e "instalacion" no son aperturas: se cuentan aparte.
-  const vApp = v.filter((x) => x.pagina !== "instalar-clic" && x.pagina !== "instalacion");
+  // "instalar-clic", "instalacion" y "primera-instalada" no son aperturas: se cuentan aparte.
+  const vApp = v.filter((x) => x.pagina !== "instalar-clic" && x.pagina !== "instalacion" && x.pagina !== "primera-instalada");
   const hechos = (p: string) => v.filter((x) => x.pagina === p).reduce((s, x) => s + x.recuento, 0);
   if (!vApp.length) {
     lineas.push("Aperturas: sin datos", "Páginas más abiertas: sin datos");
@@ -35,7 +35,7 @@ export function componerResumen(dia: string, datos: DatosResumen): string {
     lineas.push(`Páginas más abiertas: ${top.map(([p, r]) => `${p} ${n(r)}`).join(" · ")}`);
   }
   lineas.push(`Cálculos de ruta pedidos: ${datos.rutas == null ? "sin datos" : n(datos.rutas)}`);
-  lineas.push(`Instalación: clics en Instalar ${n(hechos("instalar-clic"))} · instalaciones confirmadas ${n(hechos("instalacion"))} (solo Android y ordenador; iPhone no avisa)`);
+  lineas.push(`Instalación: clics en Instalar ${n(hechos("instalar-clic"))} · instalaciones confirmadas ${n(hechos("instalacion"))} (solo Android y ordenador) · móviles que abren la app instalada por primera vez ${n(hechos("primera-instalada"))} (también iPhone)`);
   if (datos.horas_tope > 0) {
     lineas.push(`Dato orientativo: tope alcanzado en ${datos.horas_tope} ${datos.horas_tope === 1 ? "hora" : "horas"}.`);
   }

@@ -1,6 +1,6 @@
 // Contador de aperturas (decisión 113): en cada carga avisa a gasol-visita de qué página se abre y
 // si es desde la app instalada o desde el navegador. Se cuentan aperturas, no personas: no se envía
-// ni se guarda nada que identifique el dispositivo (ni localStorage, ni cookies). Sin esperar
+// ni se guarda nada que identifique el dispositivo (ni cookies; solo una marca local «ya contado» para contar una vez cada móvil instalado, que no se envía). Sin esperar
 // respuesta; si falla, solo un aviso en la consola.
 import { API } from "./config.js";
 
@@ -12,8 +12,23 @@ export function paginaDe(pathname) {
   return f === "index.html" ? "portada" : f.replace(/\.html$/, "");
 }
 
+const MARCA = "gasol.instalada-contada";
+
+/** true solo la primera vez en este dispositivo. La marca se queda en el móvil: no se envía ni identifica a nadie. */
+function esPrimeraVez() {
+  try {
+    if (localStorage.getItem(MARCA)) return false;
+    localStorage.setItem(MARCA, "1");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function enviar(pagina = paginaDe(location.pathname), modoFijo) {
   const modo = modoFijo || (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true ? "instalada" : "navegador");
+  // Primera vez que este móvil abre la app desde su icono (también en iPhone, donde Safari no avisa de la instalación).
+  if (!modoFijo && modo === "instalada" && esPrimeraVez()) enviar("primera-instalada", "instalada");
   const cuerpo = JSON.stringify({ pagina, modo });
   const url = `${API}/gasol-visita`;
   try {
