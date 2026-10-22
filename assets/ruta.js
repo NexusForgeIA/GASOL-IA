@@ -192,8 +192,8 @@ form.addEventListener("submit", async (e) => {
     repostaje = null;
     pintar();
   } catch (err) {
-    // Tope del servidor: el mismo aviso amable que el del dispositivo (el de la hora dice «dentro de un rato»).
-    if (err.status === 429) avisar(err.limite === "hora" ? err.message : AVISO_LIMITE_RUTAS);
+    // Tope del servidor: el mismo aviso amable que el del dispositivo (el de la hora y el del minuto traen su propio texto).
+    if (err.status === 429) avisar(err.limite === "hora" || err.limite === "minuto" ? err.message : AVISO_LIMITE_RUTAS);
     else avisar(err.message, true);
     if (CUENTAS && err.status === 401) $("sin-sesion").hidden = false;
   } finally {
