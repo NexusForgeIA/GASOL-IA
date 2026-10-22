@@ -10,6 +10,7 @@
 // RGPD: las coordenadas se redondean a 2 decimales (~1 km), no se guardan ni se
 // escriben en logs, y la respuesta no se cachea.
 
+import { ipDe, nuevoContador, superaLimite } from "../_shared/limite-cliente.ts";
 import { FICHA_COMBUSTIBLES, idsValidos } from "./ids.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -61,26 +62,60 @@ async function rpc(nombre: string, args: unknown, rango = "") {
 
 const redondear = (n: number) => Math.round(n * 100) / 100;
 
+// Límite por cliente (IP, solo en memoria; ver _shared/limite-cliente.ts). Una pantalla normal hace
+// pocas consultas por minuto; esto frena el bucle de un script sin molestar a nadie.
+const LIMITE_MINUTO_CLIENTE = 60;
+const porCliente = nuevoContador();
+
+// Los listados casi no cambian (la carga de estaciones es diaria): se guardan en la instancia para que
+// repetir ?listado=territorios no lance sus hasta 20 consultas cada vez. Si la carga falla no se guarda.
+const cacheListado = new Map<string, { hasta: number; datos: Promise<unknown> }>();
+function listado(nombre: string, ttlMs: number, cargar: () => Promise<unknown>) {
+  const ahora = Date.now();
+  const e = cacheListado.get(nombre);
+  if (e && e.hasta > ahora) return e.datos;
+  const datos = cargar();
+  cacheListado.set(nombre, { hasta: ahora + ttlMs, datos });
+  datos.catch(() => { if (cacheListado.get(nombre)?.datos === datos) cacheListado.delete(nombre); });
+  return datos;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
   if (req.method !== "GET") return json({ error: "Método no permitido" }, 405);
   const q = new URL(req.url).searchParams;
+  const nombreListado = q.get("listado");
+  const cacheado = nombreListado !== null && (cacheListado.get(nombreListado)?.hasta ?? 0) > Date.now();
+
+  // Lo que sale de la memoria no toca la base de datos y no cuenta; el resto sí.
+  if (!cacheado) {
+    const espera = superaLimite(porCliente, ipDe(req), LIMITE_MINUTO_CLIENTE);
+    if (espera) {
+      return new Response(JSON.stringify({ error: "Demasiadas consultas seguidas. Espera un momento." }), {
+        status: 429,
+        headers: { ...CORS, "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Retry-After": String(espera) },
+      });
+    }
+  }
 
   try {
-    if (q.get("listado") === "territorios") {
-      // PostgREST devuelve como máximo 1000 filas por petición: se pagina.
-      const filas: unknown[] = [];
-      for (let offset = 0; offset < 20000; offset += 1000) {
-        const pagina = await rpc("gasol_territorios", {}, `?limit=1000&offset=${offset}`);
-        filas.push(...pagina);
-        if (pagina.length < 1000) break;
-      }
+    if (nombreListado === "territorios") {
+      const filas = await listado("territorios", 3_600_000, async () => {
+        // PostgREST devuelve como máximo 1000 filas por petición: se pagina.
+        const todas: unknown[] = [];
+        for (let offset = 0; offset < 20000; offset += 1000) {
+          const pagina = await rpc("gasol_territorios", {}, `?limit=1000&offset=${offset}`);
+          todas.push(...pagina);
+          if (pagina.length < 1000) break;
+        }
+        return todas;
+      });
       return json({ territorios: filas }, 200, "public, max-age=3600");
     }
 
-    if (q.get("listado") === "lugares") {
+    if (nombreListado === "lugares") {
       // Un único jsonb: [[id_municipio, municipio, provincia, lat, lon], ...]
-      return json({ lugares: await rpc("gasol_lugares", {}) }, 200, "public, max-age=86400");
+      return json({ lugares: await listado("lugares", 3_600_000, () => rpc("gasol_lugares", {})) }, 200, "public, max-age=86400");
     }
 
     if (q.has("ficha")) {
