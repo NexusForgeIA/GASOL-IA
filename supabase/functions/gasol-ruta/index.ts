@@ -9,9 +9,11 @@ import { acumuladoM, cajas, enCorredor, proyectar, type Punto, simplificar } fro
 import {
   ATRIBUCION, cors, ErrorHttp, respuesta, rpcServicio, tokenDe, usuario,
 } from "../_shared/supa.ts";
-import { contarRuta, MENSAJES_LIMITE } from "./limites.ts";
+import { ipDe, nuevoContador, superaLimite } from "../_shared/limite-cliente.ts";
+import { contarRuta, LIMITE_RUTAS_MINUTO_CLIENTE, MENSAJES_LIMITE } from "./limites.ts";
 import { proveedorActivo } from "./proveedor.ts";
 
+const porCliente = nuevoContador();
 const CORS = cors("GET, POST");
 const json = respuesta(CORS);
 
@@ -57,6 +59,9 @@ Deno.serve(async (req) => {
         throw new ErrorHttp(429, `Has llegado al límite de ${LIMITE_DIARIO} cálculos de ruta por hoy.`);
       }
     } else {
+      // Primero el tope por cliente, para que quien abusa no gaste el global de los demás.
+      const espera = superaLimite(porCliente, ipDe(req), LIMITE_RUTAS_MINUTO_CLIENTE);
+      if (espera) return json({ error: MENSAJES_LIMITE.minuto, limite: "minuto" }, 429, { "Retry-After": String(espera) });
       // Tope global por hora y por día: solo contadores, sin coordenadas ni identificadores.
       const superada = await contarRuta(rpcServicio);
       if (superada) return json({ error: MENSAJES_LIMITE[superada], limite: superada }, 429);

@@ -8,7 +8,11 @@ export const LIMITE_RUTAS_HORA = 60;
 /** Cálculos por día entre todos (el mismo tope global que ya tenía la demo). */
 export const LIMITE_RUTAS_DIA = 500;
 
+/** Cálculos por minuto y por cliente (IP, en memoria): que uno solo no agote el tope global de todos. */
+export const LIMITE_RUTAS_MINUTO_CLIENTE = 5;
+
 export const MENSAJES_LIMITE = {
+  minuto: "Estás pidiendo rutas muy seguido. Espera un momento y vuelve a intentarlo.",
   dia: "Has llegado al límite de cálculos de hoy en esta versión beta. Vuelve mañana.",
   hora: "Hay muchos cálculos de ruta en esta hora en esta versión beta. Vuelve a intentarlo dentro de un rato.",
 } as const;
